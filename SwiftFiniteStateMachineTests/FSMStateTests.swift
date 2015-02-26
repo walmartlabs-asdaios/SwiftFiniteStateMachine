@@ -24,21 +24,24 @@ func XCTAssertEqualOptional<T:Equatable>(expression1: @autoclosure () -> T?, exp
 
 class FSMStateTests: XCTestCase {
 
+    let dummyFiniteStateMachine = FSMFiniteStateMachine()
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
     func testCreation() {
-        let state = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+        let state = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         XCTAssertEqual("test", state.name)
+        XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
     }
 
     // enterState block tests
 
     func testWillEnterStateBlock() {
-        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -69,7 +72,7 @@ class FSMStateTests: XCTestCase {
     }
 
     func testDidEnterStateBlock() {
-        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -102,7 +105,7 @@ class FSMStateTests: XCTestCase {
     // exitState block tests
 
     func testWillExitStateBlock() {
-        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -133,7 +136,7 @@ class FSMStateTests: XCTestCase {
     }
 
     func testDidExitStateBlock() {
-        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
