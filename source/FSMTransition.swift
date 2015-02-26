@@ -8,10 +8,10 @@
 
 import Foundation
 
-func ==(lhs: FSMTransition, rhs: FSMTransition) -> Bool {
-    return lhs === rhs
-}
-
 class FSMTransition: Equatable {
 
+}
+
+func ==(lhs: FSMTransition, rhs: FSMTransition) -> Bool {
+    return lhs === rhs
 }

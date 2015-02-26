@@ -20,9 +20,9 @@ class FSMStateTests: FSMTestCase {
         XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
     }
 
-    // enterState block tests
+    // enterState tests
 
-    func testWillEnterStateBlock() {
+    func testWillEnterState() {
         let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
@@ -53,7 +53,7 @@ class FSMStateTests: FSMTestCase {
         })
     }
 
-    func testDidEnterStateBlock() {
+    func testDidEnterState() {
         let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
@@ -84,9 +84,9 @@ class FSMStateTests: FSMTestCase {
         })
     }
     
-    // exitState block tests
+    // exitState tests
 
-    func testWillExitStateBlock() {
+    func testWillExitState() {
         let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
@@ -117,7 +117,7 @@ class FSMStateTests: FSMTestCase {
         })
     }
 
-    func testDidExitStateBlock() {
+    func testDidExitState() {
         let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil

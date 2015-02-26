@@ -8,10 +8,10 @@
 
 import Foundation
 
-func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
-    return lhs === rhs
-}
-
 class FSMFiniteStateMachine: Equatable {
 
+}
+
+func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
+    return lhs === rhs
 }

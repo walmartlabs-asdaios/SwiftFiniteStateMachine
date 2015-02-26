@@ -28,13 +28,72 @@ class FSMEventTests: FSMTestCase {
         event = FSMEvent("test", sources:[dummySourceState1,dummySourceState2], destination:dummyDestinationState, finiteStateMachine:dummyFiniteStateMachine)
     }
 
-
     func testCreation() {
         XCTAssertEqual("test", event.name);
         XCTAssertEqual([dummySourceState1,dummySourceState2], event.sources);
         XCTAssertEqual(dummyDestinationState, event.destination);
         XCTAssertEqual(dummyFiniteStateMachine, event.finiteStateMachine);
         XCTAssertEqual(kFSMDefaultEventTimeout, event.eventTimeout);
+    }
+
+    // fireEvent tests
+
+    func testWillFireEvent() {
+        var actualEvent:FSMEvent? = nil
+        var actualTransition:FSMTransition? = nil
+        var actualValue:AnyObject? = nil
+
+        event.willFireEvent = {
+            (event, transition, value) -> AnyObject? in
+            actualEvent = event
+            actualTransition = transition;
+            actualValue = value;
+            return value
+        }
+
+        let expectedTransition = FSMTransition()
+        let expectedValue:AnyObject? = "expected value"
+
+        let result = event.willFireEventWithTransition(expectedTransition, value:expectedValue)
+        result.then(
+            { (value) -> AnyObject? in
+                XCTAssertEqualOptional(self.event, actualEvent);
+                XCTAssertEqualOptional(expectedTransition, actualTransition);
+                XCTAssertTrue(expectedValue === actualValue);
+                return nil
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                return error
+        })
+    }
+
+    func testDidFireEvent() {
+        var actualEvent:FSMEvent? = nil
+        var actualTransition:FSMTransition? = nil
+        var actualValue:AnyObject? = nil
+
+        event.didFireEvent = {
+            (event, transition, value) -> AnyObject? in
+            actualEvent = event
+            actualTransition = transition;
+            actualValue = value;
+            return value
+        }
+
+        let expectedTransition = FSMTransition()
+        let expectedValue:AnyObject? = "expected value"
+
+        let result = event.didFireEventWithTransition(expectedTransition, value:expectedValue)
+        result.then(
+            { (value) -> AnyObject? in
+                XCTAssertEqualOptional(self.event, actualEvent);
+                XCTAssertEqualOptional(expectedTransition, actualTransition);
+                XCTAssertTrue(expectedValue === actualValue);
+                return nil
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                return error
+        })
     }
     
 }
