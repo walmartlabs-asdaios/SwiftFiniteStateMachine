@@ -55,12 +55,25 @@ class FSMFiniteStateMachine: Equatable {
 
     private var mutableStates:[String:FSMState] = [:]
 
+    private(set) internal var currentState: FSMState?
+
+    var states:[String:FSMState] {
+        get {
+            return mutableStates
+        }
+    }
+
+    // MARK: interface
+
+    init() {
+    }
+
     /**
     * Add a new state to be used by the instance.
     *
     * :param: stateName must be a unique identifier within the instance
     * :param: error optional error return value
-    * :returns: An instance of ASDAFSMState if initialization was successful, nil otherwise
+    * :returns: An instance of FSMState if initialization was successful, nil otherwise
     */
     func addState(stateName:String, error:NSErrorPointer) -> FSMState? {
         var result:FSMState? = nil
@@ -81,6 +94,35 @@ class FSMFiniteStateMachine: Equatable {
         }
         return result;
     }
+
+    /**
+    * Initialize state machine to it's starting state.
+    *
+    * :param: state the state to initialize this instance to, it must be an instance of FSMState
+    *              that was created by addStateWithName:error:
+    * :param: error optional error return value
+    * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
+    */
+    func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
+        var result:FSMState? = nil
+
+        if (mutableStates[state.name] != nil) {
+            result = state;
+            currentState = state;
+        } else {
+            if (error != nil) {
+                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["state":state.name])
+            }
+        }
+        return result;
+    }
+
+    // MARK: implementation
+
+    var description : String {
+        return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"
+    }
+
 }
 
 func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {

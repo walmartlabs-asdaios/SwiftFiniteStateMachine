@@ -70,6 +70,10 @@ class FSMEvent: Equatable {
 
     // MARK: implementation
 
+    var description : String {
+        return "FSMEvent: \(name)"
+    }
+
     func willFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
         if let willFireEvent = willFireEvent? {

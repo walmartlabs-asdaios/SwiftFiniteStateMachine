@@ -31,7 +31,7 @@ typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> Any
 * - if any other value is returned (including nil), then that value is passed to 
 *   the next step in the process
 */
-class FSMState: Equatable {
+class FSMState: Equatable, Printable {
     /**
     * The unique identifier within the state machine instance.
     */
@@ -74,6 +74,10 @@ class FSMState: Equatable {
     }
 
     // MARK: implementation
+
+    var description : String {
+        return "FSMState: \(name)"
+    }
 
     func willEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
