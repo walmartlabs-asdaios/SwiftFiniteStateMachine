@@ -16,19 +16,14 @@ class FSMTransitionTests: FSMTestCase {
     func testCreation() {
         let sourceState = FSMState("source", finiteStateMachine:dummyFiniteStateMachine)
         let destinationState = FSMState("destination", finiteStateMachine:dummyFiniteStateMachine)
-//        let event = FSMEvent("event", sources:[sourceState], destination:destinationState, finiteStateMachine:dummyFiniteStateMachine)
-//
-//        let transition = FSMTransition(event, source:sourceStatee, 
-//        ASDAFSMTransition *transition = [[ASDAFSMTransition alloc] initWithFiniteStateMachine:self.dummyFiniteStateMachine
-//        event:event
-//        sourceState:sourceState];
-//        XCTAssertEqualObjects(self.dummyFiniteStateMachine, transition.finiteStateMachine);
-//        XCTAssertEqualObjects(event, transition.event);
-//        XCTAssertEqualObjects(sourceState, transition.sourceState);
-//        XCTAssertEqualObjects(destinationState, transition.destinationState);
-//
-//        XCTAssertEqual("test", state.name)
-//        XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
+        let event = FSMEvent("event", sources:[sourceState], destination:destinationState, finiteStateMachine:dummyFiniteStateMachine)
+
+        let transition = FSMTransition(event, source:sourceState, finiteStateMachine:dummyFiniteStateMachine)
+
+        XCTAssertEqual(self.dummyFiniteStateMachine, transition.finiteStateMachine);
+        XCTAssertEqual(event, transition.event);
+        XCTAssertEqual(sourceState, transition.source);
+        XCTAssertEqual(destinationState, transition.destination);
     }
 
 }

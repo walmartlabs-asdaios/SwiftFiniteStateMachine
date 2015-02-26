@@ -51,7 +51,7 @@ class FSMEventTests: FSMTestCase {
             return value
         }
 
-        let expectedTransition = FSMTransition()
+        let expectedTransition = FSMTransition(event,source:dummySourceState1,finiteStateMachine:dummyFiniteStateMachine)
         let expectedValue:AnyObject? = "expected value"
 
         let result = event.willFireEventWithTransition(expectedTransition, value:expectedValue)
@@ -80,7 +80,7 @@ class FSMEventTests: FSMTestCase {
             return value
         }
 
-        let expectedTransition = FSMTransition()
+        let expectedTransition = FSMTransition(event,source:dummySourceState1,finiteStateMachine:dummyFiniteStateMachine)
         let expectedValue:AnyObject? = "expected value"
 
         let result = event.didFireEventWithTransition(expectedTransition, value:expectedValue)

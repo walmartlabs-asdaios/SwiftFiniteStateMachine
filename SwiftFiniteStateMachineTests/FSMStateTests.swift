@@ -23,7 +23,8 @@ class FSMStateTests: FSMTestCase {
     // enterState tests
 
     func testWillEnterState() {
-        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
+        let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
+        let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -37,7 +38,8 @@ class FSMStateTests: FSMTestCase {
             return value
         }
 
-        let expectedTransition = FSMTransition()
+        let event = FSMEvent("event",sources:[dummySource],destination:expectedState,finiteStateMachine:dummyFiniteStateMachine)
+        let expectedTransition = FSMTransition(event,source:dummySource,finiteStateMachine:dummyFiniteStateMachine)
         let expectedValue:AnyObject? = "expected value"
 
         let result = expectedState.willEnterStateWithTransition(expectedTransition, value:expectedValue)
@@ -54,7 +56,8 @@ class FSMStateTests: FSMTestCase {
     }
 
     func testDidEnterState() {
-        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
+        let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
+        let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -68,7 +71,8 @@ class FSMStateTests: FSMTestCase {
             return value
         }
 
-        let expectedTransition = FSMTransition()
+        let event = FSMEvent("event",sources:[dummySource],destination:expectedState,finiteStateMachine:dummyFiniteStateMachine)
+        let expectedTransition = FSMTransition(event,source:dummySource,finiteStateMachine:dummyFiniteStateMachine)
         let expectedValue:AnyObject? = "expected value"
 
         let result = expectedState.didEnterStateWithTransition(expectedTransition, value:expectedValue)
@@ -87,7 +91,8 @@ class FSMStateTests: FSMTestCase {
     // exitState tests
 
     func testWillExitState() {
-        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
+        let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
+        let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -101,7 +106,8 @@ class FSMStateTests: FSMTestCase {
             return value
         }
 
-        let expectedTransition = FSMTransition()
+        let event = FSMEvent("event",sources:[expectedState],destination:dummyDestination,finiteStateMachine:dummyFiniteStateMachine)
+        let expectedTransition = FSMTransition(event,source:expectedState,finiteStateMachine:dummyFiniteStateMachine)
         let expectedValue:AnyObject? = "expected value"
 
         let result = expectedState.willExitStateWithTransition(expectedTransition, value:expectedValue)
@@ -118,7 +124,8 @@ class FSMStateTests: FSMTestCase {
     }
 
     func testDidExitState() {
-        let expectedState = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
+        let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
+        let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -132,7 +139,8 @@ class FSMStateTests: FSMTestCase {
             return value
         }
 
-        let expectedTransition = FSMTransition()
+        let event = FSMEvent("event",sources:[expectedState],destination:dummyDestination,finiteStateMachine:dummyFiniteStateMachine)
+        let expectedTransition = FSMTransition(event,source:expectedState,finiteStateMachine:dummyFiniteStateMachine)
         let expectedValue:AnyObject? = "expected value"
 
         let result = expectedState.didExitStateWithTransition(expectedTransition, value:expectedValue)
