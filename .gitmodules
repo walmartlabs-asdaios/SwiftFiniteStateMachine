@@ -1,0 +1,3 @@
+[submodule "external/SwiftPromises"]
+	path = external/SwiftPromises
+	url = git@github.com:ivygulch/SwiftPromises.git

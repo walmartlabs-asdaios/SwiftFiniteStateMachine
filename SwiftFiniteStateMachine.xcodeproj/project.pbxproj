@@ -12,7 +12,19 @@
 		F83B61711A9F96F00070549A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F83B616F1A9F96F00070549A /* Main.storyboard */; };
 		F83B61731A9F96F00070549A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F83B61721A9F96F00070549A /* Images.xcassets */; };
 		F83B61761A9F96F00070549A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83B61741A9F96F00070549A /* LaunchScreen.xib */; };
-		F83B61821A9F96F00070549A /* SwiftFiniteStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61811A9F96F00070549A /* SwiftFiniteStateMachineTests.swift */; };
+		F83B61901A9F97520070549A /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618E1A9F97520070549A /* Promise.swift */; };
+		F83B61911A9F97520070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618F1A9F97520070549A /* Synchronizer.swift */; };
+		F83B61931A9F9DD60070549A /* FSMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61921A9F9DD60070549A /* FSMState.swift */; };
+		F83B61951A9F9E3B0070549A /* FSMStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61941A9F9E3B0070549A /* FSMStateTests.swift */; };
+		F83B61971A9F9E830070549A /* FSMTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61961A9F9E830070549A /* FSMTransition.swift */; };
+		F83B61991A9F9E8F0070549A /* FSMEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61981A9F9E8F0070549A /* FSMEvent.swift */; };
+		F83B619A1A9F9EAD0070549A /* FSMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61921A9F9DD60070549A /* FSMState.swift */; };
+		F83B619B1A9F9EAD0070549A /* FSMTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61961A9F9E830070549A /* FSMTransition.swift */; };
+		F83B619C1A9F9EAD0070549A /* FSMEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61981A9F9E8F0070549A /* FSMEvent.swift */; };
+		F83B619D1A9F9FEF0070549A /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618E1A9F97520070549A /* Promise.swift */; };
+		F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618F1A9F97520070549A /* Synchronizer.swift */; };
+		F83B61A21A9FABC50070549A /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */; };
+		F83B61A31A9FABC90070549A /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +47,13 @@
 		F83B61751A9F96F00070549A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F83B617B1A9F96F00070549A /* SwiftFiniteStateMachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftFiniteStateMachineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F83B61801A9F96F00070549A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F83B61811A9F96F00070549A /* SwiftFiniteStateMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFiniteStateMachineTests.swift; sourceTree = "<group>"; };
+		F83B618E1A9F97520070549A /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		F83B618F1A9F97520070549A /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
+		F83B61921A9F9DD60070549A /* FSMState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMState.swift; sourceTree = "<group>"; };
+		F83B61941A9F9E3B0070549A /* FSMStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMStateTests.swift; sourceTree = "<group>"; };
+		F83B61961A9F9E830070549A /* FSMTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransition.swift; sourceTree = "<group>"; };
+		F83B61981A9F9E8F0070549A /* FSMEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEvent.swift; sourceTree = "<group>"; };
+		F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +77,8 @@
 		F83B615D1A9F96F00070549A = {
 			isa = PBXGroup;
 			children = (
+				F83B618C1A9F97410070549A /* external */,
+				F83B618B1A9F97070070549A /* source */,
 				F83B61681A9F96F00070549A /* SwiftFiniteStateMachine */,
 				F83B617E1A9F96F00070549A /* SwiftFiniteStateMachineTests */,
 				F83B61671A9F96F00070549A /* Products */,
@@ -98,7 +118,7 @@
 		F83B617E1A9F96F00070549A /* SwiftFiniteStateMachineTests */ = {
 			isa = PBXGroup;
 			children = (
-				F83B61811A9F96F00070549A /* SwiftFiniteStateMachineTests.swift */,
+				F83B61941A9F9E3B0070549A /* FSMStateTests.swift */,
 				F83B617F1A9F96F00070549A /* Supporting Files */,
 			);
 			path = SwiftFiniteStateMachineTests;
@@ -110,6 +130,35 @@
 				F83B61801A9F96F00070549A /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F83B618B1A9F97070070549A /* source */ = {
+			isa = PBXGroup;
+			children = (
+				F83B61921A9F9DD60070549A /* FSMState.swift */,
+				F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */,
+				F83B61961A9F9E830070549A /* FSMTransition.swift */,
+				F83B61981A9F9E8F0070549A /* FSMEvent.swift */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		F83B618C1A9F97410070549A /* external */ = {
+			isa = PBXGroup;
+			children = (
+				F83B618D1A9F97520070549A /* SwiftPromises */,
+			);
+			name = external;
+			sourceTree = "<group>";
+		};
+		F83B618D1A9F97520070549A /* SwiftPromises */ = {
+			isa = PBXGroup;
+			children = (
+				F83B618E1A9F97520070549A /* Promise.swift */,
+				F83B618F1A9F97520070549A /* Synchronizer.swift */,
+			);
+			name = SwiftPromises;
+			path = external/SwiftPromises/source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,7 +262,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F83B616E1A9F96F00070549A /* ViewController.swift in Sources */,
+				F83B61A21A9FABC50070549A /* FSMFiniteStateMachine.swift in Sources */,
 				F83B616C1A9F96F00070549A /* AppDelegate.swift in Sources */,
+				F83B61901A9F97520070549A /* Promise.swift in Sources */,
+				F83B61991A9F9E8F0070549A /* FSMEvent.swift in Sources */,
+				F83B61931A9F9DD60070549A /* FSMState.swift in Sources */,
+				F83B61911A9F97520070549A /* Synchronizer.swift in Sources */,
+				F83B61971A9F9E830070549A /* FSMTransition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +276,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F83B61821A9F96F00070549A /* SwiftFiniteStateMachineTests.swift in Sources */,
+				F83B619A1A9F9EAD0070549A /* FSMState.swift in Sources */,
+				F83B619C1A9F9EAD0070549A /* FSMEvent.swift in Sources */,
+				F83B619D1A9F9FEF0070549A /* Promise.swift in Sources */,
+				F83B61A31A9FABC90070549A /* FSMFiniteStateMachine.swift in Sources */,
+				F83B61951A9F9E3B0070549A /* FSMStateTests.swift in Sources */,
+				F83B619B1A9F9EAD0070549A /* FSMTransition.swift in Sources */,
+				F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
