@@ -25,6 +25,8 @@
 		F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618F1A9F97520070549A /* Synchronizer.swift */; };
 		F83B61A21A9FABC50070549A /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */; };
 		F83B61A31A9FABC90070549A /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */; };
+		F83B61A51A9FB3260070549A /* FSMTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A41A9FB3260070549A /* FSMTransitionTests.swift */; };
+		F83B61A71A9FB3690070549A /* FSMTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A61A9FB3690070549A /* FSMTestCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		F83B61961A9F9E830070549A /* FSMTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransition.swift; sourceTree = "<group>"; };
 		F83B61981A9F9E8F0070549A /* FSMEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEvent.swift; sourceTree = "<group>"; };
 		F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachine.swift; sourceTree = "<group>"; };
+		F83B61A41A9FB3260070549A /* FSMTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransitionTests.swift; sourceTree = "<group>"; };
+		F83B61A61A9FB3690070549A /* FSMTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTestCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,8 @@
 			isa = PBXGroup;
 			children = (
 				F83B61941A9F9E3B0070549A /* FSMStateTests.swift */,
+				F83B61A61A9FB3690070549A /* FSMTestCase.swift */,
+				F83B61A41A9FB3260070549A /* FSMTransitionTests.swift */,
 				F83B617F1A9F96F00070549A /* Supporting Files */,
 			);
 			path = SwiftFiniteStateMachineTests;
@@ -283,6 +289,8 @@
 				F83B61951A9F9E3B0070549A /* FSMStateTests.swift in Sources */,
 				F83B619B1A9F9EAD0070549A /* FSMTransition.swift in Sources */,
 				F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */,
+				F83B61A71A9FB3690070549A /* FSMTestCase.swift in Sources */,
+				F83B61A51A9FB3260070549A /* FSMTransitionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
