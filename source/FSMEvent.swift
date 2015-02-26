@@ -9,9 +9,26 @@
 import Foundation
 
 func ==(lhs: FSMEvent, rhs: FSMEvent) -> Bool {
-    return lhs === rhs
+    return (lhs.name == rhs.name) && (lhs.finiteStateMachine == rhs.finiteStateMachine)
 }
 
-class FSMEvent: Equatable {
+let kFSMDefaultEventTimeout:NSTimeInterval = 10.0
 
+class FSMEvent: Equatable {
+    let name: String
+    let finiteStateMachine: FSMFiniteStateMachine
+    let sources: [FSMState]
+    let destination: FSMState
+    let eventTimeout: NSTimeInterval
+
+    // MARK: interface
+
+    init(_ name : String, sources:[FSMState], destination:FSMState, finiteStateMachine: FSMFiniteStateMachine) {
+        self.name = name
+        self.sources = sources
+        self.destination = destination
+        self.finiteStateMachine = finiteStateMachine
+        self.eventTimeout = kFSMDefaultEventTimeout
+    }
+    
 }
