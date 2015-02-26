@@ -68,6 +68,37 @@ class FSMStateTests: XCTestCase {
         })
     }
 
+    func testDidEnterStateBlock() {
+        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+
+        var actualState:FSMState? = nil
+        var actualTransition:FSMTransition? = nil
+        var actualValue:AnyObject? = nil
+
+        expectedState.didEnterState = {
+            (state, transition, value) -> AnyObject? in
+            actualState = state;
+            actualTransition = transition;
+            actualValue = value;
+            return value
+        }
+
+        let expectedTransition = FSMTransition()
+        let expectedValue:AnyObject? = "expected value"
+
+        let result = expectedState.didEnterStateWithTransition(expectedTransition, value:expectedValue)
+        result.then(
+            { (value) -> AnyObject? in
+                XCTAssertEqualOptional(expectedState, actualState);
+                XCTAssertEqualOptional(expectedTransition, actualTransition);
+                XCTAssertTrue(expectedValue === actualValue);
+                return nil
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                return error
+        })
+    }
+
     /*
     - (void) testDidEnterStateBlock;
     {
