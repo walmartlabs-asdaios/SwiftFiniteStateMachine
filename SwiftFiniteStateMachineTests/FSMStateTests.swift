@@ -98,87 +98,69 @@ class FSMStateTests: XCTestCase {
                 return error
         })
     }
-
-    /*
-    - (void) testDidEnterStateBlock;
-    {
-    ASDAFSMState *expectedState = [[ASDAFSMState alloc] initWithFiniteStateMachine:self.dummyFiniteStateMachine name:@"test"];
-    __block ASDAFSMState *actualState = nil;
-    __block ASDAFSMTransition *actualTransition = nil;
-    __block id actualValue = nil;
-    expectedState.didEnterStateBlock = ^SDPromise*(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    actualState = stateArg;
-    actualTransition = transitionArg;
-    actualValue = value;
-    return nil;
-    };
-    ASDAFSMTransition *expectedTransition = [[ASDAFSMTransition alloc] init];
-    id expectedValue = @"expected value";
-    SDPromise *result = [expectedState willExitStateWithTransition:expectedTransition value:expectedValue];
-
-    [result then:^id(id dataObject) {
-    XCTAssertEqualObjects(expectedState, actualState);
-    XCTAssertEqualObjects(expectedTransition, actualTransition);
-    XCTAssertEqualObjects(expectedValue, actualValue);
-    XCTAssertEqualObjects(expectedValue, dataObject);
-    return nil;
-    }];
-    }
-    */
-
+    
     // exitState block tests
 
-    /*
-    - (void) testWillExitStateBlock;
-    {
-    ASDAFSMState *expectedState = [[ASDAFSMState alloc] initWithFiniteStateMachine:self.dummyFiniteStateMachine name:@"test"];
-    __block ASDAFSMState *actualState = nil;
-    __block ASDAFSMTransition *actualTransition = nil;
-    __block id actualValue = nil;
-    expectedState.willExitStateBlock = ^SDPromise*(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    actualState = stateArg;
-    actualTransition = transitionArg;
-    actualValue = value;
-    return nil;
-    };
-    ASDAFSMTransition *expectedTransition = [[ASDAFSMTransition alloc] init];
-    id expectedValue = @"expected value";
-    SDPromise *result = [expectedState willExitStateWithTransition:expectedTransition value:expectedValue];
+    func testWillExitStateBlock() {
+        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
 
-    [result then:^id(id dataObject) {
-    XCTAssertEqualObjects(expectedState, actualState);
-    XCTAssertEqualObjects(expectedTransition, actualTransition);
-    XCTAssertEqualObjects(expectedValue, actualValue);
-    XCTAssertEqualObjects(expectedValue, dataObject);
-    return nil;
-    }];
-    }
-    */
-    /*
-    - (void) testDidExitStateBlock;
-    {
-    ASDAFSMState *expectedState = [[ASDAFSMState alloc] initWithFiniteStateMachine:self.dummyFiniteStateMachine name:@"test"];
-    __block ASDAFSMState *actualState = nil;
-    __block ASDAFSMTransition *actualTransition = nil;
-    __block id actualValue = nil;
-    expectedState.didExitStateBlock = ^SDPromise*(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    actualState = stateArg;
-    actualTransition = transitionArg;
-    actualValue = value;
-    return nil;
-    };
-    ASDAFSMTransition *expectedTransition = [[ASDAFSMTransition alloc] init];
-    id expectedValue = @"expected value";
-    SDPromise *result = [expectedState willExitStateWithTransition:expectedTransition value:expectedValue];
+        var actualState:FSMState? = nil
+        var actualTransition:FSMTransition? = nil
+        var actualValue:AnyObject? = nil
 
-    [result then:^id(id dataObject) {
-    XCTAssertEqualObjects(expectedState, actualState);
-    XCTAssertEqualObjects(expectedTransition, actualTransition);
-    XCTAssertEqualObjects(expectedValue, actualValue);
-    XCTAssertEqualObjects(expectedValue, dataObject);
-    return nil;
-    }];
+        expectedState.willExitState = {
+            (state, transition, value) -> AnyObject? in
+            actualState = state;
+            actualTransition = transition;
+            actualValue = value;
+            return value
+        }
+
+        let expectedTransition = FSMTransition()
+        let expectedValue:AnyObject? = "expected value"
+
+        let result = expectedState.willExitStateWithTransition(expectedTransition, value:expectedValue)
+        result.then(
+            { (value) -> AnyObject? in
+                XCTAssertEqualOptional(expectedState, actualState);
+                XCTAssertEqualOptional(expectedTransition, actualTransition);
+                XCTAssertTrue(expectedValue === actualValue);
+                return nil
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                return error
+        })
     }
-    */
+
+    func testDidExitStateBlock() {
+        let expectedState = FSMState("test", finiteStateMachine: FSMFiniteStateMachine());
+
+        var actualState:FSMState? = nil
+        var actualTransition:FSMTransition? = nil
+        var actualValue:AnyObject? = nil
+
+        expectedState.didExitState = {
+            (state, transition, value) -> AnyObject? in
+            actualState = state;
+            actualTransition = transition;
+            actualValue = value;
+            return value
+        }
+
+        let expectedTransition = FSMTransition()
+        let expectedValue:AnyObject? = "expected value"
+
+        let result = expectedState.didExitStateWithTransition(expectedTransition, value:expectedValue)
+        result.then(
+            { (value) -> AnyObject? in
+                XCTAssertEqualOptional(expectedState, actualState);
+                XCTAssertEqualOptional(expectedTransition, actualTransition);
+                XCTAssertTrue(expectedValue === actualValue);
+                return nil
+            }, reject: { (error) -> NSError in
+                XCTFail("should not fail")
+                return error
+        })
+    }
     
 }
