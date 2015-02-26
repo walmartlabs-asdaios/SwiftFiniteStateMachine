@@ -36,7 +36,7 @@ class FSMEventTests: FSMTestCase {
         XCTAssertEqual(kFSMDefaultEventTimeout, event.eventTimeout);
     }
 
-    // fireEvent tests
+    // MARK: fireEvent tests
 
     func testWillFireEvent() {
         var actualEvent:FSMEvent? = nil
