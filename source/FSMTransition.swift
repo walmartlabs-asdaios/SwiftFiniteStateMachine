@@ -11,17 +11,17 @@ import Foundation
 class FSMTransition: Equatable {
 
     /**
-    The event that triggered this transition
+    * The event that triggered this transition
     */
     let event:FSMEvent
 
     /**
-    The source state when the transition was triggered
+    * The source state when the transition was triggered
     */
     let source:FSMState
 
     /**
-    The destination state of the transition
+    * The destination state of the transition
     */
     var destination:FSMState {
         get {
@@ -30,7 +30,7 @@ class FSMTransition: Equatable {
     }
 
     /**
-    The instance of the finite state machine this state is attached to
+    * The instance of the finite state machine this state is attached to
     */
     let finiteStateMachine: FSMFiniteStateMachine
 
