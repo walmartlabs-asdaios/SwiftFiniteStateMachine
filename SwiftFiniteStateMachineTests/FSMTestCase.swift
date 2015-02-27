@@ -24,4 +24,14 @@ func XCTAssertEqualOptional<T:Equatable>(expression1: @autoclosure () -> T?, exp
 
 class FSMTestCase: XCTestCase {
 
+    func delayedFulfilledPromise(delay:NSTimeInterval, value:AnyObject?) -> Promise {
+        // Delay one of the steps longer than the event timeout threshold
+        let deferred = Promise()
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            deferred.fulfill(value)
+        }
+        return deferred
+    }
+
 }

@@ -40,12 +40,7 @@ class FSMEventTimeoutTests: FSMTestCase {
         let expectation = expectationWithDescription("expectation")
         event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
             // Delay one of the steps longer than the event timeout threshold
-            let deferred = Promise()
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(timeout * 5.0 * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) {
-                deferred.fulfill(value)
-            }
-            return deferred
+            return self.delayedFulfilledPromise(timeout*5.0, value:value)
         }
 
         var actualTimeoutBlockEvent:FSMEvent? = nil
@@ -81,12 +76,7 @@ class FSMEventTimeoutTests: FSMTestCase {
         let expectation = expectationWithDescription("expectation")
         event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
             // Delay one of the steps for a bit, but shorter than the event timeout threshold
-            let deferred = Promise()
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(timeout / 2.0 * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) {
-                deferred.fulfill(value)
-            }
-            return deferred
+            return self.delayedFulfilledPromise(timeout/2.0, value:value)
         }
 
         let promise = finiteStateMachine.fireEvent(event1to2, initialValue:nil)
