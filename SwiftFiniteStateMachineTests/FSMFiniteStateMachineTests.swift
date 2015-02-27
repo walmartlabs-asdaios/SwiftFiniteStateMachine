@@ -142,21 +142,18 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         }
     }
 
-/*
-    - (void) testEventMustHaveAtLeastOnceSource;
-    {
-    ASDAFiniteStateMachine *finiteStateMachine = [self finiteStateMachineWithStateNames:@[@"source1",@"source2",@"destination"]];
-    NSError *error = nil;
-    ASDAFSMEvent *result = [finiteStateMachine addEventWithName:@"event"
-    sources:@[]
-    destination:@"destination"
-    error:&error];
-    XCTAssertNotNil(error);
-    XCTAssertNil(result);
-    NSDictionary *userInfo = [error userInfo];
-    NSArray *errorMessages = userInfo[@"messages"];
-    XCTAssertEqual(1, [errorMessages count]);
+    func testEventMustHaveAtLeastOnceSource() {
+        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+
+        var error:NSError? = nil
+        if let event = finiteStateMachine.addEvent("event", sources:[], destination:"destination", error:&error) {
+            XCTFail("event creation should have failed")
+        } else {
+            XCTAssertNotNil(error)
+            let userInfo = error!.userInfo as [String:AnyObject]
+            let errorMessages = userInfo["messages"] as [String]
+            XCTAssertEqual(1, errorMessages.count);
+        }
     }
 
-*/
 }
