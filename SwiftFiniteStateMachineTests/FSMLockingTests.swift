@@ -100,47 +100,5 @@ class FSMLockingTests: FSMTestCase {
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
     }
-/*
-    - (void) testNonConflictingCall
-    {
-    XCTestExpectation *event1to2Expectation = [self expectationWithDescription("event1to2Expectation")
-    self.event1to2.willFireEventBlock = ^id(ASDAFSMEvent *event, ASDAFSMTransition *transition, id value) {
-    // Delay one of the steps for a bit, but shorter than the event timeout threshold
-    [NSThread sleepForTimeInterval:event.eventTimeout / 2.0]
-    return value
-    }
-    self.event2to3.willFireEventBlock = ^id(ASDAFSMEvent *event, ASDAFSMTransition *transition, id value) {
-    // Delay one of the steps for a bit, but shorter than the event timeout threshold
-    [NSThread sleepForTimeInterval:event.eventTimeout / 2.0]
-    return value
-    }
-    SDPromise *promise1to2 = [self.finiteStateMachine fireEvent:self.event1to2 withInitialValue:nil]
-    [promise1to2 then:^id(id dataObject1to2) {
-    [event1to2Expectation fulfill]
-    return nil
-    } reject:^id(NSError *error) {
-    [event1to2Expectation fulfill]
-    XCTFail("event1to2 should not have been rejected: %", [error localizedDescription])
-    return nil
-    }]
-
-    // wait long enough for event to finish
-    [self waitForExpectationsWithTimeout:self.event1to2.eventTimeout*2.0 handler:nil]
-
-    XCTestExpectation *event2to3Expectation = [self expectationWithDescription("event2to3Expectation")
-    SDPromise *promise2to3 = [self.finiteStateMachine fireEvent:self.event2to3 withInitialValue:nil]
-    [promise2to3 then:^id(id dataObject) {
-    [event2to3Expectation fulfill]
-    return nil
-    } reject:^id(NSError *error) {
-    [event2to3Expectation fulfill]
-    XCTFail("event2to3 should not have been rejected: %", [error localizedDescription])
-    return nil
-    }]
-
-    // wait long enough for event to finish
-    [self waitForExpectationsWithTimeout:self.event2to3.eventTimeout*2.0 handler:nil]
-    }
-*/
 
 }
