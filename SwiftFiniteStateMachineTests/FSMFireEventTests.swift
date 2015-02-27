@@ -333,87 +333,64 @@ class FSMFireEventTests: FSMTestCase {
         waitForExpectationsWithTimeout(5.0, handler:nil)
     }
 
-    /*
-    - (void) testEventInitialValue
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil]
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil]
+    func testEventInitialValue() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
 
-    // assume value passed through is mutable array
-    __block NSInteger firingOrder = 0
-    @weakify(self)
-    event.willFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)]
-    return value
-    }
-    event.destinationState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)]
-    return value
-    }
-    event.destinationState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self)
-    XCTFail("should not call destinationState.willExitState")
-    return nil
-    }
-    self.expectedSourceState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self)
-    XCTFail("should not call expectedSourceState.willEnterState")
-    return nil
-    }
-    self.expectedSourceState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)]
-    return value
+        var firingOrder = 0
+
+        event.willFireEvent = { (event, transition, value) -> AnyObject? in
+            var array = value as [Int]
+            array.append(++firingOrder)
+            return array
+        }
+        event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
+            var array = value as [Int]
+            array.append(++firingOrder)
+            return array
+        }
+        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+            var array = value as [Int]
+            array.append(++firingOrder)
+            return array
+        }
+        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+            var array = value as [Int]
+            array.append(++firingOrder)
+            return array
+        }
+        event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
+            var array = value as [Int]
+            array.append(++firingOrder)
+            return array
+        }
+        event.didFireEvent = { (event, transition, value) -> AnyObject? in
+            var array = value as [Int]
+            array.append(++firingOrder)
+            return array
+        }
+
+        var initialValue:[Int] = []
+        let promise = finiteStateMachine.fireEvent(event, initialValue:initialValue)
+        let expectation = expectationWithDescription("expectEventSequence")
+
+        promise.then(
+            { (value) -> AnyObject? in
+                if let array = value as? [Int] {
+                    let expectedValue = [1,2,3,4,5,6]
+                    XCTAssertEqual(expectedValue, array, "should have accumulated values in array passed in as intial value")
+                } else {
+                    XCTFail("value should be [Int]")
+                }
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                XCTFail("Should not fail")
+                expectation.fulfill()
+                return error
+        })
+
+        waitForExpectationsWithTimeout(5.0, handler:nil)
     }
 
-    self.expectedSourceState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self)
-    XCTFail("should not call expectedSourceState.didEnterState")
-    return nil
-    }
-    self.expectedSourceState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)]
-    return value
-    }
-    event.destinationState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)]
-    return value
-    }
-    event.destinationState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self)
-    XCTFail("should not call destinationState.didExitState")
-    return nil
-    }
-    event.didFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)]
-    return value
-    }
-
-    NSMutableArray *initialValue = [NSMutableArray array]
-    SDPromise *result = [self.finiteStateMachine fireEvent:event withInitialValue:initialValue]
-    XCTAssertTrue([result isKindOfClass:[SDPromise class]])
-    XCTestExpectation *expectation = [self expectationWithDescription:"expectEventSequence"]
-    [result then:^id(id dataObject) {
-    @strongify(self)
-    XCTAssertEqual(initialValue, dataObject, "In this example, it should be the exact same object passed in originally")
-    NSArray *expectedValue = @[@(1),@(2),@(3),@(4),@(5),@(6)]
-    XCTAssertEqualObjects(expectedValue, dataObject, "should have accumulated values in array passed in as intial value")
-    [expectation fulfill]
-    return nil
-    } reject:^id(NSError *error) {
-    @strongify(self)
-    XCTFail("Should not fail")
-    [expectation fulfill]
-    return nil
-    }]
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
-    XCTAssertNil(error)
-    }]
-    }
-    
-    
-    */
-    
 }
