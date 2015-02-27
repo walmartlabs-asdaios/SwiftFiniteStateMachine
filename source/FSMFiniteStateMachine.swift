@@ -73,6 +73,12 @@ class FSMFiniteStateMachine: Equatable {
         }
     }
 
+    var pendingEvent:FSMEvent? {
+        get {
+            return lockingEvent
+        }
+    }
+
     // MARK: - interface
 
     init() {
