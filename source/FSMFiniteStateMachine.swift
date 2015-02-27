@@ -54,6 +54,7 @@ let kFSMErrorEventTimeout = 104
 class FSMFiniteStateMachine: Equatable {
 
     private var mutableStates:[String:FSMState] = [:]
+    private var mutableEvents:[String:FSMEvent] = [:]
 
     private(set) internal var currentState: FSMState?
 
@@ -63,7 +64,13 @@ class FSMFiniteStateMachine: Equatable {
         }
     }
 
-    // MARK: interface
+    var events:[String:FSMEvent] {
+        get {
+            return mutableEvents
+        }
+    }
+
+    // MARK: - interface
 
     init() {
     }
@@ -79,20 +86,20 @@ class FSMFiniteStateMachine: Equatable {
         var result:FSMState? = nil
 
         var errorMessage = ""
-        if (stateName.utf16Count == 0) {
-            errorMessage = "Missing state name";
-        } else if (mutableStates[stateName] != nil) {
+        if stateName.utf16Count == 0 {
+            errorMessage = "Missing state name"
+        } else if mutableStates[stateName] != nil {
             errorMessage = "Duplicate state name: \(stateName)"
         } else {
             result = FSMState(stateName,finiteStateMachine:self)
             mutableStates[stateName] = result
         }
-        if (result == nil) {
-            if (error != nil) {
+        if result == nil {
+            if error != nil {
                 error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["messages":[errorMessage]])
             }
         }
-        return result;
+        return result
     }
 
     /**
@@ -106,18 +113,82 @@ class FSMFiniteStateMachine: Equatable {
     func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
         var result:FSMState? = nil
 
-        if (mutableStates[state.name] != nil) {
-            result = state;
-            currentState = state;
+        if mutableStates[state.name] != nil {
+            result = state
+            currentState = state
         } else {
-            if (error != nil) {
+            if error != nil {
                 error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["state":state.name])
+            }
+        }
+        return result
+    }
+
+    /**
+    * Add a new event to be used by the instance to transition between states.
+    *
+    * :param: eventName must be a unique identifier within the instance
+    * :param: sources an array of either state names or instances that already exist in the instance
+    *                the state machine instance must be in one of these states in order for the event
+    *                to fire successfully
+    @ :param: destination a state name or instance that already exists in the instance
+    * :param: error optional error return value
+    * :returns: An instance of FSMEvent if successful, nil otherwise
+    */
+    func addEvent(name:String, sources:[AnyObject], destination:AnyObject, error:NSErrorPointer) -> FSMEvent? {
+        var result:FSMEvent? = nil
+
+        var errorMessages:[String] = []
+        if name.utf16Count == 0 {
+            errorMessages.append("Missing event name")
+        } else if mutableEvents[name] != nil {
+            errorMessages.append("Duplicate event name: \(name)")
+        }
+
+        var sourceStates:[FSMState] = []
+        for source in sources {
+            if let state = validateState(source) {
+                sourceStates.append(state)
+            } else {
+                errorMessages.append("Invalid source: \(source)")
+            }
+        }
+        if sources.count == 0 {
+            errorMessages.append("at least one source is required")
+        }
+
+        var destinationState:FSMState? = nil
+        if let state = validateState(destination) {
+            destinationState = state
+        } else {
+            errorMessages.append("Invalid destination: \(destination)")
+        }
+
+        if errorMessages.count == 0 {
+            result = FSMEvent(name, sources:sourceStates, destination:destinationState!, finiteStateMachine:self)
+            mutableEvents[name] = result;
+        }
+        if result == nil {
+            if error != nil {
+                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidEvent, userInfo:["messages":errorMessages])
             }
         }
         return result;
     }
 
-    // MARK: implementation
+
+    // MARK: - implementation
+
+    func validateState(stateOrName:AnyObject?) -> FSMState? {
+        if let state = stateOrName as? FSMState {
+            if find(mutableStates.values,state) != nil {
+                return state
+            }
+        } else if let stateName = stateOrName as? String {
+            return mutableStates[stateName]
+        }
+        return nil
+    }
 
     var description : String {
         return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"

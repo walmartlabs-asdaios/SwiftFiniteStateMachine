@@ -20,7 +20,7 @@ class FSMStateTests: FSMTestCase {
         XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
     }
 
-    // MARK: enterState tests
+    // MARK: - enterState tests
 
     func testWillEnterState() {
         let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
@@ -88,7 +88,7 @@ class FSMStateTests: FSMTestCase {
         })
     }
     
-    // MARK: exitState tests
+    // MARK: - exitState tests
 
     func testWillExitState() {
         let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);

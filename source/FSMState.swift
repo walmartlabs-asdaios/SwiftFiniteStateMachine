@@ -66,14 +66,14 @@ class FSMState: Equatable, Printable {
     */
     var didExitState: kFSMDidExitStateClosure?
 
-    // MARK: interface
+    // MARK: - interface
 
     init(_ name : String, finiteStateMachine: FSMFiniteStateMachine) {
         self.name = name
         self.finiteStateMachine = finiteStateMachine
     }
 
-    // MARK: implementation
+    // MARK: - implementation
 
     var description : String {
         return "FSMState: \(name)"

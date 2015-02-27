@@ -11,7 +11,7 @@ import XCTest
 
 class FSMFiniteStateMachineTests: FSMTestCase {
 
-    // MARK: state tests
+    // MARK: - state tests
 
     func testStateNamesMustBeUnique() {
         let finiteStateMachine = FSMFiniteStateMachine()
@@ -69,6 +69,32 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         XCTAssertNil(result)
         XCTAssertNotNil(error)
         XCTAssertNil(finiteStateMachine.currentState, "Should still not have a current state");
+    }
+
+    // MARK: - event tests
+
+    func finiteStateMachineWithStateNames(stateNames:[String]) -> FSMFiniteStateMachine {
+        let finiteStateMachine = FSMFiniteStateMachine()
+        for stateName in stateNames {
+            finiteStateMachine.addState(stateName, error:nil)
+        }
+        return finiteStateMachine;
+    }
+
+    func testEventInitializationWithValidStringValues() {
+        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+
+        var error:NSError? = nil
+        if let event = finiteStateMachine.addEvent("event", sources:["source1","source2"], destination:"destination", error:&error) {
+            XCTAssertEqual("event", event.name);
+            let sourceStates = event.sources
+            XCTAssertEqual(2, sourceStates.count);
+            XCTAssertEqual("source1", sourceStates[0].name)
+            XCTAssertEqual("source2", sourceStates[1].name)
+            XCTAssertEqual("destination", event.destination.name)
+        } else {
+            XCTFail("event creation failed")
+        }
     }
 
 }

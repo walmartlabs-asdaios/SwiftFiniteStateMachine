@@ -40,7 +40,7 @@ class FSMTransition: Equatable {
         self.finiteStateMachine = finiteStateMachine
     }
 
-    // MARK: implementation
+    // MARK: - implementation
 
     var description : String {
         return "FSMTransition: event=\(event.name) source=\(source.name)"

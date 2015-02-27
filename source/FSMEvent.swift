@@ -8,9 +8,9 @@
 
 import Foundation
 
-typealias kASDAFSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
-typealias kASDAFSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
-typealias kASDAFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
+typealias kFSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
+typealias kFSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
+typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
 class FSMEvent: Equatable {
     /**
@@ -30,12 +30,12 @@ class FSMEvent: Equatable {
     let sources: [FSMState]
 
     /**
-    * An ASDAFSMState instances that is the resulting state of a successful firing of the event.
+    * An FSMState instances that is the resulting state of a successful firing of the event.
     */
     let destination: FSMState
 
     /**
-    * The timeout for this event, defaults to kASDAFSMDefaultTimeout (currently 10.0 seconds)
+    * The timeout for this event, defaults to kFSMDefaultEventTimeout (currently 10.0 seconds)
     */
     let eventTimeout: NSTimeInterval
 
@@ -43,22 +43,22 @@ class FSMEvent: Equatable {
     * This optional closure is called after the transition process begins,
     * but before the current state is changed
     */
-    var willFireEvent:kASDAFSMWillFireEventClosure?
+    var willFireEvent:kFSMWillFireEventClosure?
 
     /**
     * This optional closure is called before the transition process completes,
     * after the current state is changed
     */
-    var didFireEvent:kASDAFSMDidFireEventClosure?
+    var didFireEvent:kFSMDidFireEventClosure?
 
     /**
     * This optional closure is called after the event times out, the result of the
     * event will be a rejection error -- there is no ability to retry from this point.
     */
-    var eventDidTimeout:kASDAFSMEventTimeoutClosure?
+    var eventDidTimeout:kFSMEventTimeoutClosure?
 
 
-    // MARK: interface
+    // MARK: - interface
 
     init(_ name : String, sources:[FSMState], destination:FSMState, finiteStateMachine: FSMFiniteStateMachine) {
         self.name = name
@@ -68,7 +68,7 @@ class FSMEvent: Equatable {
         self.eventTimeout = kFSMDefaultEventTimeout
     }
 
-    // MARK: implementation
+    // MARK: - implementation
 
     var description : String {
         return "FSMEvent: \(name)"
