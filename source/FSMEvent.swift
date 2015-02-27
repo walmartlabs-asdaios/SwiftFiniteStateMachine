@@ -68,6 +68,15 @@ class FSMEvent: Equatable {
         self.eventTimeout = kFSMDefaultEventTimeout
     }
 
+    func startTimeoutTimerWithTransition(transition:FSMTransition, promises:[Promise]) {
+
+    }
+
+    func stopTimeoutTimer() {
+        
+    }
+
+
     // MARK: - implementation
 
     var description : String {

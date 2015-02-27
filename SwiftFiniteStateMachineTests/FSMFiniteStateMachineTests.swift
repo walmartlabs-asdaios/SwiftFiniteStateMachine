@@ -82,7 +82,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     }
 
     func testEventInitializationWithValidStringValues() {
-        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+        let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
         var error:NSError? = nil
         if let event = finiteStateMachine.addEvent("event", sources:["source1","source2"], destination:"destination", error:&error) {
@@ -97,7 +97,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     }
 
     func testEventInitializationWithValidInstanceValues() {
-        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+        let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
         let source1 = finiteStateMachine.states["source1"]!
         let source2 = finiteStateMachine.states["source2"]!
         let destination = finiteStateMachine.states["destination"]!
@@ -116,7 +116,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
 
 
     func testEventInitializationWithInvalidStringValues() {
-        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+        let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
         var error:NSError? = nil
         if let event = finiteStateMachine.addEvent("event", sources:["source1x","source2x"], destination:"destinationx", error:&error) {
@@ -130,7 +130,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     }
 
     func testEventNamesMustBeUnique() {
-        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+        let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
         let eventName = "event"
         if let event1 = finiteStateMachine.addEvent(eventName, sources:["source1","source2"], destination:"destination", error:nil) {
@@ -143,7 +143,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     }
 
     func testEventMustHaveAtLeastOnceSource() {
-        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+        let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
         var error:NSError? = nil
         if let event = finiteStateMachine.addEvent("event", sources:[], destination:"destination", error:&error) {

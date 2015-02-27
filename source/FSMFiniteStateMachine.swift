@@ -13,6 +13,7 @@ let kFSMErrorInvalidState = 101
 let kFSMErrorInvalidEvent = 102
 let kFSMErrorRejected = 103
 let kFSMErrorEventTimeout = 104
+let kFSMErrorTransitionInProgress = 105
 
 /**
 * FSMFiniteStateMachine is the controller for this sub-system.
@@ -55,6 +56,8 @@ class FSMFiniteStateMachine: Equatable {
 
     private var mutableStates:[String:FSMState] = [:]
     private var mutableEvents:[String:FSMEvent] = [:]
+    private let synchronizer = Synchronizer()
+    private var lockingEvent:FSMEvent? = nil
 
     private(set) internal var currentState: FSMState?
 
@@ -166,18 +169,90 @@ class FSMFiniteStateMachine: Equatable {
 
         if errorMessages.count == 0 {
             result = FSMEvent(name, sources:sourceStates, destination:destinationState!, finiteStateMachine:self)
-            mutableEvents[name] = result;
+            mutableEvents[name] = result
         }
         if result == nil {
             if error != nil {
                 error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidEvent, userInfo:["messages":errorMessages])
             }
         }
-        return result;
+        return result
     }
 
+    func fireEvent(event:FSMEvent, initialValue:AnyObject?) -> Promise {
+
+        if !lockForEvent(event) {
+            return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorTransitionInProgress, userInfo:nil))
+        }
+
+        if let errorMessage = checkEventSourceState(event, sourceState:currentState) {
+            unlockEvent()
+            return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorRejected, userInfo:["messages":[errorMessage]]))
+        }
+
+        let sourceState = currentState!
+        let destinationState = event.destination
+        let transition = FSMTransition(event, source:sourceState, finiteStateMachine:self)
+        var lastPromise = Promise(initialValue)
+
+        var promises:[Promise] = []
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            return event.willFireEventWithTransition(transition, value:value)
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            return destinationState.willEnterStateWithTransition(transition, value:value)
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            return sourceState.willExitStateWithTransition(transition, value:value)
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            self.currentState = destinationState
+            return value
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            return sourceState.didExitStateWithTransition(transition, value:value)
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            return destinationState.didEnterStateWithTransition(transition, value:value)
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({(value) -> AnyObject? in
+            return event.didFireEventWithTransition(transition, value:value)
+        })
+        promises.append(lastPromise)
+
+        lastPromise = lastPromise.then({ (value) -> AnyObject? in
+            event.stopTimeoutTimer()
+            self.unlockEvent()
+            return value
+        }, reject: { (error) -> NSError in
+            event.stopTimeoutTimer()
+            self.unlockEvent()
+            return error
+        })
+
+        event.startTimeoutTimerWithTransition(transition, promises:promises)
+
+        return lastPromise
+    }
 
     // MARK: - implementation
+
+    var description : String {
+        return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"
+    }
 
     func validateState(stateOrName:AnyObject?) -> FSMState? {
         if let state = stateOrName as? FSMState {
@@ -190,10 +265,41 @@ class FSMFiniteStateMachine: Equatable {
         return nil
     }
 
-    var description : String {
-        return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"
+    func lockForEvent(event:FSMEvent) -> Bool {
+        var result = false
+
+        synchronizer.synchronize {
+            if self.lockingEvent == nil {
+                self.lockingEvent = event
+                result = true
+            }
+        }
+        return result
     }
 
+    func unlockEvent() {
+        synchronizer.synchronize {
+            self.lockingEvent = nil
+        }
+    }
+
+    func checkEventSourceState(event:FSMEvent, sourceState:FSMState?) -> String? {
+        var result:String? = nil
+        if let sourceState = sourceState {
+            if find(event.sources,sourceState) == nil {
+                result = "current state '\(sourceState.name)' is not in event sources: "
+                var sep = ""
+                for eventSource in event.sources {
+                    result! += "\(sep)\(eventSource.name)"
+                    sep = ", "
+                }
+            }
+        } else {
+            result = "there is no current state"
+        }
+        return result
+    }
+    
 }
 
 func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
