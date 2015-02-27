@@ -20,10 +20,10 @@ class FSMTransitionTests: FSMTestCase {
 
         let transition = FSMTransition(event, source:sourceState, finiteStateMachine:dummyFiniteStateMachine)
 
-        XCTAssertEqual(self.dummyFiniteStateMachine, transition.finiteStateMachine);
-        XCTAssertEqual(event, transition.event);
-        XCTAssertEqual(sourceState, transition.source);
-        XCTAssertEqual(destinationState, transition.destination);
+        XCTAssertEqual(self.dummyFiniteStateMachine, transition.finiteStateMachine)
+        XCTAssertEqual(event, transition.event)
+        XCTAssertEqual(sourceState, transition.source)
+        XCTAssertEqual(destinationState, transition.destination)
     }
 
 }

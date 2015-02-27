@@ -18,11 +18,11 @@ class FSMFiniteStateMachineTests: FSMTestCase {
 
         var error:NSError? = nil
         let result1 = finiteStateMachine.addState("state", error:&error)
-        XCTAssertEqualOptional("state", result1?.name);
+        XCTAssertEqualOptional("state", result1?.name)
 
         let result2 = finiteStateMachine.addState("state", error:&error)
-        XCTAssertNil(result2);
-        XCTAssertNotNil(error);
+        XCTAssertNil(result2)
+        XCTAssertNotNil(error)
     }
 
     func testAddMultipleStates() {
@@ -62,13 +62,13 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         XCTAssertNotNil(invalidState)
         let states = finiteStateMachine.states
         XCTAssertNil(states["invalidState"])
-        XCTAssertNil(finiteStateMachine.currentState, "Should not have a current state");
+        XCTAssertNil(finiteStateMachine.currentState, "Should not have a current state")
 
         var error:NSError? = nil
         let result = finiteStateMachine.setInitialState(invalidState, error:&error)
         XCTAssertNil(result)
         XCTAssertNotNil(error)
-        XCTAssertNil(finiteStateMachine.currentState, "Should still not have a current state");
+        XCTAssertNil(finiteStateMachine.currentState, "Should still not have a current state")
     }
 
     // MARK: - event tests
@@ -78,7 +78,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         for stateName in stateNames {
             finiteStateMachine.addState(stateName, error:nil)
         }
-        return finiteStateMachine;
+        return finiteStateMachine
     }
 
     func testEventInitializationWithValidStringValues() {
@@ -86,8 +86,8 @@ class FSMFiniteStateMachineTests: FSMTestCase {
 
         var error:NSError? = nil
         if let event = finiteStateMachine.addEvent("event", sources:["source1","source2"], destination:"destination", error:&error) {
-            XCTAssertEqual("event", event.name);
-            XCTAssertEqual(2, event.sources.count);
+            XCTAssertEqual("event", event.name)
+            XCTAssertEqual(2, event.sources.count)
             XCTAssertEqual("source1", event.sources[0].name)
             XCTAssertEqual("source2", event.sources[1].name)
             XCTAssertEqual("destination", event.destination.name)
@@ -104,8 +104,8 @@ class FSMFiniteStateMachineTests: FSMTestCase {
 
         var error:NSError? = nil
         if let event = finiteStateMachine.addEvent("event", sources:[source1,source2], destination:destination, error:&error) {
-            XCTAssertEqual("event", event.name);
-            XCTAssertEqual(2, event.sources.count);
+            XCTAssertEqual("event", event.name)
+            XCTAssertEqual(2, event.sources.count)
             XCTAssertEqual("source1", event.sources[0].name)
             XCTAssertEqual("source2", event.sources[1].name)
             XCTAssertEqual("destination", event.destination.name)
@@ -125,7 +125,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
             XCTAssertNotNil(error)
             let userInfo = error!.userInfo as [String:AnyObject]
             let errorMessages = userInfo["messages"] as [String]
-            XCTAssertEqual(3, errorMessages.count);
+            XCTAssertEqual(3, errorMessages.count)
         }
     }
 
@@ -152,7 +152,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
             XCTAssertNotNil(error)
             let userInfo = error!.userInfo as [String:AnyObject]
             let errorMessages = userInfo["messages"] as [String]
-            XCTAssertEqual(1, errorMessages.count);
+            XCTAssertEqual(1, errorMessages.count)
         }
     }
 

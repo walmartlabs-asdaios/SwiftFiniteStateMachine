@@ -70,7 +70,7 @@ class FSMEvent: Equatable {
     }
 
     func startTimeoutTimerWithTransition(transition:FSMTransition, promises:[Promise]) {
-        let userInfo = ["promises":promises,"transition":transition];
+        let userInfo = ["promises":promises,"transition":transition]
         timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(eventTimeout, target:self, selector:"handleEventTimeout:", userInfo:userInfo, repeats:false)
     }
 

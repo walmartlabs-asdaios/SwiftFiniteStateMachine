@@ -235,15 +235,17 @@ class FSMFiniteStateMachine: Equatable {
 
         event.startTimeoutTimerWithTransition(transition, promises:promises)
 
-        lastPromise = lastPromise.then({ (value) -> AnyObject? in
-            event.stopTimeoutTimer()
-            self.unlockEvent()
-            return value
-        }, reject: { (error) -> NSError in
-            event.stopTimeoutTimer()
-            self.unlockEvent()
-            return error
-        })
+        lastPromise = lastPromise.then(
+            { (value) -> AnyObject? in
+                event.stopTimeoutTimer()
+                self.unlockEvent()
+                return value
+            }, reject: { (error) -> NSError in
+                event.stopTimeoutTimer()
+                self.unlockEvent()
+                return error
+            }
+        )
 
         return lastPromise
     }

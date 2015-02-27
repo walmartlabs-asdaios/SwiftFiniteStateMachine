@@ -51,19 +51,21 @@ class FSMEventTimeoutTests: FSMTestCase {
         var actualTimeoutBlockEvent:FSMEvent? = nil
         var actualTimeoutBlockTransition:FSMTransition? = nil
         event1to2.eventDidTimeout = {(event,transition) -> Void in
-            actualTimeoutBlockEvent = event;
-            actualTimeoutBlockTransition = transition;
+            actualTimeoutBlockEvent = event
+            actualTimeoutBlockTransition = transition
         }
         let promise = finiteStateMachine.fireEvent(event1to2, initialValue:nil)
-        promise.then({ (value) -> AnyObject? in
-            expectation.fulfill()
-            XCTFail("Should have been rejected")
-            return value
-        }, reject: { (error) -> NSError in
-            expectation.fulfill()
-            XCTAssertEqual(kFSMErrorEventTimeout, error.code)
-            return error
-        })
+        promise.then(
+            { (value) -> AnyObject? in
+                expectation.fulfill()
+                XCTFail("Should have been rejected")
+                return value
+            }, reject: { (error) -> NSError in
+                expectation.fulfill()
+                XCTAssertEqual(kFSMErrorEventTimeout, error.code)
+                return error
+            }
+        )
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
@@ -71,5 +73,37 @@ class FSMEventTimeoutTests: FSMTestCase {
         XCTAssertEqualOptional(event1to2, actualTimeoutBlockEvent)
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
+
+    func testDelayWithoutTimeout() {
+        let timeout:NSTimeInterval = 1.0
+        event1to2.eventTimeout = timeout
+
+        let expectation = expectationWithDescription("expectation")
+        event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
+            // Delay one of the steps for a bit, but shorter than the event timeout threshold
+            let deferred = Promise()
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(timeout / 2.0 * Double(NSEC_PER_SEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue()) {
+                deferred.fulfill(value)
+            }
+            return deferred
+        }
+
+        let promise = finiteStateMachine.fireEvent(event1to2, initialValue:nil)
+        promise.then(
+            { (value) -> AnyObject? in
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                expectation.fulfill()
+                XCTFail("Should not have been rejected")
+                return error
+        })
+
+        // wait long enough for timeout to trigger
+        waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
+    }
+
+
 
 }

@@ -14,7 +14,7 @@ class FSMStateTests: FSMTestCase {
     let dummyFiniteStateMachine = FSMFiniteStateMachine()
 
     func testCreation() {
-        let state = FSMState("test", finiteStateMachine: dummyFiniteStateMachine);
+        let state = FSMState("test", finiteStateMachine: dummyFiniteStateMachine)
 
         XCTAssertEqual("test", state.name)
         XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
@@ -23,8 +23,8 @@ class FSMStateTests: FSMTestCase {
     // MARK: - enterState tests
 
     func testWillEnterState() {
-        let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
-        let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
+        let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
+        let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -32,9 +32,9 @@ class FSMStateTests: FSMTestCase {
 
         expectedState.willEnterState = {
             (state, transition, value) -> AnyObject? in
-            actualState = state;
-            actualTransition = transition;
-            actualValue = value;
+            actualState = state
+            actualTransition = transition
+            actualValue = value
             return value
         }
 
@@ -45,9 +45,9 @@ class FSMStateTests: FSMTestCase {
         let result = expectedState.willEnterStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
             { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState);
-                XCTAssertEqualOptional(expectedTransition, actualTransition);
-                XCTAssertTrue(expectedValue === actualValue);
+                XCTAssertEqualOptional(expectedState, actualState)
+                XCTAssertEqualOptional(expectedTransition, actualTransition)
+                XCTAssertTrue(expectedValue === actualValue)
                 return nil
             }, reject: { (error) -> NSError in
                 XCTFail("should not fail")
@@ -56,8 +56,8 @@ class FSMStateTests: FSMTestCase {
     }
 
     func testDidEnterState() {
-        let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
-        let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
+        let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
+        let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -65,9 +65,9 @@ class FSMStateTests: FSMTestCase {
 
         expectedState.didEnterState = {
             (state, transition, value) -> AnyObject? in
-            actualState = state;
-            actualTransition = transition;
-            actualValue = value;
+            actualState = state
+            actualTransition = transition
+            actualValue = value
             return value
         }
 
@@ -78,9 +78,9 @@ class FSMStateTests: FSMTestCase {
         let result = expectedState.didEnterStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
             { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState);
-                XCTAssertEqualOptional(expectedTransition, actualTransition);
-                XCTAssertTrue(expectedValue === actualValue);
+                XCTAssertEqualOptional(expectedState, actualState)
+                XCTAssertEqualOptional(expectedTransition, actualTransition)
+                XCTAssertTrue(expectedValue === actualValue)
                 return nil
             }, reject: { (error) -> NSError in
                 XCTFail("should not fail")
@@ -91,8 +91,8 @@ class FSMStateTests: FSMTestCase {
     // MARK: - exitState tests
 
     func testWillExitState() {
-        let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
-        let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
+        let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
+        let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -100,9 +100,9 @@ class FSMStateTests: FSMTestCase {
 
         expectedState.willExitState = {
             (state, transition, value) -> AnyObject? in
-            actualState = state;
-            actualTransition = transition;
-            actualValue = value;
+            actualState = state
+            actualTransition = transition
+            actualValue = value
             return value
         }
 
@@ -113,9 +113,9 @@ class FSMStateTests: FSMTestCase {
         let result = expectedState.willExitStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
             { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState);
-                XCTAssertEqualOptional(expectedTransition, actualTransition);
-                XCTAssertTrue(expectedValue === actualValue);
+                XCTAssertEqualOptional(expectedState, actualState)
+                XCTAssertEqualOptional(expectedTransition, actualTransition)
+                XCTAssertTrue(expectedValue === actualValue)
                 return nil
             }, reject: { (error) -> NSError in
                 XCTFail("should not fail")
@@ -124,8 +124,8 @@ class FSMStateTests: FSMTestCase {
     }
 
     func testDidExitState() {
-        let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine);
-        let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine);
+        let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
+        let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
         var actualState:FSMState? = nil
         var actualTransition:FSMTransition? = nil
@@ -133,9 +133,9 @@ class FSMStateTests: FSMTestCase {
 
         expectedState.didExitState = {
             (state, transition, value) -> AnyObject? in
-            actualState = state;
-            actualTransition = transition;
-            actualValue = value;
+            actualState = state
+            actualTransition = transition
+            actualValue = value
             return value
         }
 
@@ -146,9 +146,9 @@ class FSMStateTests: FSMTestCase {
         let result = expectedState.didExitStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
             { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState);
-                XCTAssertEqualOptional(expectedTransition, actualTransition);
-                XCTAssertTrue(expectedValue === actualValue);
+                XCTAssertEqualOptional(expectedState, actualState)
+                XCTAssertEqualOptional(expectedTransition, actualTransition)
+                XCTAssertTrue(expectedValue === actualValue)
                 return nil
             }, reject: { (error) -> NSError in
                 XCTFail("should not fail")
