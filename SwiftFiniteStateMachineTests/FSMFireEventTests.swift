@@ -91,10 +91,11 @@ class FSMFireEventTests: FSMTestCase {
     func testWillFireEventFulfilled() {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
         let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        let expectedValue = "expectedValue"
         event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            return nil
+            return expectedValue
         }
-        expectSuccessWithEvent(event, expectedValue:nil)
+        expectSuccessWithEvent(event, expectedValue:expectedValue)
     }
 
     func testWillFireEventRejected() {
@@ -109,10 +110,11 @@ class FSMFireEventTests: FSMTestCase {
     func testWillExitStateFulfilled() {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
         let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        let expectedValue = "expectedValue"
         expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            return nil
+            return expectedValue
         }
-        expectSuccessWithEvent(event, expectedValue:nil)
+        expectSuccessWithEvent(event, expectedValue:expectedValue)
     }
 
     func testWillExitStateRejected() {
@@ -127,10 +129,11 @@ class FSMFireEventTests: FSMTestCase {
     func testWillEnterStateFulfilled() {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
         let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        let expectedValue = "expectedValue"
         expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
-            return nil
+            return expectedValue
         }
-        expectSuccessWithEvent(event, expectedValue:nil)
+        expectSuccessWithEvent(event, expectedValue:expectedValue)
     }
 
     func testWillEnterStateRejected() {
@@ -143,33 +146,6 @@ class FSMFireEventTests: FSMTestCase {
     }
 
 /*
-    - (void) testEnterStateYes;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-    id expectedValue = @"expected value";
-    event.destinationState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    return resolvedPromise(expectedValue);
-    };
-    [self expectSuccessWithEvent:event resolvedValue:expectedValue];
-    }
-
-    - (void) testEnterStateNO;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-    event.destinationState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    return [NSError errorWithDomain:@"test" code:-1 userInfo:nil];
-    };
-    [self expectFailureWithEvent:event];
-    }
-
     - (void) testEventOrder;
     {
     [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
