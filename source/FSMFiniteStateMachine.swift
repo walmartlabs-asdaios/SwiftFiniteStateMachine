@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias kFSMDidChangeStateClosure = (oldState:FSMState?, newState:FSMState?) -> Void
+
 let kFSMErrorDomain = "FSMError"
 let kFSMErrorInvalidState = 101
 let kFSMErrorInvalidEvent = 102
@@ -53,13 +55,24 @@ let kFSMErrorTransitionInProgress = 105
 *      event:              didFireEvent
 */
 class FSMFiniteStateMachine: Equatable {
+    /**
+    * This optional closure is called on the proposed destination state
+    * before the transition process completes, after the current state is changed
+    */
+    var didChangeState: kFSMDidChangeStateClosure?
 
     private var mutableStates:[String:FSMState] = [:]
     private var mutableEvents:[String:FSMEvent] = [:]
     private let synchronizer = Synchronizer()
     private var lockingEvent:FSMEvent? = nil
 
-    private(set) internal var currentState: FSMState?
+    
+
+    private(set) internal var currentState: FSMState? {
+        didSet {
+            didChangeState?(oldState:oldValue,newState:currentState)
+        }
+    }
 
     var states:[String:FSMState] {
         get {

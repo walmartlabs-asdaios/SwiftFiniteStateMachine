@@ -156,4 +156,24 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         }
     }
 
+    func testDidChangeStateClosure() {
+        let finiteStateMachine = FSMFiniteStateMachine()
+        let state1 = finiteStateMachine.addState("state1", error:nil)!
+        let state2 = finiteStateMachine.addState("state2", error:nil)!
+        let event = finiteStateMachine.addEvent("event", sources:[state1], destination:state2, error:nil)!
+
+        finiteStateMachine.didChangeState = {
+            (oldState:FSMState?,newState:FSMState?) in
+            XCTAssertNil(oldState)
+            XCTAssertEqualOptional(state1, newState)
+        }
+        finiteStateMachine.setInitialState(state1, error:nil)
+
+        finiteStateMachine.didChangeState = {
+            (oldState:FSMState?,newState:FSMState?) in
+            XCTAssertEqualOptional(state1, oldState)
+            XCTAssertEqualOptional(state2, newState)
+        }
+        finiteStateMachine.fireEvent(event, initialValue:nil)
+    }
 }
