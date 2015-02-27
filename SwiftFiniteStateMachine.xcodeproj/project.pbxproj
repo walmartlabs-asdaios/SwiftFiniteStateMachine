@@ -30,6 +30,8 @@
 		F83B61A91A9FB4DC0070549A /* FSMEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A81A9FB4DC0070549A /* FSMEventTests.swift */; };
 		F83B61AB1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61AA1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift */; };
 		F8A247DF1AA00E22002E6C6B /* FSMFireEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A247DE1AA00E22002E6C6B /* FSMFireEventTests.swift */; };
+		F8A247E11AA02A83002E6C6B /* FSMLockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A247E01AA02A83002E6C6B /* FSMLockingTests.swift */; };
+		F8A247E31AA02A94002E6C6B /* FSMEventTimeoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A247E21AA02A94002E6C6B /* FSMEventTimeoutTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		F83B61A81A9FB4DC0070549A /* FSMEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTests.swift; sourceTree = "<group>"; };
 		F83B61AA1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachineTests.swift; sourceTree = "<group>"; };
 		F8A247DE1AA00E22002E6C6B /* FSMFireEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFireEventTests.swift; sourceTree = "<group>"; };
+		F8A247E01AA02A83002E6C6B /* FSMLockingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLockingTests.swift; sourceTree = "<group>"; };
+		F8A247E21AA02A94002E6C6B /* FSMEventTimeoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTimeoutTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +138,8 @@
 				F83B61A81A9FB4DC0070549A /* FSMEventTests.swift */,
 				F83B61AA1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift */,
 				F8A247DE1AA00E22002E6C6B /* FSMFireEventTests.swift */,
+				F8A247E01AA02A83002E6C6B /* FSMLockingTests.swift */,
+				F8A247E21AA02A94002E6C6B /* FSMEventTimeoutTests.swift */,
 				F83B617F1A9F96F00070549A /* Supporting Files */,
 			);
 			path = SwiftFiniteStateMachineTests;
@@ -301,8 +307,10 @@
 				F83B61951A9F9E3B0070549A /* FSMStateTests.swift in Sources */,
 				F83B619B1A9F9EAD0070549A /* FSMTransition.swift in Sources */,
 				F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */,
+				F8A247E11AA02A83002E6C6B /* FSMLockingTests.swift in Sources */,
 				F83B61A71A9FB3690070549A /* FSMTestCase.swift in Sources */,
 				F83B61A51A9FB3260070549A /* FSMTransitionTests.swift in Sources */,
+				F8A247E31AA02A94002E6C6B /* FSMEventTimeoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

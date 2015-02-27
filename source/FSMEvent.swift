@@ -37,7 +37,7 @@ class FSMEvent: Equatable {
     /**
     * The timeout for this event, defaults to kFSMDefaultEventTimeout (currently 10.0 seconds)
     */
-    let eventTimeout: NSTimeInterval
+    var eventTimeout: NSTimeInterval
 
     /**
     * This optional closure is called after the transition process begins,
@@ -57,6 +57,7 @@ class FSMEvent: Equatable {
     */
     var eventDidTimeout:kFSMEventTimeoutClosure?
 
+    private var timeoutTimer:NSTimer? = nil
 
     // MARK: - interface
 
@@ -69,13 +70,30 @@ class FSMEvent: Equatable {
     }
 
     func startTimeoutTimerWithTransition(transition:FSMTransition, promises:[Promise]) {
-
+        let userInfo = ["promises":promises,"transition":transition];
+        timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(eventTimeout, target:self, selector:"handleEventTimeout:", userInfo:userInfo, repeats:false)
     }
 
     func stopTimeoutTimer() {
-        
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
     }
 
+    @objc func handleEventTimeout(timer:NSTimer) {
+        let userInfo = timer.userInfo as [String:AnyObject]
+        let promises = userInfo["promises"] as [Promise]
+        let transition = userInfo["transition"] as FSMTransition
+        stopTimeoutTimer()
+
+        let error = NSError(domain:kFSMErrorDomain, code:kFSMErrorEventTimeout, userInfo:nil)
+        for promise in promises {
+            if !promise.isFulfilled {
+                promise.reject(error)
+            }
+        }
+
+        eventDidTimeout?(self, transition)
+    }
 
     // MARK: - implementation
 

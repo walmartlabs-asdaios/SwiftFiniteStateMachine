@@ -233,6 +233,8 @@ class FSMFiniteStateMachine: Equatable {
         })
         promises.append(lastPromise)
 
+        event.startTimeoutTimerWithTransition(transition, promises:promises)
+
         lastPromise = lastPromise.then({ (value) -> AnyObject? in
             event.stopTimeoutTimer()
             self.unlockEvent()
@@ -242,8 +244,6 @@ class FSMFiniteStateMachine: Equatable {
             self.unlockEvent()
             return error
         })
-
-        event.startTimeoutTimerWithTransition(transition, promises:promises)
 
         return lastPromise
     }
