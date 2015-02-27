@@ -87,14 +87,83 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         var error:NSError? = nil
         if let event = finiteStateMachine.addEvent("event", sources:["source1","source2"], destination:"destination", error:&error) {
             XCTAssertEqual("event", event.name);
-            let sourceStates = event.sources
-            XCTAssertEqual(2, sourceStates.count);
-            XCTAssertEqual("source1", sourceStates[0].name)
-            XCTAssertEqual("source2", sourceStates[1].name)
+            XCTAssertEqual(2, event.sources.count);
+            XCTAssertEqual("source1", event.sources[0].name)
+            XCTAssertEqual("source2", event.sources[1].name)
             XCTAssertEqual("destination", event.destination.name)
         } else {
             XCTFail("event creation failed")
         }
     }
 
+    func testEventInitializationWithValidInstanceValues() {
+        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+        let source1 = finiteStateMachine.states["source1"]!
+        let source2 = finiteStateMachine.states["source2"]!
+        let destination = finiteStateMachine.states["destination"]!
+
+        var error:NSError? = nil
+        if let event = finiteStateMachine.addEvent("event", sources:[source1,source2], destination:destination, error:&error) {
+            XCTAssertEqual("event", event.name);
+            XCTAssertEqual(2, event.sources.count);
+            XCTAssertEqual("source1", event.sources[0].name)
+            XCTAssertEqual("source2", event.sources[1].name)
+            XCTAssertEqual("destination", event.destination.name)
+        } else {
+            XCTFail("event creation failed")
+        }
+    }
+
+    /*
+    - (void) testEventInitializationWithInvalidStringValues;
+    {
+    ASDAFiniteStateMachine *finiteStateMachine = [self finiteStateMachineWithStateNames:@[@"source1",@"source2",@"destination"]];
+    NSError *error = nil;
+    ASDAFSMEvent *result = [finiteStateMachine addEventWithName:@"event"
+    sources:@[@"source1x", @"source2x"]
+    destination:@"destinationx"
+    error:&error];
+    XCTAssertNotNil(error);
+    XCTAssertNil(result);
+    NSDictionary *userInfo = [error userInfo];
+    NSArray *errorMessages = userInfo[@"messages"];
+    XCTAssertEqual(3, [errorMessages count]);
+    }
+    */
+    /*
+    - (void) testEventNamesMustBeUnique;
+    {
+    ASDAFiniteStateMachine *finiteStateMachine = [self finiteStateMachineWithStateNames:@[@"source1",@"source2",@"destination"]];
+    NSError *error = nil;
+    ASDAFSMEvent *result1 = [finiteStateMachine addEventWithName:@"event"
+    sources:@[@"source1", @"source2"]
+    destination:@"destination"
+    error:&error];
+    XCTAssertEqualObjects(@"event", result1.name);
+    XCTAssertNil(error);
+    ASDAFSMEvent *result2 = [finiteStateMachine addEventWithName:@"event"
+    sources:@[@"source1", @"source2"]
+    destination:@"destination"
+    error:&error];
+    XCTAssertNil(result2);
+    XCTAssertNotNil(error);
+    }
+*/
+/*
+    - (void) testEventMustHaveAtLeastOnceSource;
+    {
+    ASDAFiniteStateMachine *finiteStateMachine = [self finiteStateMachineWithStateNames:@[@"source1",@"source2",@"destination"]];
+    NSError *error = nil;
+    ASDAFSMEvent *result = [finiteStateMachine addEventWithName:@"event"
+    sources:@[]
+    destination:@"destination"
+    error:&error];
+    XCTAssertNotNil(error);
+    XCTAssertNil(result);
+    NSDictionary *userInfo = [error userInfo];
+    NSArray *errorMessages = userInfo[@"messages"];
+    XCTAssertEqual(1, [errorMessages count]);
+    }
+
+*/
 }
