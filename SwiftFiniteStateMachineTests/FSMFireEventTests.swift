@@ -58,7 +58,7 @@ class FSMFireEventTests: FSMTestCase {
         waitForExpectationsWithTimeout(5.0, handler: nil)
     }
 
-    func expectFailureWithEvent(event:FSMEvent) {
+    func expectFailureWithEvent(event:FSMEvent, expectedCurrentState:FSMState?) {
         XCTAssertEqualOptional(expectedSourceState, finiteStateMachine.currentState)
         let promise = finiteStateMachine.fireEvent(event, initialValue:nil)
 
@@ -68,7 +68,7 @@ class FSMFireEventTests: FSMTestCase {
             expectation.fulfill()
             return nil;
         }, reject: { (error) -> NSError in
-            XCTAssertEqualOptional(self.expectedSourceState, self.finiteStateMachine.currentState)
+            XCTAssertEqualOptional(expectedCurrentState, self.finiteStateMachine.currentState)
             expectation.fulfill()
             return error
         })
@@ -85,7 +85,7 @@ class FSMFireEventTests: FSMTestCase {
     func testInvalidSource() {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
         let event = finiteStateMachine.addEvent("event", sources:[otherState], destination:expectedDestinationState, error:nil)!
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
     }
 
     func testWillFireEventFulfilled() {
@@ -104,7 +104,7 @@ class FSMFireEventTests: FSMTestCase {
         event.willFireEvent = { (event, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
     }
     
     func testDidFireEventFulfilled() {
@@ -123,7 +123,7 @@ class FSMFireEventTests: FSMTestCase {
         event.didFireEvent = { (event, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
     }
     
     func testWillExitStateFulfilled() {
@@ -142,7 +142,7 @@ class FSMFireEventTests: FSMTestCase {
         expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
     }
 
     func testDidExitStateFulfilled() {
@@ -161,7 +161,7 @@ class FSMFireEventTests: FSMTestCase {
         expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
     }
 
     func testWillEnterStateFulfilled() {
@@ -180,7 +180,7 @@ class FSMFireEventTests: FSMTestCase {
         expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
     }
 
     func testDidEnterStateFulfilled() {
@@ -199,7 +199,7 @@ class FSMFireEventTests: FSMTestCase {
         expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event)
+        expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
     }
 
 }
