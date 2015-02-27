@@ -129,25 +129,19 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         }
     }
 
-    /*
-    - (void) testEventNamesMustBeUnique;
-    {
-    ASDAFiniteStateMachine *finiteStateMachine = [self finiteStateMachineWithStateNames:@[@"source1",@"source2",@"destination"]];
-    NSError *error = nil;
-    ASDAFSMEvent *result1 = [finiteStateMachine addEventWithName:@"event"
-    sources:@[@"source1", @"source2"]
-    destination:@"destination"
-    error:&error];
-    XCTAssertEqualObjects(@"event", result1.name);
-    XCTAssertNil(error);
-    ASDAFSMEvent *result2 = [finiteStateMachine addEventWithName:@"event"
-    sources:@[@"source1", @"source2"]
-    destination:@"destination"
-    error:&error];
-    XCTAssertNil(result2);
-    XCTAssertNotNil(error);
+    func testEventNamesMustBeUnique() {
+        let finiteStateMachine = self.finiteStateMachineWithStateNames(["source1","source2","destination"])
+
+        let eventName = "event"
+        if let event1 = finiteStateMachine.addEvent(eventName, sources:["source1","source2"], destination:"destination", error:nil) {
+            if let event2 = finiteStateMachine.addEvent(eventName, sources:["source1","source2"], destination:"destination", error:nil) {
+                XCTFail("should not allow duplicate event names")
+                }
+        } else {
+            XCTFail("could not create event1")
+        }
     }
-*/
+
 /*
     - (void) testEventMustHaveAtLeastOnceSource;
     {
