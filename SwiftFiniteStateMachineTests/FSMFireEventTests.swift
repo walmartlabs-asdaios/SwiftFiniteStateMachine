@@ -124,33 +124,25 @@ class FSMFireEventTests: FSMTestCase {
         expectFailureWithEvent(event)
     }
 
+    func testWillEnterStateFulfilled() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
+            return nil
+        }
+        expectSuccessWithEvent(event, expectedValue:nil)
+    }
+
+    func testWillEnterStateRejected() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
+            return self.dummyError
+        }
+        expectFailureWithEvent(event)
+    }
+
 /*
-    - (void) testExitStateYES;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-    self.expectedSourceState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    return nil;
-    };
-    [self expectSuccessWithEvent:event resolvedValue:nil];
-    }
-
-    - (void) testExitStateNO;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-    self.expectedSourceState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    return [NSError errorWithDomain:@"test" code:-1 userInfo:nil];
-    };
-    [self expectFailureWithEvent:event];
-    }
-
     - (void) testEnterStateYes;
     {
     [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
