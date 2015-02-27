@@ -48,6 +48,7 @@ class FSMFireEventTests: FSMTestCase {
                 return nil
             }, reject: { (error) -> NSError in
                 XCTFail("Should not fail")
+                expectation.fulfill()
                 return error
             }
         )
@@ -55,39 +56,34 @@ class FSMFireEventTests: FSMTestCase {
         waitForExpectationsWithTimeout(5.0, handler: nil)
     }
 
-/*
-    - (void) expectFailureWithEvent:(ASDAFSMEvent *) event;
-    {
-    XCTAssertEqualObjects(self.expectedSourceState, self.finiteStateMachine.currentState);
-    SDPromise *result = [self.finiteStateMachine fireEvent:event withInitialValue:nil];
-    XCTAssertTrue([result isKindOfClass:[SDPromise class]]);
+    func expectFailureWithEvent(event:FSMEvent) {
+        XCTAssertEqualOptional(expectedSourceState, finiteStateMachine.currentState)
+        let promise = finiteStateMachine.fireEvent(event, initialValue:nil)
 
-    XCTestExpectation *expectation = [self expectationWithDescription:@"expectFailureWithEvent"];
-    @weakify(self);
-    [result then:^id(id dataObject) {
-    @strongify(self);
-    XCTFail(@"Should not succeed");
-    [expectation fulfill];
-    return nil;
-    } reject:^id(NSError *error) {
-    @strongify(self);
-    XCTAssertTrue([error isKindOfClass:[NSError class]]);
-    XCTAssertEqualObjects(self.expectedSourceState, self.finiteStateMachine.currentState, @"currentState should NOT change");
-    [expectation fulfill];
-    return nil;
-    }];
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
-    XCTAssertNil(error);
-    }];
+        let expectation = expectationWithDescription("expectFailureWithEvent")
+        promise.then({ (value) -> AnyObject? in
+            XCTFail("Should not succeed");
+            expectation.fulfill()
+            return nil;
+        }, reject: { (error) -> NSError in
+            XCTAssertEqualOptional(self.expectedSourceState, self.finiteStateMachine.currentState)
+            expectation.fulfill()
+            return error
+        })
+
+        waitForExpectationsWithTimeout(5.0, handler: nil)
     }
-*/
 
     func testValidSimple() {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-
         let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-
         expectSuccessWithEvent(event, expectedValue:nil)
+    }
+
+    func testInvalidSource() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[otherState], destination:expectedDestinationState, error:nil)!
+        expectFailureWithEvent(event)
     }
 
 }
