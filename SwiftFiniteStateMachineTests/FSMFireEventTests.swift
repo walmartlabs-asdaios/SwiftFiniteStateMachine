@@ -106,7 +106,26 @@ class FSMFireEventTests: FSMTestCase {
         }
         expectFailureWithEvent(event)
     }
+    
+    func testDidFireEventFulfilled() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        let expectedValue = "expectedValue"
+        event.didFireEvent = { (event, transition, value) -> AnyObject? in
+            return expectedValue
+        }
+        expectSuccessWithEvent(event, expectedValue:expectedValue)
+    }
 
+    func testDidFireEventRejected() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        event.didFireEvent = { (event, transition, value) -> AnyObject? in
+            return self.dummyError
+        }
+        expectFailureWithEvent(event)
+    }
+    
     func testWillExitStateFulfilled() {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
         let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
@@ -121,6 +140,25 @@ class FSMFireEventTests: FSMTestCase {
         finiteStateMachine.setInitialState(expectedSourceState, error:nil)
         let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
         expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+            return self.dummyError
+        }
+        expectFailureWithEvent(event)
+    }
+
+    func testDidExitStateFulfilled() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        let expectedValue = "expectedValue"
+        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+            return expectedValue
+        }
+        expectSuccessWithEvent(event, expectedValue:expectedValue)
+    }
+
+    func testDidExitStateRejected() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
             return self.dummyError
         }
         expectFailureWithEvent(event)
@@ -145,249 +183,23 @@ class FSMFireEventTests: FSMTestCase {
         expectFailureWithEvent(event)
     }
 
-/*
-    - (void) testEventOrder;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-
-    @weakify(self);
-    __block NSInteger firingOrder = 0;
-    event.willFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(1, ++firingOrder, @"Step 1");
-    return nil;
-    };
-    event.destinationState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(2, ++firingOrder, @"Step 2");
-    return nil;
-    };
-    event.destinationState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call destinationState.willExitStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call expectedSourceState.willEnterStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(3, ++firingOrder, @"Step 3");
-    return nil;
-    };
-
-    self.expectedSourceState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call expectedSourceState.didEnterStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(4, ++firingOrder, @"Step 4");
-    return nil;
-    };
-    event.destinationState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(5, ++firingOrder, @"Step 5");
-    return nil;
-    };
-    event.destinationState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call destinationState.didExitStateBlock");
-    return nil;
-    };
-    event.didFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(6, ++firingOrder, @"Step 6");
-    return nil;
-    };
-
-    SDPromise *result = [self.finiteStateMachine fireEvent:event withInitialValue:nil];
-    XCTAssertTrue([result isKindOfClass:[SDPromise class]]);
-    XCTestExpectation *expectation = [self expectationWithDescription:@"expectEventSequence"];
-    [result then:^id(id dataObject) {
-    @strongify(self);
-    XCTAssertEqual(6, firingOrder, @"Should be last step");
-    [expectation fulfill];
-    return nil;
-    } reject:^id(NSError *error) {
-    @strongify(self);
-    XCTFail(@"Should not fail");
-    [expectation fulfill];
-    return nil;
-    }];
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
-    XCTAssertNil(error);
-    }];
+    func testDidEnterStateFulfilled() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        let expectedValue = "expectedValue"
+        expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
+            return expectedValue
+        }
+        expectSuccessWithEvent(event, expectedValue:expectedValue)
     }
 
-    - (void) testEventRejectionPropagation;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-
-    @weakify(self);
-    __block NSInteger firingOrder = 0;
-    event.willFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(1, ++firingOrder, @"Step 1");
-    return nil;
-    };
-    event.destinationState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(2, ++firingOrder, @"Step 2");
-    return nil;
-    };
-    event.destinationState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call destinationState.willExitStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call expectedSourceState.willEnterStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    firingOrder += 1;
-    return rejectedPromise([NSError errorWithDomain:@"fail at willExitStateBlock" code:-1 userInfo:nil]);
-    };
-
-    self.expectedSourceState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call expectedSourceState.didEnterStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(4, ++firingOrder, @"Step 4");
-    return nil;
-    };
-    event.destinationState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(5, ++firingOrder, @"Step 5");
-    return nil;
-    };
-    event.destinationState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call destinationState.didExitStateBlock");
-    return nil;
-    };
-    event.didFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTAssertEqual(6, ++firingOrder, @"Step 6");
-    return nil;
-    };
-
-    SDPromise *result = [self.finiteStateMachine fireEvent:event withInitialValue:nil];
-    XCTAssertTrue([result isKindOfClass:[SDPromise class]]);
-    XCTestExpectation *expectation = [self expectationWithDescription:@"expectEventSequence"];
-    [result then:^id(id dataObject) {
-    @strongify(self);
-    XCTFail(@"Should have failed at step 3");
-    [expectation fulfill];
-    return nil;
-    } reject:^id(NSError *error) {
-    @strongify(self);
-    XCTAssertEqual(3, firingOrder, @"Should fail at step 3");
-    [expectation fulfill];
-    return nil;
-    }];
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
-    XCTAssertNil(error);
-    }];
+    func testDidEnterStateRejected() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
+            return self.dummyError
+        }
+        expectFailureWithEvent(event)
     }
-
-
-    - (void) testEventInitialValue;
-    {
-    [self.finiteStateMachine initializeWithState:self.expectedSourceState error:nil];
-    ASDAFSMEvent *event = [self.finiteStateMachine addEventWithName:@"event"
-    sources:@[self.expectedSourceState]
-    destination:self.expectedDestinationState
-    error:nil];
-
-    // assume value passed through is mutable array
-    __block NSInteger firingOrder = 0;
-    @weakify(self);
-    event.willFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)];
-    return value;
-    };
-    event.destinationState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)];
-    return value;
-    };
-    event.destinationState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call destinationState.willExitStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.willEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call expectedSourceState.willEnterStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.willExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)];
-    return value;
-    };
-
-    self.expectedSourceState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call expectedSourceState.didEnterStateBlock");
-    return nil;
-    };
-    self.expectedSourceState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)];
-    return value;
-    };
-    event.destinationState.didEnterStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)];
-    return value;
-    };
-    event.destinationState.didExitStateBlock = ^id(ASDAFSMState *stateArg, ASDAFSMTransition *transitionArg, id value) {
-    @strongify(self);
-    XCTFail(@"should not call destinationState.didExitStateBlock");
-    return nil;
-    };
-    event.didFireEventBlock = ^id(ASDAFSMEvent *eventArg, ASDAFSMTransition *transitionArg, id value) {
-    [value addObject:@(++firingOrder)];
-    return value;
-    };
-
-    NSMutableArray *initialValue = [NSMutableArray array];
-    SDPromise *result = [self.finiteStateMachine fireEvent:event withInitialValue:initialValue];
-    XCTAssertTrue([result isKindOfClass:[SDPromise class]]);
-    XCTestExpectation *expectation = [self expectationWithDescription:@"expectEventSequence"];
-    [result then:^id(id dataObject) {
-    @strongify(self);
-    XCTAssertEqual(initialValue, dataObject, @"In this example, it should be the exact same object passed in originally");
-    NSArray *expectedValue = @[@(1),@(2),@(3),@(4),@(5),@(6)];
-    XCTAssertEqualObjects(expectedValue, dataObject, @"should have accumulated values in array passed in as intial value");
-    [expectation fulfill];
-    return nil;
-    } reject:^id(NSError *error) {
-    @strongify(self);
-    XCTFail(@"Should not fail");
-    [expectation fulfill];
-    return nil;
-    }];
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
-    XCTAssertNil(error);
-    }];
-    }
-
-
-*/
 
 }
