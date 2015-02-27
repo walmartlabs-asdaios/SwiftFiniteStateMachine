@@ -106,6 +106,24 @@ class FSMFireEventTests: FSMTestCase {
         expectFailureWithEvent(event)
     }
 
+    func testWillExitStateFulfilled() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+            return nil
+        }
+        expectSuccessWithEvent(event, expectedValue:nil)
+    }
+
+    func testWillExitStateRejected() {
+        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
+        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+            return self.dummyError
+        }
+        expectFailureWithEvent(event)
+    }
+
 /*
     - (void) testExitStateYES;
     {
