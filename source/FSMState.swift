@@ -8,10 +8,10 @@
 
 import Foundation
 
-typealias kFSMWillEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
-typealias kFSMDidEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
-typealias kFSMWillExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
-typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMWillEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMDidEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMWillExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
 
 /**
 * FSMState represents a single state in the state machine instance.
@@ -31,40 +31,45 @@ typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> Any
 * - if any other value is returned (including nil), then that value is passed to 
 *   the next step in the process
 */
-class FSMState: Equatable, Printable {
+@objc public class FSMState: Equatable, Printable {
+
+    class func newInstance(name : String, finiteStateMachine: FSMFiniteStateMachine) -> FSMState {
+        return FSMState(name, finiteStateMachine:finiteStateMachine)
+    }
+
     /**
     * The unique identifier within the state machine instance.
     */
-    let name: String
+    public let name: String
 
     /**
     * The instance of the finite state machine this state is attached to
     */
-    let finiteStateMachine: FSMFiniteStateMachine
+    public let finiteStateMachine: FSMFiniteStateMachine
 
     /**
     * This optional closure is called on the proposed destination state
     * after the transition process begins, but before the current state is changed
     */
-    var willEnterState: kFSMWillEnterStateClosure?
+    public var willEnterState: kFSMWillEnterStateClosure?
 
     /**
     * This optional closure is called on the proposed destination state
     * before the transition process completes, after the current state is changed
     */
-    var didEnterState: kFSMDidEnterStateClosure?
+    public var didEnterState: kFSMDidEnterStateClosure?
 
     /**
     * This optional closure is called on the source state
     * after the transition process begins, but before the current state is changed
     */
-    var willExitState: kFSMWillExitStateClosure?
+    public var willExitState: kFSMWillExitStateClosure?
 
     /**
     * This optional closure is called on the source state
     * before the transition process completes, after the current state is changed
     */
-    var didExitState: kFSMDidExitStateClosure?
+    public var didExitState: kFSMDidExitStateClosure?
 
     // MARK: - interface
 
@@ -75,7 +80,7 @@ class FSMState: Equatable, Printable {
 
     // MARK: - implementation
 
-    var description : String {
+    public var description : String {
         return "FSMState: \(name)"
     }
 
@@ -113,6 +118,6 @@ class FSMState: Equatable, Printable {
 
 }
 
-func ==(lhs: FSMState, rhs: FSMState) -> Bool {
+public func ==(lhs: FSMState, rhs: FSMState) -> Bool {
     return (lhs.name == rhs.name) && (lhs.finiteStateMachine == rhs.finiteStateMachine)
 }

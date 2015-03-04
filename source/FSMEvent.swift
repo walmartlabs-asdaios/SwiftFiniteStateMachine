@@ -8,54 +8,59 @@
 
 import Foundation
 
-typealias kFSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
-typealias kFSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
-typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
+public typealias kFSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
-class FSMEvent: Equatable {
+@objc public class FSMEvent: Equatable {
+
+    public class func newInstance(name : String, sources:[FSMState], destination:FSMState, finiteStateMachine: FSMFiniteStateMachine) -> FSMEvent {
+        return FSMEvent(name, sources:sources, destination:destination, finiteStateMachine:finiteStateMachine)
+    }
+
     /**
     * The unique identifier within the state machine instance.
     */
-    let name: String
+    public let name: String
 
     /**
     * The instance of the finite state machine this state is attached to
     */
-    let finiteStateMachine: FSMFiniteStateMachine
+    public let finiteStateMachine: FSMFiniteStateMachine
 
     /**
     * An array of FSMState instances, the state machine instance must be in one of these
     * states before this event can be fired.
     */
-    let sources: [FSMState]
+    public let sources: [FSMState]
 
     /**
     * An FSMState instances that is the resulting state of a successful firing of the event.
     */
-    let destination: FSMState
+    public let destination: FSMState
 
     /**
     * The timeout for this event, defaults to kFSMDefaultEventTimeout (currently 10.0 seconds)
     */
-    var eventTimeout: NSTimeInterval
+    public var eventTimeout: NSTimeInterval
 
     /**
     * This optional closure is called after the transition process begins,
     * but before the current state is changed
     */
-    var willFireEvent:kFSMWillFireEventClosure?
+    public var willFireEvent:kFSMWillFireEventClosure?
 
     /**
     * This optional closure is called before the transition process completes,
     * after the current state is changed
     */
-    var didFireEvent:kFSMDidFireEventClosure?
+    public var didFireEvent:kFSMDidFireEventClosure?
 
     /**
     * This optional closure is called after the event times out, the result of the
     * event will be a rejection error -- there is no ability to retry from this point.
     */
-    var eventDidTimeout:kFSMEventTimeoutClosure?
+    public var eventDidTimeout:kFSMEventTimeoutClosure?
 
     private var timeoutTimer:NSTimer? = nil
 
@@ -70,8 +75,10 @@ class FSMEvent: Equatable {
     }
 
     func startTimeoutTimerWithTransition(transition:FSMTransition, promises:[Promise]) {
-        let userInfo = ["promises":promises,"transition":transition]
-        timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(eventTimeout, target:self, selector:"handleEventTimeout:", userInfo:userInfo, repeats:false)
+        if self.eventTimeout > 0 {
+            let userInfo = ["promises":promises,"transition":transition]
+            timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(eventTimeout, target:self, selector:"handleEventTimeout:", userInfo:userInfo, repeats:false)
+        }
     }
 
     func stopTimeoutTimer() {
@@ -97,7 +104,7 @@ class FSMEvent: Equatable {
 
     // MARK: - implementation
 
-    var description : String {
+    public var description : String {
         return "FSMEvent: \(name)"
     }
 
@@ -119,8 +126,8 @@ class FSMEvent: Equatable {
 
 }
 
-func ==(lhs: FSMEvent, rhs: FSMEvent) -> Bool {
+public func ==(lhs: FSMEvent, rhs: FSMEvent) -> Bool {
     return (lhs.name == rhs.name) && (lhs.finiteStateMachine == rhs.finiteStateMachine)
 }
 
-let kFSMDefaultEventTimeout:NSTimeInterval = 10.0
+public let kFSMDefaultEventTimeout:NSTimeInterval = 10.0

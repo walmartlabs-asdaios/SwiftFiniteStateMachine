@@ -8,14 +8,16 @@
 
 import Foundation
 
-typealias kFSMDidChangeStateClosure = (oldState:FSMState?, newState:FSMState?) -> Void
+public typealias kFSMDidChangeStateClosure = (oldState:FSMState?, newState:FSMState?) -> Void
+public typealias kFSMGetStateAndEventClosure = (state:FSMState?, event:FSMEvent?) -> Void
 
-let kFSMErrorDomain = "FSMError"
-let kFSMErrorInvalidState = 101
-let kFSMErrorInvalidEvent = 102
-let kFSMErrorRejected = 103
-let kFSMErrorEventTimeout = 104
-let kFSMErrorTransitionInProgress = 105
+public let kFSMErrorDomain = "FSMError"
+public let kFSMErrorInvalidState = 101
+public let kFSMErrorInvalidStartState = 102
+public let kFSMErrorInvalidEvent = 103
+public let kFSMErrorRejected = 104
+public let kFSMErrorEventTimeout = 105
+public let kFSMErrorTransitionInProgress = 106
 
 /**
 * FSMFiniteStateMachine is the controller for this sub-system.
@@ -54,12 +56,17 @@ let kFSMErrorTransitionInProgress = 105
 *      destinationState:   didExitState
 *      event:              didFireEvent
 */
-class FSMFiniteStateMachine: Equatable {
+@objc public class FSMFiniteStateMachine: Equatable {
+
+    public class func newInstance() -> FSMFiniteStateMachine {
+        return FSMFiniteStateMachine()
+    }
+
     /**
     * This optional closure is called on the proposed destination state
     * before the transition process completes, after the current state is changed
     */
-    var didChangeState: kFSMDidChangeStateClosure?
+    public var didChangeState: kFSMDidChangeStateClosure?
 
     private var mutableStates:[String:FSMState] = [:]
     private var mutableEvents:[String:FSMEvent] = [:]
@@ -68,28 +75,38 @@ class FSMFiniteStateMachine: Equatable {
 
     
 
-    private(set) internal var currentState: FSMState? {
+    private(set) public var currentState: FSMState? {
         didSet {
             didChangeState?(oldState:oldValue,newState:currentState)
         }
     }
 
-    var states:[String:FSMState] {
+    public var states:[String:FSMState] {
         get {
             return mutableStates
         }
     }
 
-    var events:[String:FSMEvent] {
+    public var events:[String:FSMEvent] {
         get {
             return mutableEvents
         }
     }
 
-    var pendingEvent:FSMEvent? {
+    public var pendingEvent:FSMEvent? {
         get {
             return lockingEvent
         }
+    }
+
+    public func getStateAndEvent(getStateAndEventClosure:kFSMGetStateAndEventClosure) {
+        var state:FSMState?
+        var event:FSMEvent?
+        synchronizer.synchronize {[weak self] () -> Void in
+            state = self?.currentState
+            event = self?.pendingEvent
+        }
+        getStateAndEventClosure(state:state, event:event)
     }
 
     // MARK: - interface
@@ -104,7 +121,7 @@ class FSMFiniteStateMachine: Equatable {
     * :param: error optional error return value
     * :returns: An instance of FSMState if initialization was successful, nil otherwise
     */
-    func addState(stateName:String, error:NSErrorPointer) -> FSMState? {
+    public func addState(stateName:String, error:NSErrorPointer) -> FSMState? {
         var result:FSMState? = nil
 
         var errorMessage = ""
@@ -132,7 +149,7 @@ class FSMFiniteStateMachine: Equatable {
     * :param: error optional error return value
     * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
     */
-    func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
+    public func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
         var result:FSMState? = nil
 
         if mutableStates[state.name] != nil {
@@ -157,7 +174,7 @@ class FSMFiniteStateMachine: Equatable {
     * :param: error optional error return value
     * :returns: An instance of FSMEvent if successful, nil otherwise
     */
-    func addEvent(name:String, sources:[AnyObject], destination:AnyObject, error:NSErrorPointer) -> FSMEvent? {
+    public func addEvent(name:String, sources:[AnyObject], destination:AnyObject, error:NSErrorPointer) -> FSMEvent? {
         var result:FSMEvent? = nil
 
         var errorMessages:[String] = []
@@ -198,7 +215,7 @@ class FSMFiniteStateMachine: Equatable {
         return result
     }
 
-    func fireEvent(event:FSMEvent, initialValue:AnyObject?) -> Promise {
+    public func fireEvent(event:FSMEvent, initialValue:AnyObject?) -> Promise {
 
         if !lockForEvent(event) {
             return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorTransitionInProgress, userInfo:nil))
@@ -206,7 +223,7 @@ class FSMFiniteStateMachine: Equatable {
 
         if let errorMessage = checkEventSourceState(event, sourceState:currentState) {
             unlockEvent()
-            return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorRejected, userInfo:["messages":[errorMessage]]))
+            return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidStartState, userInfo:["messages":[errorMessage]]))
         }
 
         let sourceState = currentState!
@@ -271,7 +288,7 @@ class FSMFiniteStateMachine: Equatable {
 
     // MARK: - implementation
 
-    var description : String {
+    public var description : String {
         return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"
     }
 
@@ -323,6 +340,6 @@ class FSMFiniteStateMachine: Equatable {
     
 }
 
-func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
+public func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
     return lhs === rhs
 }

@@ -8,22 +8,22 @@
 
 import Foundation
 
-class FSMTransition: Equatable {
+@objc public class FSMTransition: Equatable {
 
     /**
     * The event that triggered this transition
     */
-    let event:FSMEvent
+    public let event:FSMEvent
 
     /**
     * The source state when the transition was triggered
     */
-    let source:FSMState
+    public let source:FSMState
 
     /**
     * The destination state of the transition
     */
-    var destination:FSMState {
+    public var destination:FSMState {
         get {
             return self.event.destination
         }
@@ -32,7 +32,7 @@ class FSMTransition: Equatable {
     /**
     * The instance of the finite state machine this state is attached to
     */
-    let finiteStateMachine: FSMFiniteStateMachine
+    public let finiteStateMachine: FSMFiniteStateMachine
 
     init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
         self.event = event
@@ -42,12 +42,12 @@ class FSMTransition: Equatable {
 
     // MARK: - implementation
 
-    var description : String {
+    public var description : String {
         return "FSMTransition: event=\(event.name) source=\(source.name)"
     }
 
 }
 
-func ==(lhs: FSMTransition, rhs: FSMTransition) -> Bool {
+public func ==(lhs: FSMTransition, rhs: FSMTransition) -> Bool {
     return (lhs.event == rhs.event) && (lhs.source == rhs.source)
 }

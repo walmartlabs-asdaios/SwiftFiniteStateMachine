@@ -20,7 +20,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>194FB2C339AA2A55AC3F5BF82F9143C9E57C11B1</key>
-		<string>../..external/SwiftPromises/</string>
+		<string>../..external/SwiftPromises</string>
 		<key>3FD3021502565F2FEF3D52E26FEFFC132972614E</key>
 		<string>../..</string>
 	</dict>
