@@ -58,9 +58,18 @@ public let kFSMErrorTransitionInProgress = 106
 */
 @objc public class FSMFiniteStateMachine: Equatable {
 
+    // The following class functions are purely for the benefit of Objective-C code
     public class func newInstance() -> FSMFiniteStateMachine {
         return FSMFiniteStateMachine()
     }
+
+    public class func FSMErrorDomain() -> String { return kFSMErrorDomain }
+    public class func FSMErrorInvalidState() -> Int { return kFSMErrorInvalidState }
+    public class func FSMErrorInvalidStartState() -> Int { return kFSMErrorInvalidStartState }
+    public class func FSMErrorInvalidEvent() -> Int { return kFSMErrorInvalidEvent }
+    public class func FSMErrorRejected() -> Int { return kFSMErrorRejected }
+    public class func FSMErrorEventTimeout() -> Int { return kFSMErrorEventTimeout }
+    public class func FSMErrorTransitionInProgress() -> Int { return kFSMErrorTransitionInProgress }
 
     /**
     * This optional closure is called on the proposed destination state
