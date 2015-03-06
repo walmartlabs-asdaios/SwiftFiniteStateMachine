@@ -68,6 +68,86 @@ class FSMEventTimeoutTests: FSMTestCase {
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
 
+
+    func testMidEventResetTimeoutShouldFail() {
+        let willFireDelay:NSTimeInterval = 5.0
+        let didFireDelay:NSTimeInterval = 8.0
+
+        // event timeout is long enough for first delay, but not for second
+        let eventTimeout:NSTimeInterval = 6.0
+
+        let expectation = expectationWithDescription("expectation")
+        event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
+            return self.delayedFulfilledPromise(willFireDelay, value:value)
+        }
+        event1to2.didFireEvent = { (event, transition, value) -> AnyObject? in
+            // resetting timeout should ensure we finish the event on time
+            self.finiteStateMachine.resetTimeoutTimer(eventTimeout)
+            return self.delayedFulfilledPromise(didFireDelay, value:value)
+        }
+
+        var actualTimeoutBlockEvent:FSMEvent? = nil
+        var actualTimeoutBlockTransition:FSMTransition? = nil
+        event1to2.eventDidTimeout = {(event,transition) -> Void in
+            actualTimeoutBlockEvent = event
+            actualTimeoutBlockTransition = transition
+        }
+        let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:eventTimeout, initialValue:nil)
+        promise.then(
+            { (value) -> AnyObject? in
+                expectation.fulfill()
+                XCTFail("Should have been rejected")
+                return value
+            }, reject: { (error) -> NSError in
+                expectation.fulfill()
+                return error
+            }
+        )
+
+        // wait long enough for timeout to trigger
+        waitForExpectationsWithTimeout(willFireDelay+didFireDelay+2, handler:nil)
+
+        XCTAssertEqualOptional(event1to2, actualTimeoutBlockEvent)
+        XCTAssertNotNil(actualTimeoutBlockTransition)
+    }
+    
+
+    func testMidEventResetTimeoutShouldSucceed() {
+        let willFireDelay:NSTimeInterval = 5.0
+        let didFireDelay:NSTimeInterval = 5.0
+
+        // event timeout is long enough for first delay, but not for both
+        let eventTimeout:NSTimeInterval = 6.0
+
+        let expectation = expectationWithDescription("expectation")
+        event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
+            return self.delayedFulfilledPromise(willFireDelay, value:value)
+        }
+        event1to2.didFireEvent = { (event, transition, value) -> AnyObject? in
+            // resetting timeout should ensure we finish the event on time
+            self.finiteStateMachine.resetTimeoutTimer(eventTimeout)
+            return self.delayedFulfilledPromise(didFireDelay, value:value)
+        }
+
+        event1to2.eventDidTimeout = {(event,transition) -> Void in
+            XCTFail("Should not have timed out")
+        }
+        let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:eventTimeout, initialValue:nil)
+        promise.then(
+            { (value) -> AnyObject? in
+                expectation.fulfill()
+                return value
+            }, reject: { (error) -> NSError in
+                expectation.fulfill()
+                XCTFail("Should not have been rejected")
+                return error
+            }
+        )
+
+        // wait long enough for timeout to trigger
+        waitForExpectationsWithTimeout(willFireDelay+didFireDelay+2, handler:nil)
+    }
+    
     func testDelayWithoutTimeout() {
         let timeout:NSTimeInterval = 1.0
 

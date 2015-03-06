@@ -289,6 +289,7 @@ public let kFSMErrorTransitionInProgress = 106
 
     public func resetTimeoutTimer(eventTimeout:NSTimeInterval) {
         if let event = pendingEvent {
+            event.stopTimeoutTimer()
             if let transition = pendingEventTransition {
                 event.resetTimeoutTimer(eventTimeout, transition:transition, promises:pendingEventPromises)
             }
