@@ -72,8 +72,8 @@ public let kFSMErrorTransitionInProgress = 106
     private var mutableEvents:[String:FSMEvent] = [:]
     private let synchronizer = Synchronizer()
     private var lockingEvent:FSMEvent? = nil
-
-    
+    private var pendingEventTransition:FSMTransition? = nil
+    private var pendingEventPromises:[Promise] = []
 
     private(set) public var currentState: FSMState? {
         didSet {
@@ -215,7 +215,7 @@ public let kFSMErrorTransitionInProgress = 106
         return result
     }
 
-    public func fireEvent(event:FSMEvent, initialValue:AnyObject?) -> Promise {
+    public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise {
 
         if !lockForEvent(event) {
             return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorTransitionInProgress, userInfo:nil))
@@ -231,45 +231,46 @@ public let kFSMErrorTransitionInProgress = 106
         let transition = FSMTransition(event, source:sourceState, finiteStateMachine:self)
         var lastPromise = Promise(initialValue)
 
-        var promises:[Promise] = []
+        pendingEventPromises = []
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             return event.willFireEventWithTransition(transition, value:value)
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             return destinationState.willEnterStateWithTransition(transition, value:value)
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             return sourceState.willExitStateWithTransition(transition, value:value)
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             self.currentState = destinationState
             return value
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             return sourceState.didExitStateWithTransition(transition, value:value)
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             return destinationState.didEnterStateWithTransition(transition, value:value)
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
             return event.didFireEventWithTransition(transition, value:value)
         })
-        promises.append(lastPromise)
+        pendingEventPromises.append(lastPromise)
+        pendingEventTransition = transition
 
-        event.startTimeoutTimerWithTransition(transition, promises:promises)
+        resetTimeoutTimer(eventTimeout)
 
         lastPromise = lastPromise.then(
             { (value) -> AnyObject? in
@@ -285,6 +286,15 @@ public let kFSMErrorTransitionInProgress = 106
 
         return lastPromise
     }
+
+    public func resetTimeoutTimer(eventTimeout:NSTimeInterval) {
+        if let event = pendingEvent {
+            if let transition = pendingEventTransition {
+                event.resetTimeoutTimer(eventTimeout, transition:transition, promises:pendingEventPromises)
+            }
+        }
+    }
+
 
     // MARK: - implementation
 
@@ -309,6 +319,8 @@ public let kFSMErrorTransitionInProgress = 106
         synchronizer.synchronize {
             if self.lockingEvent == nil {
                 self.lockingEvent = event
+                self.pendingEventTransition = nil
+                self.pendingEventPromises = []
                 result = true
             }
         }
@@ -318,6 +330,8 @@ public let kFSMErrorTransitionInProgress = 106
     func unlockEvent() {
         synchronizer.synchronize {
             self.lockingEvent = nil
+            self.pendingEventTransition = nil
+            self.pendingEventPromises = []
         }
     }
 

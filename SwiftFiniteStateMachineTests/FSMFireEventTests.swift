@@ -11,6 +11,8 @@ import XCTest
 
 class FSMFireEventTests: FSMTestCase {
 
+    let defaultEventTimeout:NSTimeInterval = 10.0
+
     var finiteStateMachine:FSMFiniteStateMachine!
     var expectedSourceState:FSMState!
     var otherState:FSMState!
@@ -31,7 +33,7 @@ class FSMFireEventTests: FSMTestCase {
 
     func expectSuccessWithEvent(event:FSMEvent, expectedValue:String?) {
         XCTAssertEqualOptional(expectedSourceState, finiteStateMachine.currentState)
-        let promise = finiteStateMachine.fireEvent(event, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
 
         let expectation = expectationWithDescription("expectSuccessWithEvent")
         promise.then(
@@ -60,7 +62,7 @@ class FSMFireEventTests: FSMTestCase {
 
     func expectFailureWithEvent(event:FSMEvent, expectedCurrentState:FSMState?) {
         XCTAssertEqualOptional(expectedSourceState, finiteStateMachine.currentState)
-        let promise = finiteStateMachine.fireEvent(event, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
 
         let expectation = expectationWithDescription("expectFailureWithEvent")
         promise.then(
@@ -251,7 +253,7 @@ class FSMFireEventTests: FSMTestCase {
             return nil
         }
 
-        let promise = finiteStateMachine.fireEvent(event, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
         let expectation = expectationWithDescription("expectEventSequence")
 
         promise.then(
@@ -316,7 +318,7 @@ class FSMFireEventTests: FSMTestCase {
             return nil
         }
 
-        let promise = finiteStateMachine.fireEvent(event, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
         let expectation = expectationWithDescription("expectEventSequence")
 
         promise.then(
@@ -371,7 +373,7 @@ class FSMFireEventTests: FSMTestCase {
         }
 
         var initialValue:[Int] = []
-        let promise = finiteStateMachine.fireEvent(event, initialValue:initialValue)
+        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:initialValue)
         let expectation = expectationWithDescription("expectEventSequence")
 
         promise.then(

@@ -22,6 +22,8 @@ class DemoFSM {
     var loadRecordEvent:FSMEvent!
     var signOutEvent:FSMEvent!
 
+    let defaultEventTimeout:NSTimeInterval = 10.0
+
     init(rootViewController:UIViewController) {
         self.rootViewController = rootViewController
         configureFiniteStateMachine()
@@ -133,15 +135,15 @@ class DemoFSM {
     }
     
     func login() -> Promise {
-        return finiteStateMachine.fireEvent(authenticateEvent, initialValue:nil)
+        return finiteStateMachine.fireEvent(authenticateEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 
     func loadRecord() -> Promise {
-        return finiteStateMachine.fireEvent(loadRecordEvent, initialValue:nil)
+        return finiteStateMachine.fireEvent(loadRecordEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 
     func logout() -> Promise {
-        return finiteStateMachine.fireEvent(signOutEvent, initialValue:nil)
+        return finiteStateMachine.fireEvent(signOutEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 
 }

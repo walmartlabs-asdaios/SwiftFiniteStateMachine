@@ -174,6 +174,6 @@ class FSMFiniteStateMachineTests: FSMTestCase {
             XCTAssertEqualOptional(state1, oldState)
             XCTAssertEqualOptional(state2, newState)
         }
-        finiteStateMachine.fireEvent(event, initialValue:nil)
+        finiteStateMachine.fireEvent(event, eventTimeout:10.0, initialValue:nil)
     }
 }

@@ -33,7 +33,6 @@ class FSMEventTests: FSMTestCase {
         XCTAssertEqual([dummySourceState1,dummySourceState2], event.sources)
         XCTAssertEqual(dummyDestinationState, event.destination)
         XCTAssertEqual(dummyFiniteStateMachine, event.finiteStateMachine)
-        XCTAssertEqual(kFSMDefaultEventTimeout, event.eventTimeout)
     }
 
     // MARK: - fireEvent tests

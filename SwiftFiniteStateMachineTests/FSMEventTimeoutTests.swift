@@ -35,7 +35,6 @@ class FSMEventTimeoutTests: FSMTestCase {
 
     func testSimpleTimeout() {
         let timeout:NSTimeInterval = 1.0
-        event1to2.eventTimeout = timeout
 
         let expectation = expectationWithDescription("expectation")
         event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
@@ -49,7 +48,7 @@ class FSMEventTimeoutTests: FSMTestCase {
             actualTimeoutBlockEvent = event
             actualTimeoutBlockTransition = transition
         }
-        let promise = finiteStateMachine.fireEvent(event1to2, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:timeout, initialValue:nil)
         promise.then(
             { (value) -> AnyObject? in
                 expectation.fulfill()
@@ -71,7 +70,6 @@ class FSMEventTimeoutTests: FSMTestCase {
 
     func testDelayWithoutTimeout() {
         let timeout:NSTimeInterval = 1.0
-        event1to2.eventTimeout = timeout
 
         let expectation = expectationWithDescription("expectation")
         event1to2.willFireEvent = { (event, transition, value) -> AnyObject? in
@@ -79,7 +77,7 @@ class FSMEventTimeoutTests: FSMTestCase {
             return self.delayedFulfilledPromise(timeout/2.0, value:value)
         }
 
-        let promise = finiteStateMachine.fireEvent(event1to2, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:timeout, initialValue:nil)
         promise.then(
             { (value) -> AnyObject? in
                 expectation.fulfill()

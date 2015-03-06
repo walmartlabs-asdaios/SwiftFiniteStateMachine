@@ -40,11 +40,6 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
     public let destination: FSMState
 
     /**
-    * The timeout for this event, defaults to kFSMDefaultEventTimeout (currently 10.0 seconds)
-    */
-    public var eventTimeout: NSTimeInterval
-
-    /**
     * This optional closure is called after the transition process begins,
     * but before the current state is changed
     */
@@ -71,13 +66,14 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
         self.sources = sources
         self.destination = destination
         self.finiteStateMachine = finiteStateMachine
-        self.eventTimeout = kFSMDefaultEventTimeout
     }
 
-    func startTimeoutTimerWithTransition(transition:FSMTransition, promises:[Promise]) {
-        if self.eventTimeout > 0 {
+    func resetTimeoutTimer(eventTimeout:NSTimeInterval, transition:FSMTransition, promises:[Promise]) {
+        if eventTimeout > 0 {
             let userInfo = ["promises":promises,"transition":transition]
             timeoutTimer = NSTimer.scheduledTimerWithTimeInterval(eventTimeout, target:self, selector:"handleEventTimeout:", userInfo:userInfo, repeats:false)
+        } else {
+            stopTimeoutTimer();
         }
     }
 
@@ -129,5 +125,3 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 public func ==(lhs: FSMEvent, rhs: FSMEvent) -> Bool {
     return (lhs.name == rhs.name) && (lhs.finiteStateMachine == rhs.finiteStateMachine)
 }
-
-public let kFSMDefaultEventTimeout:NSTimeInterval = 10.0

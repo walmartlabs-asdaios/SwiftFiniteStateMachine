@@ -11,6 +11,8 @@ import XCTest
 
 class FSMLockingTests: FSMTestCase {
 
+    let defaultEventTimeout:NSTimeInterval = 10.0
+
     var finiteStateMachine:FSMFiniteStateMachine!
     var state1:FSMState!
     var state2:FSMState!
@@ -35,7 +37,6 @@ class FSMLockingTests: FSMTestCase {
 
     func testSimpleConflictingCall() {
         let timeout:NSTimeInterval = 1.0
-        event1to2.eventTimeout = timeout
 
         let event1to2Expectation = expectationWithDescription("event1to2Expectation")
         event1to2.willFireEvent = { (event,transition,value) in
@@ -43,7 +44,7 @@ class FSMLockingTests: FSMTestCase {
             return self.delayedFulfilledPromise(timeout/2.0, value:value)
         }
 
-        let promise = finiteStateMachine.fireEvent(event1to2, initialValue:nil)
+        let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:defaultEventTimeout, initialValue:nil)
         promise.then(
             { (value) -> AnyObject? in
                 event1to2Expectation.fulfill()
@@ -54,19 +55,18 @@ class FSMLockingTests: FSMTestCase {
                 return error
         })
 
-        let conflictingPromise = finiteStateMachine.fireEvent(event2to3, initialValue:nil)
+        let conflictingPromise = finiteStateMachine.fireEvent(event2to3, eventTimeout:timeout, initialValue:nil)
         XCTAssertTrue(conflictingPromise.isRejected)
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
 
-        let nonConflictingPromise = finiteStateMachine.fireEvent(event2to3, initialValue:nil)
+        let nonConflictingPromise = finiteStateMachine.fireEvent(event2to3, eventTimeout:defaultEventTimeout, initialValue:nil)
         XCTAssertFalse(nonConflictingPromise.isRejected)
     }
 
     func testAsyncConflictingCall() {
         let timeout:NSTimeInterval = 1.0
-        event1to2.eventTimeout = timeout
 
         let event1to2Expectation = expectationWithDescription("event1to2Expectation")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
@@ -76,7 +76,7 @@ class FSMLockingTests: FSMTestCase {
                 // Delay one of the steps for a bit, but shorter than the event timeout threshold
                 return self.delayedFulfilledPromise(timeout/2.0, value:value)
             }
-            let promise1to2 = self.finiteStateMachine.fireEvent(self.event1to2, initialValue:nil)
+            let promise1to2 = self.finiteStateMachine.fireEvent(self.event1to2, eventTimeout:timeout, initialValue:nil)
             promise1to2.then(
                 { (value) -> AnyObject? in
                     event1to2Expectation.fulfill()
@@ -93,7 +93,7 @@ class FSMLockingTests: FSMTestCase {
         // ensure second event isn't attempted until after first has a chance to start
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
-            let conflictingPromise = self.finiteStateMachine.fireEvent(self.event2to3, initialValue:nil)
+            let conflictingPromise = self.finiteStateMachine.fireEvent(self.event2to3, eventTimeout:self.defaultEventTimeout, initialValue:nil)
             XCTAssertTrue(conflictingPromise.isRejected)
         })
 
