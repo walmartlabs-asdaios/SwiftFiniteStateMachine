@@ -57,7 +57,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
     */
     public var eventDidTimeout:kFSMEventTimeoutClosure?
 
-    private var timeoutTimer:NSTimer? = nil
+    private var timeoutTimer:NSTimer?
 
     // MARK: - interface
 

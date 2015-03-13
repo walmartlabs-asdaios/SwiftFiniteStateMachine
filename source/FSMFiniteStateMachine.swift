@@ -80,8 +80,8 @@ public let kFSMErrorTransitionInProgress = 106
     private var mutableStates:[String:FSMState] = [:]
     private var mutableEvents:[String:FSMEvent] = [:]
     private let synchronizer = Synchronizer()
-    private var lockingEvent:FSMEvent? = nil
-    private var pendingEventTransition:FSMTransition? = nil
+    private var lockingEvent:FSMEvent?
+    private var pendingEventTransition:FSMTransition?
     private var pendingEventPromises:[Promise] = []
 
     private(set) public var currentState: FSMState? {
@@ -131,7 +131,7 @@ public let kFSMErrorTransitionInProgress = 106
     * :returns: An instance of FSMState if initialization was successful, nil otherwise
     */
     public func addState(stateName:String, error:NSErrorPointer) -> FSMState? {
-        var result:FSMState? = nil
+        var result:FSMState?
 
         var errorMessage = ""
         if stateName.utf16Count == 0 {
@@ -159,7 +159,7 @@ public let kFSMErrorTransitionInProgress = 106
     * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
     */
     public func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
-        var result:FSMState? = nil
+        var result:FSMState?
 
         if mutableStates[state.name] != nil {
             result = state
@@ -184,7 +184,7 @@ public let kFSMErrorTransitionInProgress = 106
     * :returns: An instance of FSMEvent if successful, nil otherwise
     */
     public func addEvent(name:String, sources:[AnyObject], destination:AnyObject, error:NSErrorPointer) -> FSMEvent? {
-        var result:FSMEvent? = nil
+        var result:FSMEvent?
 
         var errorMessages:[String] = []
         if name.utf16Count == 0 {
@@ -205,7 +205,7 @@ public let kFSMErrorTransitionInProgress = 106
             errorMessages.append("at least one source is required")
         }
 
-        var destinationState:FSMState? = nil
+        var destinationState:FSMState?
         if let state = validateState(destination) {
             destinationState = state
         } else {
@@ -346,7 +346,7 @@ public let kFSMErrorTransitionInProgress = 106
     }
 
     func checkEventSourceState(event:FSMEvent, sourceState:FSMState?) -> String? {
-        var result:String? = nil
+        var result:String?
         if let sourceState = sourceState {
             if find(event.sources,sourceState) == nil {
                 result = "current state '\(sourceState.name)' is not in event sources: "

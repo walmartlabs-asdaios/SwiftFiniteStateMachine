@@ -42,8 +42,8 @@ class FSMEventTimeoutTests: FSMTestCase {
             return self.delayedFulfilledPromise(timeout*5.0, value:value)
         }
 
-        var actualTimeoutBlockEvent:FSMEvent? = nil
-        var actualTimeoutBlockTransition:FSMTransition? = nil
+        var actualTimeoutBlockEvent:FSMEvent?
+        var actualTimeoutBlockTransition:FSMTransition?
         event1to2.eventDidTimeout = {(event,transition) -> Void in
             actualTimeoutBlockEvent = event
             actualTimeoutBlockTransition = transition
@@ -86,8 +86,8 @@ class FSMEventTimeoutTests: FSMTestCase {
             return self.delayedFulfilledPromise(didFireDelay, value:value)
         }
 
-        var actualTimeoutBlockEvent:FSMEvent? = nil
-        var actualTimeoutBlockTransition:FSMTransition? = nil
+        var actualTimeoutBlockEvent:FSMEvent?
+        var actualTimeoutBlockTransition:FSMTransition?
         event1to2.eventDidTimeout = {(event,transition) -> Void in
             actualTimeoutBlockEvent = event
             actualTimeoutBlockTransition = transition

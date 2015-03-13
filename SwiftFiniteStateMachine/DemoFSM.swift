@@ -11,8 +11,8 @@ import UIKit
 class DemoFSM {
     let rootViewController:UIViewController
 
-    var username:String? = nil
-    var userRecord:String? = nil
+    var username:String?
+    var userRecord:String?
 
     var finiteStateMachine:FSMFiniteStateMachine!
     var signedOutState:FSMState!

@@ -38,9 +38,9 @@ class FSMEventTests: FSMTestCase {
     // MARK: - fireEvent tests
 
     func testWillFireEvent() {
-        var actualEvent:FSMEvent? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualEvent:FSMEvent?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         event.willFireEvent = {
             (event, transition, value) -> AnyObject? in
@@ -67,9 +67,9 @@ class FSMEventTests: FSMTestCase {
     }
 
     func testDidFireEvent() {
-        var actualEvent:FSMEvent? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualEvent:FSMEvent?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         event.didFireEvent = {
             (event, transition, value) -> AnyObject? in

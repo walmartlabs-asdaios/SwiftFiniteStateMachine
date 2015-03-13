@@ -26,9 +26,9 @@ class FSMStateTests: FSMTestCase {
         let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.willEnterState = {
             (state, transition, value) -> AnyObject? in
@@ -59,9 +59,9 @@ class FSMStateTests: FSMTestCase {
         let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.didEnterState = {
             (state, transition, value) -> AnyObject? in
@@ -94,9 +94,9 @@ class FSMStateTests: FSMTestCase {
         let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.willExitState = {
             (state, transition, value) -> AnyObject? in
@@ -127,9 +127,9 @@ class FSMStateTests: FSMTestCase {
         let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.didExitState = {
             (state, transition, value) -> AnyObject? in

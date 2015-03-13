@@ -16,7 +16,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     func testStateNamesMustBeUnique() {
         let finiteStateMachine = FSMFiniteStateMachine()
 
-        var error:NSError? = nil
+        var error:NSError?
         let result1 = finiteStateMachine.addState("state", error:&error)
         XCTAssertEqualOptional("state", result1?.name)
 
@@ -48,7 +48,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         let state = finiteStateMachine.addState("state", error:nil)!
         XCTAssertNil(finiteStateMachine.currentState, "Should not have a current state")
 
-        var error:NSError? = nil
+        var error:NSError?
         let result = finiteStateMachine.setInitialState(state, error:&error)
         XCTAssertEqualOptional(state, result)
         XCTAssertEqualOptional(state, finiteStateMachine.currentState, "current state should now match initial state")
@@ -64,7 +64,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         XCTAssertNil(states["invalidState"])
         XCTAssertNil(finiteStateMachine.currentState, "Should not have a current state")
 
-        var error:NSError? = nil
+        var error:NSError?
         let result = finiteStateMachine.setInitialState(invalidState, error:&error)
         XCTAssertNil(result)
         XCTAssertNotNil(error)
@@ -84,7 +84,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     func testEventInitializationWithValidStringValues() {
         let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
-        var error:NSError? = nil
+        var error:NSError?
         if let event = finiteStateMachine.addEvent("event", sources:["source1","source2"], destination:"destination", error:&error) {
             XCTAssertEqual("event", event.name)
             XCTAssertEqual(2, event.sources.count)
@@ -102,7 +102,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
         let source2 = finiteStateMachine.states["source2"]!
         let destination = finiteStateMachine.states["destination"]!
 
-        var error:NSError? = nil
+        var error:NSError?
         if let event = finiteStateMachine.addEvent("event", sources:[source1,source2], destination:destination, error:&error) {
             XCTAssertEqual("event", event.name)
             XCTAssertEqual(2, event.sources.count)
@@ -118,7 +118,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     func testEventInitializationWithInvalidStringValues() {
         let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
-        var error:NSError? = nil
+        var error:NSError?
         if let event = finiteStateMachine.addEvent("event", sources:["source1x","source2x"], destination:"destinationx", error:&error) {
             XCTFail("event creation should have failed")
         } else {
@@ -145,7 +145,7 @@ class FSMFiniteStateMachineTests: FSMTestCase {
     func testEventMustHaveAtLeastOnceSource() {
         let finiteStateMachine = finiteStateMachineWithStateNames(["source1","source2","destination"])
 
-        var error:NSError? = nil
+        var error:NSError?
         if let event = finiteStateMachine.addEvent("event", sources:[], destination:"destination", error:&error) {
             XCTFail("event creation should have failed")
         } else {
