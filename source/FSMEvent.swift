@@ -26,7 +26,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
     /**
     * The instance of the finite state machine this state is attached to
     */
-    public let finiteStateMachine: FSMFiniteStateMachine
+    public weak var finiteStateMachine: FSMFiniteStateMachine?
 
     /**
     * An array of FSMState instances, the state machine instance must be in one of these
@@ -106,7 +106,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
     func willFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let willFireEvent = willFireEvent? {
+        if let willFireEvent = self.willFireEvent {
             response = willFireEvent(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -114,7 +114,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
     func didFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let didFireEvent = didFireEvent? {
+        if let didFireEvent = self.didFireEvent {
             response = didFireEvent(self,transition,value)
         }
         return Promise.valueAsPromise(response)

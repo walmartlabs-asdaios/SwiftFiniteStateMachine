@@ -32,7 +32,7 @@ class FSMEventTests: FSMTestCase {
         XCTAssertEqual("test", event.name)
         XCTAssertEqual([dummySourceState1,dummySourceState2], event.sources)
         XCTAssertEqual(dummyDestinationState, event.destination)
-        XCTAssertEqual(dummyFiniteStateMachine, event.finiteStateMachine)
+        XCTAssertEqualOptional(dummyFiniteStateMachine, event.finiteStateMachine)
     }
 
     // MARK: - fireEvent tests

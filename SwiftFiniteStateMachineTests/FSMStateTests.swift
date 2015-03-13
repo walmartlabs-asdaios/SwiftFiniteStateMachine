@@ -17,7 +17,7 @@ class FSMStateTests: FSMTestCase {
         let state = FSMState("test", finiteStateMachine: dummyFiniteStateMachine)
 
         XCTAssertEqual("test", state.name)
-        XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
+        XCTAssertEqualOptional(dummyFiniteStateMachine, state.finiteStateMachine)
     }
 
     // MARK: - enterState tests

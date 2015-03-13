@@ -187,7 +187,7 @@ public let kFSMErrorTransitionInProgress = 106
         var result:FSMEvent?
 
         var errorMessages:[String] = []
-        if name.isEmpty == 0 {
+        if name.isEmpty {
             errorMessages.append("Missing event name")
         } else if mutableEvents[name] != nil {
             errorMessages.append("Duplicate event name: \(name)")
@@ -347,9 +347,9 @@ public let kFSMErrorTransitionInProgress = 106
 
     func checkEventSourceState(event:FSMEvent, sourceState:FSMState?) -> String? {
         var result:String?
-        if let sourceState = sourceState {
-            if find(event.sources,sourceState) == nil {
-                result = "current state '\(sourceState.name)' is not in event sources: "
+        if let actualSourceState = sourceState {
+            if find(event.sources,actualSourceState) == nil {
+                result = "current state '\(actualSourceState.name)' is not in event sources: "
                 var sep = ""
                 for eventSource in event.sources {
                     result! += "\(sep)\(eventSource.name)"

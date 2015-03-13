@@ -45,7 +45,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
     /**
     * The instance of the finite state machine this state is attached to
     */
-    public let finiteStateMachine: FSMFiniteStateMachine
+    public weak var finiteStateMachine: FSMFiniteStateMachine?
 
     /**
     * This optional closure is called on the proposed destination state
@@ -86,7 +86,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func willEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let willEnterState = willEnterState? {
+        if let willEnterState = self.willEnterState {
             response = willEnterState(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -94,7 +94,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func didEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let didEnterState = didEnterState? {
+        if let didEnterState = self.didEnterState {
             response = didEnterState(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -102,7 +102,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func willExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let willExitState = willExitState? {
+        if let willExitState = self.willExitState {
             response = willExitState(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -110,7 +110,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func didExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let didExitState = didExitState? {
+        if let didExitState = self.didExitState {
             response = didExitState(self,transition,value)
         }
         return Promise.valueAsPromise(response)

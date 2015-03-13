@@ -13,26 +13,26 @@ import Foundation
     /**
     * The event that triggered this transition
     */
-    public let event:FSMEvent
+    public weak var event:FSMEvent?
 
     /**
     * The source state when the transition was triggered
     */
-    public let source:FSMState
+    public weak var source:FSMState?
 
     /**
     * The destination state of the transition
     */
-    public var destination:FSMState {
+    public var destination:FSMState? {
         get {
-            return self.event.destination
+            return self.event?.destination
         }
     }
 
     /**
     * The instance of the finite state machine this state is attached to
     */
-    public let finiteStateMachine: FSMFiniteStateMachine
+    public weak var finiteStateMachine: FSMFiniteStateMachine?
 
     init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
         self.event = event
@@ -43,7 +43,7 @@ import Foundation
     // MARK: - implementation
 
     public var description : String {
-        return "FSMTransition: event=\(event.name) source=\(source.name)"
+        return "FSMTransition: event=\(event?.name) source=\(source?.name)"
     }
 
 }
