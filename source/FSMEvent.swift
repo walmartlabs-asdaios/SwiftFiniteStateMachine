@@ -10,6 +10,7 @@ import Foundation
 
 public typealias kFSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
 public typealias kFSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
+public typealias kFSMFireEventFailedClosure = (FSMEvent, FSMTransition, NSError?) -> AnyObject?
 public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
 @objc public class FSMEvent: Equatable {
@@ -50,6 +51,11 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
     * after the current state is changed
     */
     public var didFireEvent:kFSMDidFireEventClosure?
+
+    /**
+    * This optional closure is called if the transition fails for some reason
+    */
+    public var fireEventFailed:kFSMFireEventFailedClosure?
 
     /**
     * This optional closure is called after the event times out, the result of the
@@ -116,6 +122,14 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
         var response:AnyObject? = value
         if let didFireEvent = didFireEvent? {
             response = didFireEvent(self,transition,value)
+        }
+        return Promise.valueAsPromise(response)
+    }
+
+    func fireEventFailedWithTransition(transition:FSMTransition, error:NSError?) -> Promise {
+        var response:AnyObject? = error
+        if let fireEventFailed = fireEventFailed? {
+            response = fireEventFailed(self,transition,error)
         }
         return Promise.valueAsPromise(response)
     }

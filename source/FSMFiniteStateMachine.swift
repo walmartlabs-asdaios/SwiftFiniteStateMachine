@@ -265,8 +265,13 @@ public let kFSMErrorTransitionInProgress = 106
         pendingEventPromises.append(lastPromise)
 
         lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return event.didFireEventWithTransition(transition, value:value)
-        })
+                return event.didFireEventWithTransition(transition, value:value)
+            },
+            reject: {(error) -> AnyObject? in
+                return event.fireEventFailedWithTransition(transition, error: error)
+            }
+        )
+        
         pendingEventPromises.append(lastPromise)
         pendingEventTransition = transition
 
