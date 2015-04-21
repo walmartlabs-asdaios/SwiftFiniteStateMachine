@@ -86,7 +86,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func willEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let willEnterState = willEnterState? {
+        if let willEnterState = willEnterState {
             response = willEnterState(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -94,7 +94,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func didEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let didEnterState = didEnterState? {
+        if let didEnterState = didEnterState {
             response = didEnterState(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -102,7 +102,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func willExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let willExitState = willExitState? {
+        if let willExitState = willExitState {
             response = willExitState(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -110,7 +110,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     func didExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let didExitState = didExitState? {
+        if let didExitState = didExitState {
             response = didExitState(self,transition,value)
         }
         return Promise.valueAsPromise(response)

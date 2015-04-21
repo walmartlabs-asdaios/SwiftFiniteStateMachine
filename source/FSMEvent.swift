@@ -89,9 +89,9 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
     }
 
     @objc func handleEventTimeout(timer:NSTimer) {
-        let userInfo = timer.userInfo as [String:AnyObject]
-        let promises = userInfo["promises"] as [Promise]
-        let transition = userInfo["transition"] as FSMTransition
+        let userInfo = timer.userInfo as! [String:AnyObject]
+        let promises = userInfo["promises"] as! [Promise]
+        let transition = userInfo["transition"] as! FSMTransition
         stopTimeoutTimer()
 
         let error = NSError(domain:kFSMErrorDomain, code:kFSMErrorEventTimeout, userInfo:nil)
@@ -112,7 +112,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
     func willFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let willFireEvent = willFireEvent? {
+        if let willFireEvent = willFireEvent {
             response = willFireEvent(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -120,7 +120,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
     func didFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
         var response:AnyObject? = value
-        if let didFireEvent = didFireEvent? {
+        if let didFireEvent = didFireEvent {
             response = didFireEvent(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -128,7 +128,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
     func fireEventFailedWithTransition(transition:FSMTransition, error:NSError?) -> Promise {
         var response:AnyObject? = error
-        if let fireEventFailed = fireEventFailed? {
+        if let fireEventFailed = fireEventFailed {
             response = fireEventFailed(self,transition,error)
         }
         return Promise.valueAsPromise(response)

@@ -125,7 +125,7 @@ public let kFSMErrorTransitionInProgress = 106
         var result:FSMState? = nil
 
         var errorMessage = ""
-        if stateName.utf16Count == 0 {
+        if stateName.isEmpty {
             errorMessage = "Missing state name"
         } else if mutableStates[stateName] != nil {
             errorMessage = "Duplicate state name: \(stateName)"
@@ -178,7 +178,7 @@ public let kFSMErrorTransitionInProgress = 106
         var result:FSMEvent? = nil
 
         var errorMessages:[String] = []
-        if name.utf16Count == 0 {
+        if name.isEmpty {
             errorMessages.append("Missing event name")
         } else if mutableEvents[name] != nil {
             errorMessages.append("Duplicate event name: \(name)")
