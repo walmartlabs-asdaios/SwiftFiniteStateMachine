@@ -342,32 +342,32 @@ class FSMFireEventTests: FSMTestCase {
         var firingOrder = 0
 
         event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }

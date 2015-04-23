@@ -123,8 +123,8 @@ class FSMFiniteStateMachineTests: FSMTestCase {
             XCTFail("event creation should have failed")
         } else {
             XCTAssertNotNil(error)
-            let userInfo = error!.userInfo as [String:AnyObject]
-            let errorMessages = userInfo["messages"] as [String]
+            let userInfo = error!.userInfo as! [String:AnyObject]
+            let errorMessages = userInfo["messages"] as! [String]
             XCTAssertEqual(3, errorMessages.count)
         }
     }
@@ -150,8 +150,8 @@ class FSMFiniteStateMachineTests: FSMTestCase {
             XCTFail("event creation should have failed")
         } else {
             XCTAssertNotNil(error)
-            let userInfo = error!.userInfo as [String:AnyObject]
-            let errorMessages = userInfo["messages"] as [String]
+            let userInfo = error!.userInfo as! [String:AnyObject]
+            let errorMessages = userInfo["messages"] as! [String]
             XCTAssertEqual(1, errorMessages.count)
         }
     }
