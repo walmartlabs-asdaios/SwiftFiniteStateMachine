@@ -31,7 +31,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 * - if any other value is returned (including nil), then that value is passed to 
 *   the next step in the process
 */
-@objc public class FSMState: Equatable, Printable {
+@objc public class FSMState: Equatable, CustomStringConvertible {
 
     class func newInstance(name : String, finiteStateMachine: FSMFiniteStateMachine) -> FSMState {
         return FSMState(name, finiteStateMachine:finiteStateMachine)

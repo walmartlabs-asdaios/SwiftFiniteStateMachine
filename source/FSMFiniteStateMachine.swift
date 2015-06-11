@@ -117,11 +117,12 @@ public let kFSMErrorTransitionInProgress = 106
     /**
     * Add a new state to be used by the instance.
     *
-    * :param: stateName must be a unique identifier within the instance
-    * :param: error optional error return value
-    * :returns: An instance of FSMState if initialization was successful, nil otherwise
+    * - parameter stateName: must be a unique identifier within the instance
+    * - parameter error: optional error return value
+    * - returns: An instance of FSMState if initialization was successful, nil otherwise
     */
-    public func addState(stateName:String, error:NSErrorPointer) -> FSMState? {
+    public func addState(stateName:String) throws -> FSMState {
+        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
         var result:FSMState? = nil
 
         var errorMessage = ""
@@ -134,47 +135,51 @@ public let kFSMErrorTransitionInProgress = 106
             mutableStates[stateName] = result
         }
         if result == nil {
-            if error != nil {
-                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["messages":[errorMessage]])
-            }
+            error = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["messages":[errorMessage]])
         }
-        return result
+        if let value = result {
+            return value
+        }
+        throw error
     }
 
     /**
     * Initialize state machine to it's starting state.
     *
-    * :param: state the state to initialize this instance to, it must be an instance of FSMState
+    * - parameter state: the state to initialize this instance to, it must be an instance of FSMState
     *              that was created by addStateWithName:error:
-    * :param: error optional error return value
-    * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
+    * - parameter error: optional error return value
+    * - returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
     */
-    public func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
+    public func setInitialState(state:FSMState) throws -> FSMState {
+        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
         var result:FSMState? = nil
 
         if mutableStates[state.name] != nil {
             result = state
             currentState = state
         } else {
-            if error != nil {
-                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["state":state.name])
-            }
+            error = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["state":state.name])
         }
-        return result
+        if let value = result {
+            return value
+        }
+        throw error
     }
 
     /**
     * Add a new event to be used by the instance to transition between states.
     *
-    * :param: eventName must be a unique identifier within the instance
-    * :param: sources an array of either state names or instances that already exist in the instance
+    * - parameter eventName: must be a unique identifier within the instance
+    * - parameter sources: an array of either state names or instances that already exist in the instance
     *                the state machine instance must be in one of these states in order for the event
     *                to fire successfully
-    @ :param: destination a state name or instance that already exists in the instance
-    * :param: error optional error return value
-    * :returns: An instance of FSMEvent if successful, nil otherwise
+    @ - parameter destination: a state name or instance that already exists in the instance
+    * - parameter error: optional error return value
+    * - returns: An instance of FSMEvent if successful, nil otherwise
     */
-    public func addEvent(name:String, sources:[AnyObject], destination:AnyObject, error:NSErrorPointer) -> FSMEvent? {
+    public func addEvent(name:String, sources:[AnyObject], destination:AnyObject) throws -> FSMEvent {
+        var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
         var result:FSMEvent? = nil
 
         var errorMessages:[String] = []
@@ -208,11 +213,12 @@ public let kFSMErrorTransitionInProgress = 106
             mutableEvents[name] = result
         }
         if result == nil {
-            if error != nil {
-                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidEvent, userInfo:["messages":errorMessages])
-            }
+            error = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidEvent, userInfo:["messages":errorMessages])
         }
-        return result
+        if let value = result {
+            return value
+        }
+        throw error
     }
 
     public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise {
@@ -310,7 +316,7 @@ public let kFSMErrorTransitionInProgress = 106
 
     func validateState(stateOrName:AnyObject?) -> FSMState? {
         if let state = stateOrName as? FSMState {
-            if find(mutableStates.values,state) != nil {
+            if mutableStates.values.indexOf(state) != nil {
                 return state
             }
         } else if let stateName = stateOrName as? String {
@@ -344,7 +350,7 @@ public let kFSMErrorTransitionInProgress = 106
     func checkEventSourceState(event:FSMEvent, sourceState:FSMState?) -> String? {
         var result:String? = nil
         if let sourceState = sourceState {
-            if find(event.sources,sourceState) == nil {
+            if event.sources.indexOf(sourceState) == nil {
                 result = "current state '\(sourceState.name)' is not in event sources: "
                 var sep = ""
                 for eventSource in event.sources {
