@@ -31,7 +31,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 * - if any other value is returned (including nil), then that value is passed to 
 *   the next step in the process
 */
-@objc public class FSMState: Equatable, CustomStringConvertible {
+@objc public class FSMState: NSObject {
 
     class func newInstance(name : String, finiteStateMachine: FSMFiniteStateMachine) -> FSMState {
         return FSMState(name, finiteStateMachine:finiteStateMachine)
@@ -80,7 +80,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMState: \(name)"
     }
 

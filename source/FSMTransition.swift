@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc public class FSMTransition: Equatable {
+@objc public class FSMTransition: NSObject {
 
     /**
     * The event that triggered this transition
@@ -42,7 +42,7 @@ import Foundation
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMTransition: event=\(event.name) source=\(source.name)"
     }
 

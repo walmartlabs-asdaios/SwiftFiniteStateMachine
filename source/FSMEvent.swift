@@ -13,7 +13,7 @@ public typealias kFSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?)
 public typealias kFSMFireEventFailedClosure = (FSMEvent, FSMTransition, NSError?) -> AnyObject?
 public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
-@objc public class FSMEvent: Equatable {
+@objc public class FSMEvent: NSObject {
 
     public class func newInstance(name : String, sources:[FSMState], destination:FSMState, finiteStateMachine: FSMFiniteStateMachine) -> FSMEvent {
         return FSMEvent(name, sources:sources, destination:destination, finiteStateMachine:finiteStateMachine)
@@ -106,7 +106,7 @@ public typealias kFSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMEvent: \(name)"
     }
 

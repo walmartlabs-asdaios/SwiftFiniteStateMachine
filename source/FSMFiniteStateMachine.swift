@@ -56,7 +56,7 @@ public let kFSMErrorTransitionInProgress = 106
 *      destinationState:   didExitState
 *      event:              didFireEvent
 */
-@objc public class FSMFiniteStateMachine: Equatable {
+@objc public class FSMFiniteStateMachine: NSObject {
 
     public class func newInstance() -> FSMFiniteStateMachine {
         return FSMFiniteStateMachine()
@@ -110,9 +110,6 @@ public let kFSMErrorTransitionInProgress = 106
     }
 
     // MARK: - interface
-
-    init() {
-    }
 
     /**
     * Add a new state to be used by the instance.
@@ -310,7 +307,7 @@ public let kFSMErrorTransitionInProgress = 106
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"
     }
 
