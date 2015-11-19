@@ -264,6 +264,7 @@ public class FSMFiniteStateMachine: NSObject {
 
         lastPromise = lastPromise.then({
             value in
+            self.currentState = destinationState
             return .Pending(destinationState.didEnterStateWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
