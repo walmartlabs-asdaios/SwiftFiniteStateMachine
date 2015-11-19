@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+@testable import SwiftFiniteStateMachine
 
 class FSMLockingTests: FSMTestCase {
 
@@ -46,13 +47,15 @@ class FSMLockingTests: FSMTestCase {
 
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:defaultEventTimeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 event1to2Expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 event1to2Expectation.fulfill()
                 XCTFail("Should not have been rejected")
-                return error
+                return .Error(error)
         })
 
         let conflictingPromise = finiteStateMachine.fireEvent(event2to3, eventTimeout:timeout, initialValue:nil)
@@ -78,14 +81,16 @@ class FSMLockingTests: FSMTestCase {
             }
             let promise1to2 = self.finiteStateMachine.fireEvent(self.event1to2, eventTimeout:timeout, initialValue:nil)
             promise1to2.then(
-                { (value) -> AnyObject? in
+                {
+                    value in
                     event1to2Expectation.fulfill()
                     XCTAssertNil(self.finiteStateMachine.pendingEvent)
-                    return value
-                }, reject: { (error) -> NSError in
+                    return .Value(value)
+                }, reject: {
+                    error in
                     event1to2Expectation.fulfill()
                     XCTFail("Should not have been rejected")
-                    return error
+                    return .Error(error)
                 }
             )
         })

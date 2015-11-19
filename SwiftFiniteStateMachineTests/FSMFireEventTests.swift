@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+@testable import SwiftFiniteStateMachine
 
 class FSMFireEventTests: FSMTestCase {
 
@@ -32,28 +33,30 @@ class FSMFireEventTests: FSMTestCase {
     // MARK: - fire event tests
 
     func expectSuccessWithEvent(event:FSMEvent, expectedValue:String?) {
-        XCTAssertEqualOptional(expectedSourceState, finiteStateMachine.currentState)
+        XCTAssertEqual(expectedSourceState, finiteStateMachine.currentState)
         let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
 
         let expectation = expectationWithDescription("expectSuccessWithEvent")
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 if (expectedValue == nil) {
                     XCTAssertNil(value)
                 } else {
                     if let actualValue = value as? String {
-                        XCTAssertEqualOptional(expectedValue, actualValue)
+                        XCTAssertEqual(expectedValue, actualValue)
                     } else {
                         XCTFail("Expected \(expectedValue) but found \(value)")
                     }
                 }
-                XCTAssertEqualOptional(self.expectedDestinationState, self.finiteStateMachine.currentState, "currentState should change")
+                XCTAssertEqual(self.expectedDestinationState, self.finiteStateMachine.currentState, "currentState should change")
                 expectation.fulfill()
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("Should not fail")
                 expectation.fulfill()
-                return error
+                return .Error(error)
             }
         )
 
@@ -61,19 +64,21 @@ class FSMFireEventTests: FSMTestCase {
     }
 
     func expectFailureWithEvent(event:FSMEvent, expectedCurrentState:FSMState?) {
-        XCTAssertEqualOptional(expectedSourceState, finiteStateMachine.currentState)
+        XCTAssertEqual(expectedSourceState, finiteStateMachine.currentState)
         let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
 
         let expectation = expectationWithDescription("expectFailureWithEvent")
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 XCTFail("Should not succeed")
                 expectation.fulfill()
-                return nil
-            }, reject: { (error) -> NSError in
-                XCTAssertEqualOptional(expectedCurrentState, self.finiteStateMachine.currentState)
+                return .Value(nil)
+            }, reject: {
+                error in
+                XCTAssertEqual(expectedCurrentState, self.finiteStateMachine.currentState)
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         waitForExpectationsWithTimeout(5.0, handler: nil)
@@ -257,14 +262,16 @@ class FSMFireEventTests: FSMTestCase {
         let expectation = expectationWithDescription("expectEventSequence")
 
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 XCTAssertEqual(6, firingOrder, "Should be last step")
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 XCTFail("Should not fail")
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         waitForExpectationsWithTimeout(5.0, handler:nil)
@@ -322,14 +329,16 @@ class FSMFireEventTests: FSMTestCase {
         let expectation = expectationWithDescription("expectEventSequence")
 
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 XCTFail("Should have failed at step 3")
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 XCTAssertEqual(3, firingOrder, "Should fail at step 3")
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         waitForExpectationsWithTimeout(5.0, handler:nil)
@@ -342,42 +351,43 @@ class FSMFireEventTests: FSMTestCase {
         var firingOrder = 0
 
         event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
         event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            var array = value as [Int]
+            var array = value as! [Int]
             array.append(++firingOrder)
             return array
         }
 
-        var initialValue:[Int] = []
+        let initialValue:[Int] = []
         let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:initialValue)
         let expectation = expectationWithDescription("expectEventSequence")
 
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 if let array = value as? [Int] {
                     let expectedValue = [1,2,3,4,5,6]
                     XCTAssertEqual(expectedValue, array, "should have accumulated values in array passed in as intial value")
@@ -385,11 +395,12 @@ class FSMFireEventTests: FSMTestCase {
                     XCTFail("value should be [Int]")
                 }
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 XCTFail("Should not fail")
                 expectation.fulfill()
-                return error
+                return .Error(error)
         })
 
         waitForExpectationsWithTimeout(5.0, handler:nil)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftFiniteStateMachine
 
 class DemoFSM {
     let rootViewController:UIViewController
@@ -73,8 +74,8 @@ class DemoFSM {
         finiteStateMachine.setInitialState(signedOutState, error:nil)
     }
 
-    func dummyAuthenticationPromise() -> Promise {
-        let result = Promise()
+    func dummyAuthenticationPromise() -> Promise<AnyObject> {
+        let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Authentication", message: "Tap fail or enter a username and tap authenticate", preferredStyle: .Alert)
         var usernameTextField:UITextField!
         alertController.addTextFieldWithConfigurationHandler { (textField:UITextField!) -> Void in
@@ -95,8 +96,8 @@ class DemoFSM {
         return result
     }
 
-    func dummySignInPromise() -> Promise {
-        let result = Promise()
+    func dummySignInPromise() -> Promise<AnyObject> {
+        let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Load Record", message: "Tap fail or enter userRecord and tap load record", preferredStyle: .Alert)
         var userRecordTextField:UITextField!
         alertController.addTextFieldWithConfigurationHandler { (textField:UITextField!) -> Void in
@@ -117,8 +118,8 @@ class DemoFSM {
         return result
     }
     
-    func dummySignOutPromise() -> Promise {
-        let result = Promise()
+    func dummySignOutPromise() -> Promise<AnyObject> {
+        let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Logout", message: "Tap fail or logout", preferredStyle: .Alert)
 
         alertController.addAction(UIAlertAction(title: "Fail", style: .Cancel) { (action) in
@@ -134,15 +135,15 @@ class DemoFSM {
         return result
     }
     
-    func login() -> Promise {
+    func login() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(authenticateEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 
-    func loadRecord() -> Promise {
+    func loadRecord() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(loadRecordEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 
-    func logout() -> Promise {
+    func logout() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(signOutEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 

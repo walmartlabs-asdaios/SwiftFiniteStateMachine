@@ -8,16 +8,18 @@
 
 import Foundation
 
-public typealias kFSMDidChangeStateClosure = (oldState:FSMState?, newState:FSMState?) -> Void
-public typealias kFSMGetStateAndEventClosure = (state:FSMState?, event:FSMEvent?) -> Void
+public typealias FSMDidChangeStateClosure = (oldState:FSMState?, newState:FSMState?) -> Void
+public typealias FSMGetStateAndEventClosure = (state:FSMState?, event:FSMEvent?) -> Void
 
-public let kFSMErrorDomain = "FSMError"
-public let kFSMErrorInvalidState = 101
-public let kFSMErrorInvalidStartState = 102
-public let kFSMErrorInvalidEvent = 103
-public let kFSMErrorRejected = 104
-public let kFSMErrorEventTimeout = 105
-public let kFSMErrorTransitionInProgress = 106
+public struct FSMConstants {
+    static let FSMErrorDomain = "FSMError"
+    static let FSMErrorInvalidState = 101
+    static let FSMErrorInvalidStartState = 102
+    static let FSMErrorInvalidEvent = 103
+    static let FSMErrorRejected = 104
+    static let FSMErrorEventTimeout = 105
+    static let FSMErrorTransitionInProgress = 106
+}
 
 /**
 * FSMFiniteStateMachine is the controller for this sub-system.
@@ -56,33 +58,20 @@ public let kFSMErrorTransitionInProgress = 106
 *      destinationState:   didExitState
 *      event:              didFireEvent
 */
-@objc public class FSMFiniteStateMachine: Equatable {
-
-    // The following class functions are purely for the benefit of Objective-C code
-    public class func newInstance() -> FSMFiniteStateMachine {
-        return FSMFiniteStateMachine()
-    }
-
-    public class func FSMErrorDomain() -> String { return kFSMErrorDomain }
-    public class func FSMErrorInvalidState() -> Int { return kFSMErrorInvalidState }
-    public class func FSMErrorInvalidStartState() -> Int { return kFSMErrorInvalidStartState }
-    public class func FSMErrorInvalidEvent() -> Int { return kFSMErrorInvalidEvent }
-    public class func FSMErrorRejected() -> Int { return kFSMErrorRejected }
-    public class func FSMErrorEventTimeout() -> Int { return kFSMErrorEventTimeout }
-    public class func FSMErrorTransitionInProgress() -> Int { return kFSMErrorTransitionInProgress }
+public class FSMFiniteStateMachine: NSObject {
 
     /**
     * This optional closure is called on the proposed destination state
     * before the transition process completes, after the current state is changed
     */
-    public var didChangeState: kFSMDidChangeStateClosure?
+    public var didChangeState: FSMDidChangeStateClosure?
 
     private var mutableStates:[String:FSMState] = [:]
     private var mutableEvents:[String:FSMEvent] = [:]
     private let synchronizer = Synchronizer()
     private var lockingEvent:FSMEvent?
     private var pendingEventTransition:FSMTransition?
-    private var pendingEventPromises:[Promise] = []
+    private var pendingEventPromises:[Promise<AnyObject>] = []
 
     private(set) public var currentState: FSMState? {
         didSet {
@@ -108,7 +97,7 @@ public let kFSMErrorTransitionInProgress = 106
         }
     }
 
-    public func getStateAndEvent(getStateAndEventClosure:kFSMGetStateAndEventClosure) {
+    public func getStateAndEvent(getStateAndEventClosure:FSMGetStateAndEventClosure) {
         var state:FSMState?
         var event:FSMEvent?
         synchronizer.synchronize {[weak self] () -> Void in
@@ -120,7 +109,8 @@ public let kFSMErrorTransitionInProgress = 106
 
     // MARK: - interface
 
-    init() {
+    override public init() {
+        super.init()
     }
 
     /**
@@ -144,7 +134,7 @@ public let kFSMErrorTransitionInProgress = 106
         }
         if result == nil {
             if error != nil {
-                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["messages":[errorMessage]])
+                error.memory = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidState, userInfo:["messages":[errorMessage]])
             }
         }
         return result
@@ -166,7 +156,7 @@ public let kFSMErrorTransitionInProgress = 106
             currentState = state
         } else {
             if error != nil {
-                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidState, userInfo:["state":state.name])
+                error.memory = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidState, userInfo:["state":state.name])
             }
         }
         return result
@@ -218,21 +208,21 @@ public let kFSMErrorTransitionInProgress = 106
         }
         if result == nil {
             if error != nil {
-                error.memory = NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidEvent, userInfo:["messages":errorMessages])
+                error.memory = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidEvent, userInfo:["messages":errorMessages])
             }
         }
         return result
     }
 
-    public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise {
+    public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
 
         if !lockForEvent(event) {
-            return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorTransitionInProgress, userInfo:nil))
+            return Promise(NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorTransitionInProgress, userInfo:nil))
         }
 
         if let errorMessage = checkEventSourceState(event, sourceState:currentState) {
             unlockEvent()
-            return Promise(NSError(domain:kFSMErrorDomain, code:kFSMErrorInvalidStartState, userInfo:["messages":[errorMessage]]))
+            return Promise(NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidStartState, userInfo:["messages":[errorMessage]]))
         }
 
         let sourceState = currentState!
@@ -242,39 +232,45 @@ public let kFSMErrorTransitionInProgress = 106
 
         pendingEventPromises = []
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return event.willFireEventWithTransition(transition, value:value)
+        lastPromise = lastPromise.then({
+            value in
+            return .Pending(event.willFireEventWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return destinationState.willEnterStateWithTransition(transition, value:value)
+        lastPromise = lastPromise.then({
+            value in
+            return .Pending(destinationState.willEnterStateWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return sourceState.willExitStateWithTransition(transition, value:value)
+        lastPromise = lastPromise.then({
+            value in
+            return .Pending(sourceState.willExitStateWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            self.currentState = destinationState
-            return value
+        lastPromise = lastPromise.then({
+            value in
+            return .Value(value)
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return sourceState.didExitStateWithTransition(transition, value:value)
+        lastPromise = lastPromise.then({
+            value in
+            return .Pending(sourceState.didExitStateWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return destinationState.didEnterStateWithTransition(transition, value:value)
+        lastPromise = lastPromise.then({
+            value in
+            return .Pending(destinationState.didEnterStateWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({(value) -> AnyObject? in
-            return event.didFireEventWithTransition(transition, value:value)
+        lastPromise = lastPromise.then({
+            value in
+            return .Pending(event.didFireEventWithTransition(transition, value:value))
         })
         pendingEventPromises.append(lastPromise)
         pendingEventTransition = transition
@@ -282,14 +278,16 @@ public let kFSMErrorTransitionInProgress = 106
         resetTimeoutTimer(eventTimeout)
 
         lastPromise = lastPromise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 event.stopTimeoutTimer()
                 self.unlockEvent()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 event.stopTimeoutTimer()
                 self.unlockEvent()
-                return error
+                return .Error(error)
             }
         )
 
@@ -308,13 +306,13 @@ public let kFSMErrorTransitionInProgress = 106
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMFiniteStateMachine:\nstates: \(mutableStates.keys)"
     }
 
     func validateState(stateOrName:AnyObject?) -> FSMState? {
         if let state = stateOrName as? FSMState {
-            if find(mutableStates.values,state) != nil {
+            if mutableStates.values.contains(state) {
                 return state
             }
         } else if let stateName = stateOrName as? String {
@@ -348,7 +346,7 @@ public let kFSMErrorTransitionInProgress = 106
     func checkEventSourceState(event:FSMEvent, sourceState:FSMState?) -> String? {
         var result:String?
         if let actualSourceState = sourceState {
-            if find(event.sources,actualSourceState) == nil {
+            if !event.sources.contains(actualSourceState) {
                 result = "current state '\(actualSourceState.name)' is not in event sources: "
                 var sep = ""
                 for eventSource in event.sources {

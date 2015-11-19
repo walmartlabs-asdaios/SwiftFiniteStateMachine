@@ -8,6 +8,7 @@
 
 import Foundation
 import XCTest
+@testable import SwiftFiniteStateMachine
 
 class FSMStateTests: FSMTestCase {
 
@@ -17,7 +18,7 @@ class FSMStateTests: FSMTestCase {
         let state = FSMState("test", finiteStateMachine: dummyFiniteStateMachine)
 
         XCTAssertEqual("test", state.name)
-        XCTAssertEqualOptional(dummyFiniteStateMachine, state.finiteStateMachine)
+        XCTAssertEqual(dummyFiniteStateMachine, state.finiteStateMachine)
     }
 
     // MARK: - enterState tests
@@ -44,14 +45,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.willEnterStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
 
@@ -77,14 +80,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.didEnterStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
     
@@ -112,14 +117,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.willExitStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
 
@@ -145,14 +152,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.didExitStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+@testable import SwiftFiniteStateMachine
 
 class FSMEventTimeoutTests: FSMTestCase {
     
@@ -50,21 +51,23 @@ class FSMEventTimeoutTests: FSMTestCase {
         }
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:timeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
                 XCTFail("Should have been rejected")
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
-                XCTAssertEqual(kFSMErrorEventTimeout, error.code)
-                return error
+                XCTAssertEqual(FSMConstants.FSMErrorEventTimeout, (error as NSError).code)
+                return .Error(error)
             }
         )
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
 
-        XCTAssertEqualOptional(event1to2, actualTimeoutBlockEvent)
+        XCTAssertEqual(event1to2, actualTimeoutBlockEvent)
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
 
@@ -94,20 +97,22 @@ class FSMEventTimeoutTests: FSMTestCase {
         }
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:eventTimeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
                 XCTFail("Should have been rejected")
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
-                return error
+                return .Error(error)
             }
         )
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(willFireDelay+didFireDelay+2, handler:nil)
 
-        XCTAssertEqualOptional(event1to2, actualTimeoutBlockEvent)
+        XCTAssertEqual(event1to2, actualTimeoutBlockEvent)
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
     
@@ -134,13 +139,15 @@ class FSMEventTimeoutTests: FSMTestCase {
         }
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:eventTimeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
                 XCTFail("Should not have been rejected")
-                return error
+                return .Error(error)
             }
         )
 
@@ -159,13 +166,15 @@ class FSMEventTimeoutTests: FSMTestCase {
 
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:timeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
                 XCTFail("Should not have been rejected")
-                return error
+                return .Error(error)
         })
 
         // wait long enough for timeout to trigger

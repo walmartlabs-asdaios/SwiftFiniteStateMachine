@@ -8,10 +8,10 @@
 
 import Foundation
 
-public typealias kFSMWillEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
-public typealias kFSMDidEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
-public typealias kFSMWillExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
-public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias FSMWillEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias FSMDidEnterStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias FSMWillExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
+public typealias FSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?) -> AnyObject?
 
 /**
 * FSMState represents a single state in the state machine instance.
@@ -31,11 +31,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
 * - if any other value is returned (including nil), then that value is passed to 
 *   the next step in the process
 */
-@objc public class FSMState: Equatable, Printable {
-
-    class func newInstance(name : String, finiteStateMachine: FSMFiniteStateMachine) -> FSMState {
-        return FSMState(name, finiteStateMachine:finiteStateMachine)
-    }
+public class FSMState: NSObject {
 
     /**
     * The unique identifier within the state machine instance.
@@ -51,40 +47,41 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
     * This optional closure is called on the proposed destination state
     * after the transition process begins, but before the current state is changed
     */
-    public var willEnterState: kFSMWillEnterStateClosure?
+    public var willEnterState: FSMWillEnterStateClosure?
 
     /**
     * This optional closure is called on the proposed destination state
     * before the transition process completes, after the current state is changed
     */
-    public var didEnterState: kFSMDidEnterStateClosure?
+    public var didEnterState: FSMDidEnterStateClosure?
 
     /**
     * This optional closure is called on the source state
     * after the transition process begins, but before the current state is changed
     */
-    public var willExitState: kFSMWillExitStateClosure?
+    public var willExitState: FSMWillExitStateClosure?
 
     /**
     * This optional closure is called on the source state
     * before the transition process completes, after the current state is changed
     */
-    public var didExitState: kFSMDidExitStateClosure?
+    public var didExitState: FSMDidExitStateClosure?
 
     // MARK: - interface
 
-    init(_ name : String, finiteStateMachine: FSMFiniteStateMachine) {
+    public init(_ name : String, finiteStateMachine: FSMFiniteStateMachine) {
         self.name = name
         self.finiteStateMachine = finiteStateMachine
+        super.init()
     }
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMState: \(name)"
     }
 
-    func willEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
+    func willEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {
         var response:AnyObject? = value
         if let willEnterState = self.willEnterState {
             response = willEnterState(self,transition,value)
@@ -92,7 +89,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
         return Promise.valueAsPromise(response)
     }
 
-    func didEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
+    func didEnterStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {
         var response:AnyObject? = value
         if let didEnterState = self.didEnterState {
             response = didEnterState(self,transition,value)
@@ -100,7 +97,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
         return Promise.valueAsPromise(response)
     }
 
-    func willExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
+    func willExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {
         var response:AnyObject? = value
         if let willExitState = self.willExitState {
             response = willExitState(self,transition,value)
@@ -108,7 +105,7 @@ public typealias kFSMDidExitStateClosure = (FSMState, FSMTransition, AnyObject?)
         return Promise.valueAsPromise(response)
     }
 
-    func didExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise {
+    func didExitStateWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {
         var response:AnyObject? = value
         if let didExitState = self.didExitState {
             response = didExitState(self,transition,value)

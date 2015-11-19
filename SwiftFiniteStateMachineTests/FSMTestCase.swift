@@ -8,25 +8,13 @@
 
 import UIKit
 import XCTest
-
-/// like XCTAssertEqual, but handles optional unwrapping
-func XCTAssertEqualOptional<T:Equatable>(expression1: @autoclosure () -> T?, expression2: @autoclosure () -> T?, _ message: String? = nil, file: String = __FILE__, line: UInt = __LINE__) {
-    if let exp1 = expression1() {
-        if let exp2 = expression2() {
-            XCTAssertEqual(exp1, exp2, (message != nil) ? message! : "", file: file, line: line)
-        } else {
-            XCTFail((message != nil) ? message! : "exp1 != nil, exp2 == nil", file: file, line: line)
-        }
-    } else if let exp2 = expression2() {
-        XCTFail((message != nil) ? message! : "exp1 == nil, exp2 != nil", file: file, line: line)
-    }
-}
+@testable import SwiftFiniteStateMachine
 
 class FSMTestCase: XCTestCase {
 
-    func delayedFulfilledPromise(delay:NSTimeInterval, value:AnyObject?) -> Promise {
+    func delayedFulfilledPromise(delay:NSTimeInterval, value:AnyObject?) -> Promise<AnyObject> {
         // Delay one of the steps longer than the event timeout threshold
-        let deferred = Promise()
+        let deferred:Promise<AnyObject> = Promise()
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             deferred.fulfill(value)

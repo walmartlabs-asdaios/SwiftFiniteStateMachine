@@ -7,83 +7,99 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F83B616C1A9F96F00070549A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B616B1A9F96F00070549A /* AppDelegate.swift */; };
-		F83B616E1A9F96F00070549A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B616D1A9F96F00070549A /* ViewController.swift */; };
-		F83B61711A9F96F00070549A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F83B616F1A9F96F00070549A /* Main.storyboard */; };
-		F83B61731A9F96F00070549A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F83B61721A9F96F00070549A /* Images.xcassets */; };
-		F83B61761A9F96F00070549A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83B61741A9F96F00070549A /* LaunchScreen.xib */; };
-		F83B61901A9F97520070549A /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618E1A9F97520070549A /* Promise.swift */; };
-		F83B61911A9F97520070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618F1A9F97520070549A /* Synchronizer.swift */; };
-		F83B61931A9F9DD60070549A /* FSMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61921A9F9DD60070549A /* FSMState.swift */; };
-		F83B61951A9F9E3B0070549A /* FSMStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61941A9F9E3B0070549A /* FSMStateTests.swift */; };
-		F83B61971A9F9E830070549A /* FSMTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61961A9F9E830070549A /* FSMTransition.swift */; };
-		F83B61991A9F9E8F0070549A /* FSMEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61981A9F9E8F0070549A /* FSMEvent.swift */; };
-		F83B619A1A9F9EAD0070549A /* FSMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61921A9F9DD60070549A /* FSMState.swift */; };
-		F83B619B1A9F9EAD0070549A /* FSMTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61961A9F9E830070549A /* FSMTransition.swift */; };
-		F83B619C1A9F9EAD0070549A /* FSMEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61981A9F9E8F0070549A /* FSMEvent.swift */; };
-		F83B619D1A9F9FEF0070549A /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618E1A9F97520070549A /* Promise.swift */; };
-		F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B618F1A9F97520070549A /* Synchronizer.swift */; };
-		F83B61A21A9FABC50070549A /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */; };
-		F83B61A31A9FABC90070549A /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */; };
-		F83B61A51A9FB3260070549A /* FSMTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A41A9FB3260070549A /* FSMTransitionTests.swift */; };
-		F83B61A71A9FB3690070549A /* FSMTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A61A9FB3690070549A /* FSMTestCase.swift */; };
-		F83B61A91A9FB4DC0070549A /* FSMEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61A81A9FB4DC0070549A /* FSMEventTests.swift */; };
-		F83B61AB1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B61AA1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift */; };
-		F8A247DF1AA00E22002E6C6B /* FSMFireEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A247DE1AA00E22002E6C6B /* FSMFireEventTests.swift */; };
-		F8A247E11AA02A83002E6C6B /* FSMLockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A247E01AA02A83002E6C6B /* FSMLockingTests.swift */; };
-		F8A247E31AA02A94002E6C6B /* FSMEventTimeoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A247E21AA02A94002E6C6B /* FSMEventTimeoutTests.swift */; };
-		F8CD25411AA0CD3700AAED9D /* DemoFSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CD25401AA0CD3700AAED9D /* DemoFSM.swift */; };
+		F8A027B21BFE2CF400ED1378 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027AF1BFE2CF400ED1378 /* Promise.swift */; };
+		F8A027B31BFE2CF400ED1378 /* SwiftPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = F8A027B01BFE2CF400ED1378 /* SwiftPromises.h */; };
+		F8A027B41BFE2CF400ED1378 /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B11BFE2CF400ED1378 /* Synchronizer.swift */; };
+		F8A027BD1BFE2D8800ED1378 /* FSMEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B51BFE2D8800ED1378 /* FSMEventTests.swift */; };
+		F8A027BE1BFE2D8800ED1378 /* FSMEventTimeoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B61BFE2D8800ED1378 /* FSMEventTimeoutTests.swift */; };
+		F8A027BF1BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B71BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift */; };
+		F8A027C01BFE2D8800ED1378 /* FSMFireEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B81BFE2D8800ED1378 /* FSMFireEventTests.swift */; };
+		F8A027C11BFE2D8800ED1378 /* FSMLockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B91BFE2D8800ED1378 /* FSMLockingTests.swift */; };
+		F8A027C21BFE2D8800ED1378 /* FSMStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BA1BFE2D8800ED1378 /* FSMStateTests.swift */; };
+		F8A027C31BFE2D8800ED1378 /* FSMTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BB1BFE2D8800ED1378 /* FSMTestCase.swift */; };
+		F8A027C41BFE2D8800ED1378 /* FSMTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BC1BFE2D8800ED1378 /* FSMTransitionTests.swift */; };
+		F8A027E61BFE33CF00ED1378 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027DC1BFE33CF00ED1378 /* AppDelegate.swift */; };
+		F8A027E91BFE33CF00ED1378 /* DemoFSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027E21BFE33CF00ED1378 /* DemoFSM.swift */; };
+		F8A027EA1BFE33CF00ED1378 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8A027E31BFE33CF00ED1378 /* Images.xcassets */; };
+		F8A027EC1BFE33CF00ED1378 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027E51BFE33CF00ED1378 /* ViewController.swift */; };
+		F8A027F11BFE33E700ED1378 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A027ED1BFE33E700ED1378 /* LaunchScreen.xib */; };
+		F8A027F21BFE33E700ED1378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8A027EF1BFE33E700ED1378 /* Main.storyboard */; };
+		F8FB219F1BFE15B70013C963 /* SwiftFiniteStateMachine.h in Headers */ = {isa = PBXBuildFile; fileRef = F8FB219E1BFE15B70013C963 /* SwiftFiniteStateMachine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F8FB21A61BFE15B80013C963 /* SwiftFiniteStateMachine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FB219C1BFE15B70013C963 /* SwiftFiniteStateMachine.framework */; };
+		F8FB21BB1BFE164F0013C963 /* FSMEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FB21B71BFE164F0013C963 /* FSMEvent.swift */; };
+		F8FB21BC1BFE164F0013C963 /* FSMFiniteStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FB21B81BFE164F0013C963 /* FSMFiniteStateMachine.swift */; };
+		F8FB21BD1BFE164F0013C963 /* FSMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FB21B91BFE164F0013C963 /* FSMState.swift */; };
+		F8FB21BE1BFE164F0013C963 /* FSMTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FB21BA1BFE164F0013C963 /* FSMTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F83B617C1A9F96F00070549A /* PBXContainerItemProxy */ = {
+		F8A027F31BFE348F00ED1378 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F83B615E1A9F96F00070549A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F83B61651A9F96F00070549A;
+			remoteGlobalIDString = F8FB219B1BFE15B70013C963;
+			remoteInfo = SwiftFiniteStateMachine;
+		};
+		F8FB21A71BFE15B80013C963 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F83B615E1A9F96F00070549A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8FB219B1BFE15B70013C963;
 			remoteInfo = SwiftFiniteStateMachine;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F83B61661A9F96F00070549A /* SwiftFiniteStateMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftFiniteStateMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F83B616A1A9F96F00070549A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F83B616B1A9F96F00070549A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F83B616D1A9F96F00070549A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F83B61701A9F96F00070549A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F83B61721A9F96F00070549A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		F83B61751A9F96F00070549A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		F83B617B1A9F96F00070549A /* SwiftFiniteStateMachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftFiniteStateMachineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F83B61801A9F96F00070549A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F83B618E1A9F97520070549A /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
-		F83B618F1A9F97520070549A /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
-		F83B61921A9F9DD60070549A /* FSMState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMState.swift; sourceTree = "<group>"; };
-		F83B61941A9F9E3B0070549A /* FSMStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMStateTests.swift; sourceTree = "<group>"; };
-		F83B61961A9F9E830070549A /* FSMTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransition.swift; sourceTree = "<group>"; };
-		F83B61981A9F9E8F0070549A /* FSMEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEvent.swift; sourceTree = "<group>"; };
-		F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachine.swift; sourceTree = "<group>"; };
-		F83B61A41A9FB3260070549A /* FSMTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransitionTests.swift; sourceTree = "<group>"; };
-		F83B61A61A9FB3690070549A /* FSMTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTestCase.swift; sourceTree = "<group>"; };
-		F83B61A81A9FB4DC0070549A /* FSMEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTests.swift; sourceTree = "<group>"; };
-		F83B61AA1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachineTests.swift; sourceTree = "<group>"; };
-		F8A247DE1AA00E22002E6C6B /* FSMFireEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFireEventTests.swift; sourceTree = "<group>"; };
-		F8A247E01AA02A83002E6C6B /* FSMLockingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLockingTests.swift; sourceTree = "<group>"; };
-		F8A247E21AA02A94002E6C6B /* FSMEventTimeoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTimeoutTests.swift; sourceTree = "<group>"; };
-		F8CD25401AA0CD3700AAED9D /* DemoFSM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoFSM.swift; sourceTree = "<group>"; };
+		F8A027AF1BFE2CF400ED1378 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		F8A027B01BFE2CF400ED1378 /* SwiftPromises.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftPromises.h; sourceTree = "<group>"; };
+		F8A027B11BFE2CF400ED1378 /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
+		F8A027B51BFE2D8800ED1378 /* FSMEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTests.swift; sourceTree = "<group>"; };
+		F8A027B61BFE2D8800ED1378 /* FSMEventTimeoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTimeoutTests.swift; sourceTree = "<group>"; };
+		F8A027B71BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachineTests.swift; sourceTree = "<group>"; };
+		F8A027B81BFE2D8800ED1378 /* FSMFireEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFireEventTests.swift; sourceTree = "<group>"; };
+		F8A027B91BFE2D8800ED1378 /* FSMLockingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLockingTests.swift; sourceTree = "<group>"; };
+		F8A027BA1BFE2D8800ED1378 /* FSMStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMStateTests.swift; sourceTree = "<group>"; };
+		F8A027BB1BFE2D8800ED1378 /* FSMTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTestCase.swift; sourceTree = "<group>"; };
+		F8A027BC1BFE2D8800ED1378 /* FSMTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransitionTests.swift; sourceTree = "<group>"; };
+		F8A027CA1BFE338200ED1378 /* SwiftFiniteStateMachineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftFiniteStateMachineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8A027DC1BFE33CF00ED1378 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F8A027E21BFE33CF00ED1378 /* DemoFSM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoFSM.swift; sourceTree = "<group>"; };
+		F8A027E31BFE33CF00ED1378 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F8A027E41BFE33CF00ED1378 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8A027E51BFE33CF00ED1378 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F8A027EE1BFE33E700ED1378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		F8A027F01BFE33E700ED1378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F8FB219C1BFE15B70013C963 /* SwiftFiniteStateMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFiniteStateMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8FB219E1BFE15B70013C963 /* SwiftFiniteStateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFiniteStateMachine.h; sourceTree = "<group>"; };
+		F8FB21A01BFE15B70013C963 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8FB21A51BFE15B80013C963 /* SwiftFiniteStateMachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftFiniteStateMachineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8FB21AC1BFE15B80013C963 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8FB21B71BFE164F0013C963 /* FSMEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEvent.swift; sourceTree = "<group>"; };
+		F8FB21B81BFE164F0013C963 /* FSMFiniteStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachine.swift; sourceTree = "<group>"; };
+		F8FB21B91BFE164F0013C963 /* FSMState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMState.swift; sourceTree = "<group>"; };
+		F8FB21BA1BFE164F0013C963 /* FSMTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F83B61631A9F96F00070549A /* Frameworks */ = {
+		F8A027C71BFE338200ED1378 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F83B61781A9F96F00070549A /* Frameworks */ = {
+		F8FB21981BFE15B70013C963 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8FB21A21BFE15B80013C963 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8FB21A61BFE15B80013C963 /* SwiftFiniteStateMachine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,9 +110,9 @@
 			isa = PBXGroup;
 			children = (
 				F83B618C1A9F97410070549A /* external */,
-				F83B618B1A9F97070070549A /* source */,
-				F83B61681A9F96F00070549A /* SwiftFiniteStateMachine */,
-				F83B617E1A9F96F00070549A /* SwiftFiniteStateMachineTests */,
+				F8FB219D1BFE15B70013C963 /* SwiftFiniteStateMachine */,
+				F8FB21A91BFE15B80013C963 /* SwiftFiniteStateMachineTests */,
+				F8A027CB1BFE338200ED1378 /* SwiftFiniteStateMachineDemo */,
 				F83B61671A9F96F00070549A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -104,97 +120,116 @@
 		F83B61671A9F96F00070549A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F83B61661A9F96F00070549A /* SwiftFiniteStateMachine.app */,
-				F83B617B1A9F96F00070549A /* SwiftFiniteStateMachineTests.xctest */,
+				F8FB219C1BFE15B70013C963 /* SwiftFiniteStateMachine.framework */,
+				F8FB21A51BFE15B80013C963 /* SwiftFiniteStateMachineTests.xctest */,
+				F8A027CA1BFE338200ED1378 /* SwiftFiniteStateMachineDemo.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F83B61681A9F96F00070549A /* SwiftFiniteStateMachine */ = {
-			isa = PBXGroup;
-			children = (
-				F83B616B1A9F96F00070549A /* AppDelegate.swift */,
-				F83B616D1A9F96F00070549A /* ViewController.swift */,
-				F83B616F1A9F96F00070549A /* Main.storyboard */,
-				F83B61721A9F96F00070549A /* Images.xcassets */,
-				F83B61741A9F96F00070549A /* LaunchScreen.xib */,
-				F83B61691A9F96F00070549A /* Supporting Files */,
-				F8CD25401AA0CD3700AAED9D /* DemoFSM.swift */,
-			);
-			path = SwiftFiniteStateMachine;
-			sourceTree = "<group>";
-		};
-		F83B61691A9F96F00070549A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F83B616A1A9F96F00070549A /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		F83B617E1A9F96F00070549A /* SwiftFiniteStateMachineTests */ = {
-			isa = PBXGroup;
-			children = (
-				F83B61941A9F9E3B0070549A /* FSMStateTests.swift */,
-				F83B61A61A9FB3690070549A /* FSMTestCase.swift */,
-				F83B61A41A9FB3260070549A /* FSMTransitionTests.swift */,
-				F83B61A81A9FB4DC0070549A /* FSMEventTests.swift */,
-				F83B61AA1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift */,
-				F8A247DE1AA00E22002E6C6B /* FSMFireEventTests.swift */,
-				F8A247E01AA02A83002E6C6B /* FSMLockingTests.swift */,
-				F8A247E21AA02A94002E6C6B /* FSMEventTimeoutTests.swift */,
-				F83B617F1A9F96F00070549A /* Supporting Files */,
-			);
-			path = SwiftFiniteStateMachineTests;
-			sourceTree = "<group>";
-		};
-		F83B617F1A9F96F00070549A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F83B61801A9F96F00070549A /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		F83B618B1A9F97070070549A /* source */ = {
-			isa = PBXGroup;
-			children = (
-				F83B61921A9F9DD60070549A /* FSMState.swift */,
-				F83B61A11A9FABC50070549A /* FSMFiniteStateMachine.swift */,
-				F83B61961A9F9E830070549A /* FSMTransition.swift */,
-				F83B61981A9F9E8F0070549A /* FSMEvent.swift */,
-			);
-			path = source;
 			sourceTree = "<group>";
 		};
 		F83B618C1A9F97410070549A /* external */ = {
 			isa = PBXGroup;
 			children = (
-				F83B618D1A9F97520070549A /* SwiftPromises */,
+				F8A027AE1BFE2CF400ED1378 /* SwiftPromises */,
 			);
 			name = external;
 			sourceTree = "<group>";
 		};
-		F83B618D1A9F97520070549A /* SwiftPromises */ = {
+		F8A027AE1BFE2CF400ED1378 /* SwiftPromises */ = {
 			isa = PBXGroup;
 			children = (
-				F83B618E1A9F97520070549A /* Promise.swift */,
-				F83B618F1A9F97520070549A /* Synchronizer.swift */,
+				F8A027AF1BFE2CF400ED1378 /* Promise.swift */,
+				F8A027B01BFE2CF400ED1378 /* SwiftPromises.h */,
+				F8A027B11BFE2CF400ED1378 /* Synchronizer.swift */,
 			);
 			name = SwiftPromises;
-			path = external/SwiftPromises/source;
+			path = external/SwiftPromises/SwiftPromises/source;
+			sourceTree = "<group>";
+		};
+		F8A027CB1BFE338200ED1378 /* SwiftFiniteStateMachineDemo */ = {
+			isa = PBXGroup;
+			children = (
+				F8A027DC1BFE33CF00ED1378 /* AppDelegate.swift */,
+				F8A027E21BFE33CF00ED1378 /* DemoFSM.swift */,
+				F8A027E31BFE33CF00ED1378 /* Images.xcassets */,
+				F8A027E41BFE33CF00ED1378 /* Info.plist */,
+				F8A027E51BFE33CF00ED1378 /* ViewController.swift */,
+				F8A027ED1BFE33E700ED1378 /* LaunchScreen.xib */,
+				F8A027EF1BFE33E700ED1378 /* Main.storyboard */,
+			);
+			path = SwiftFiniteStateMachineDemo;
+			sourceTree = "<group>";
+		};
+		F8FB219D1BFE15B70013C963 /* SwiftFiniteStateMachine */ = {
+			isa = PBXGroup;
+			children = (
+				F8FB219E1BFE15B70013C963 /* SwiftFiniteStateMachine.h */,
+				F8FB21B71BFE164F0013C963 /* FSMEvent.swift */,
+				F8FB21B81BFE164F0013C963 /* FSMFiniteStateMachine.swift */,
+				F8FB21B91BFE164F0013C963 /* FSMState.swift */,
+				F8FB21BA1BFE164F0013C963 /* FSMTransition.swift */,
+				F8FB21A01BFE15B70013C963 /* Info.plist */,
+			);
+			path = SwiftFiniteStateMachine;
+			sourceTree = "<group>";
+		};
+		F8FB21A91BFE15B80013C963 /* SwiftFiniteStateMachineTests */ = {
+			isa = PBXGroup;
+			children = (
+				F8A027B51BFE2D8800ED1378 /* FSMEventTests.swift */,
+				F8A027B61BFE2D8800ED1378 /* FSMEventTimeoutTests.swift */,
+				F8A027B71BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift */,
+				F8A027B81BFE2D8800ED1378 /* FSMFireEventTests.swift */,
+				F8A027B91BFE2D8800ED1378 /* FSMLockingTests.swift */,
+				F8A027BA1BFE2D8800ED1378 /* FSMStateTests.swift */,
+				F8A027BB1BFE2D8800ED1378 /* FSMTestCase.swift */,
+				F8A027BC1BFE2D8800ED1378 /* FSMTransitionTests.swift */,
+				F8FB21AC1BFE15B80013C963 /* Info.plist */,
+			);
+			path = SwiftFiniteStateMachineTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		F8FB21991BFE15B70013C963 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8A027B31BFE2CF400ED1378 /* SwiftPromises.h in Headers */,
+				F8FB219F1BFE15B70013C963 /* SwiftFiniteStateMachine.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		F83B61651A9F96F00070549A /* SwiftFiniteStateMachine */ = {
+		F8A027C91BFE338200ED1378 /* SwiftFiniteStateMachineDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F83B61851A9F96F00070549A /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachine" */;
+			buildConfigurationList = F8A027D91BFE338200ED1378 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachineDemo" */;
 			buildPhases = (
-				F83B61621A9F96F00070549A /* Sources */,
-				F83B61631A9F96F00070549A /* Frameworks */,
-				F83B61641A9F96F00070549A /* Resources */,
+				F8A027C61BFE338200ED1378 /* Sources */,
+				F8A027C71BFE338200ED1378 /* Frameworks */,
+				F8A027C81BFE338200ED1378 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8A027F41BFE348F00ED1378 /* PBXTargetDependency */,
+			);
+			name = SwiftFiniteStateMachineDemo;
+			productName = SwiftFiniteStateMachineDemo;
+			productReference = F8A027CA1BFE338200ED1378 /* SwiftFiniteStateMachineDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F8FB219B1BFE15B70013C963 /* SwiftFiniteStateMachine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8FB21AD1BFE15B80013C963 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachine" */;
+			buildPhases = (
+				F8FB21971BFE15B70013C963 /* Sources */,
+				F8FB21981BFE15B70013C963 /* Frameworks */,
+				F8FB21991BFE15B70013C963 /* Headers */,
+				F8FB219A1BFE15B70013C963 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -202,25 +237,25 @@
 			);
 			name = SwiftFiniteStateMachine;
 			productName = SwiftFiniteStateMachine;
-			productReference = F83B61661A9F96F00070549A /* SwiftFiniteStateMachine.app */;
-			productType = "com.apple.product-type.application";
+			productReference = F8FB219C1BFE15B70013C963 /* SwiftFiniteStateMachine.framework */;
+			productType = "com.apple.product-type.framework";
 		};
-		F83B617A1A9F96F00070549A /* SwiftFiniteStateMachineTests */ = {
+		F8FB21A41BFE15B80013C963 /* SwiftFiniteStateMachineTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F83B61881A9F96F00070549A /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachineTests" */;
+			buildConfigurationList = F8FB21B01BFE15B80013C963 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachineTests" */;
 			buildPhases = (
-				F83B61771A9F96F00070549A /* Sources */,
-				F83B61781A9F96F00070549A /* Frameworks */,
-				F83B61791A9F96F00070549A /* Resources */,
+				F8FB21A11BFE15B80013C963 /* Sources */,
+				F8FB21A21BFE15B80013C963 /* Frameworks */,
+				F8FB21A31BFE15B80013C963 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F83B617D1A9F96F00070549A /* PBXTargetDependency */,
+				F8FB21A81BFE15B80013C963 /* PBXTargetDependency */,
 			);
 			name = SwiftFiniteStateMachineTests;
 			productName = SwiftFiniteStateMachineTests;
-			productReference = F83B617B1A9F96F00070549A /* SwiftFiniteStateMachineTests.xctest */;
+			productReference = F8FB21A51BFE15B80013C963 /* SwiftFiniteStateMachineTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -229,15 +264,18 @@
 		F83B615E1A9F96F00070549A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Ivy Gulch LLC";
 				TargetAttributes = {
-					F83B61651A9F96F00070549A = {
-						CreatedOnToolsVersion = 6.1.1;
+					F8A027C91BFE338200ED1378 = {
+						CreatedOnToolsVersion = 7.1.1;
 					};
-					F83B617A1A9F96F00070549A = {
-						CreatedOnToolsVersion = 6.1.1;
-						TestTargetID = F83B61651A9F96F00070549A;
+					F8FB219B1BFE15B70013C963 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					F8FB21A41BFE15B80013C963 = {
+						CreatedOnToolsVersion = 7.2;
 					};
 				};
 			};
@@ -254,24 +292,32 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F83B61651A9F96F00070549A /* SwiftFiniteStateMachine */,
-				F83B617A1A9F96F00070549A /* SwiftFiniteStateMachineTests */,
+				F8FB219B1BFE15B70013C963 /* SwiftFiniteStateMachine */,
+				F8FB21A41BFE15B80013C963 /* SwiftFiniteStateMachineTests */,
+				F8A027C91BFE338200ED1378 /* SwiftFiniteStateMachineDemo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		F83B61641A9F96F00070549A /* Resources */ = {
+		F8A027C81BFE338200ED1378 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F83B61711A9F96F00070549A /* Main.storyboard in Resources */,
-				F83B61761A9F96F00070549A /* LaunchScreen.xib in Resources */,
-				F83B61731A9F96F00070549A /* Images.xcassets in Resources */,
+				F8A027F11BFE33E700ED1378 /* LaunchScreen.xib in Resources */,
+				F8A027EA1BFE33CF00ED1378 /* Images.xcassets in Resources */,
+				F8A027F21BFE33E700ED1378 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F83B61791A9F96F00070549A /* Resources */ = {
+		F8FB219A1BFE15B70013C963 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8FB21A31BFE15B80013C963 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -281,68 +327,74 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F83B61621A9F96F00070549A /* Sources */ = {
+		F8A027C61BFE338200ED1378 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F83B616E1A9F96F00070549A /* ViewController.swift in Sources */,
-				F83B61A21A9FABC50070549A /* FSMFiniteStateMachine.swift in Sources */,
-				F83B616C1A9F96F00070549A /* AppDelegate.swift in Sources */,
-				F83B61901A9F97520070549A /* Promise.swift in Sources */,
-				F83B61991A9F9E8F0070549A /* FSMEvent.swift in Sources */,
-				F83B61931A9F9DD60070549A /* FSMState.swift in Sources */,
-				F83B61911A9F97520070549A /* Synchronizer.swift in Sources */,
-				F83B61971A9F9E830070549A /* FSMTransition.swift in Sources */,
-				F8CD25411AA0CD3700AAED9D /* DemoFSM.swift in Sources */,
+				F8A027EC1BFE33CF00ED1378 /* ViewController.swift in Sources */,
+				F8A027E61BFE33CF00ED1378 /* AppDelegate.swift in Sources */,
+				F8A027E91BFE33CF00ED1378 /* DemoFSM.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F83B61771A9F96F00070549A /* Sources */ = {
+		F8FB21971BFE15B70013C963 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F83B619A1A9F9EAD0070549A /* FSMState.swift in Sources */,
-				F83B619C1A9F9EAD0070549A /* FSMEvent.swift in Sources */,
-				F83B61AB1A9FC4DA0070549A /* FSMFiniteStateMachineTests.swift in Sources */,
-				F8A247DF1AA00E22002E6C6B /* FSMFireEventTests.swift in Sources */,
-				F83B619D1A9F9FEF0070549A /* Promise.swift in Sources */,
-				F83B61A91A9FB4DC0070549A /* FSMEventTests.swift in Sources */,
-				F83B61A31A9FABC90070549A /* FSMFiniteStateMachine.swift in Sources */,
-				F83B61951A9F9E3B0070549A /* FSMStateTests.swift in Sources */,
-				F83B619B1A9F9EAD0070549A /* FSMTransition.swift in Sources */,
-				F83B619E1A9F9FEF0070549A /* Synchronizer.swift in Sources */,
-				F8A247E11AA02A83002E6C6B /* FSMLockingTests.swift in Sources */,
-				F83B61A71A9FB3690070549A /* FSMTestCase.swift in Sources */,
-				F83B61A51A9FB3260070549A /* FSMTransitionTests.swift in Sources */,
-				F8A247E31AA02A94002E6C6B /* FSMEventTimeoutTests.swift in Sources */,
+				F8FB21BB1BFE164F0013C963 /* FSMEvent.swift in Sources */,
+				F8FB21BC1BFE164F0013C963 /* FSMFiniteStateMachine.swift in Sources */,
+				F8A027B21BFE2CF400ED1378 /* Promise.swift in Sources */,
+				F8FB21BD1BFE164F0013C963 /* FSMState.swift in Sources */,
+				F8FB21BE1BFE164F0013C963 /* FSMTransition.swift in Sources */,
+				F8A027B41BFE2CF400ED1378 /* Synchronizer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8FB21A11BFE15B80013C963 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8A027BD1BFE2D8800ED1378 /* FSMEventTests.swift in Sources */,
+				F8A027C11BFE2D8800ED1378 /* FSMLockingTests.swift in Sources */,
+				F8A027C21BFE2D8800ED1378 /* FSMStateTests.swift in Sources */,
+				F8A027C31BFE2D8800ED1378 /* FSMTestCase.swift in Sources */,
+				F8A027BE1BFE2D8800ED1378 /* FSMEventTimeoutTests.swift in Sources */,
+				F8A027BF1BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift in Sources */,
+				F8A027C01BFE2D8800ED1378 /* FSMFireEventTests.swift in Sources */,
+				F8A027C41BFE2D8800ED1378 /* FSMTransitionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F83B617D1A9F96F00070549A /* PBXTargetDependency */ = {
+		F8A027F41BFE348F00ED1378 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F83B61651A9F96F00070549A /* SwiftFiniteStateMachine */;
-			targetProxy = F83B617C1A9F96F00070549A /* PBXContainerItemProxy */;
+			target = F8FB219B1BFE15B70013C963 /* SwiftFiniteStateMachine */;
+			targetProxy = F8A027F31BFE348F00ED1378 /* PBXContainerItemProxy */;
+		};
+		F8FB21A81BFE15B80013C963 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F8FB219B1BFE15B70013C963 /* SwiftFiniteStateMachine */;
+			targetProxy = F8FB21A71BFE15B80013C963 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F83B616F1A9F96F00070549A /* Main.storyboard */ = {
+		F8A027ED1BFE33E700ED1378 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F83B61701A9F96F00070549A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		F83B61741A9F96F00070549A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F83B61751A9F96F00070549A /* Base */,
+				F8A027EE1BFE33E700ED1378 /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		F8A027EF1BFE33E700ED1378 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F8A027F01BFE33E700ED1378 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -368,6 +420,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -427,57 +480,111 @@
 			};
 			name = Release;
 		};
-		F83B61861A9F96F00070549A /* Debug */ = {
+		F8A027DA1BFE338200ED1378 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = SwiftFiniteStateMachine/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftFiniteStateMachineDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachineDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		F83B61871A9F96F00070549A /* Release */ = {
+		F8A027DB1BFE338200ED1378 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = SwiftFiniteStateMachine/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftFiniteStateMachineDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachineDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
-		F83B61891A9F96F00070549A /* Debug */ = {
+		F8FB21AE1BFE15B80013C963 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = SwiftFiniteStateMachineTests/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftFiniteStateMachine/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftFiniteStateMachine.app/SwiftFiniteStateMachine";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		F83B618A1A9F96F00070549A /* Release */ = {
+		F8FB21AF1BFE15B80013C963 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftFiniteStateMachine/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachine;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F8FB21B11BFE15B80013C963 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = SwiftFiniteStateMachineTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachineTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftFiniteStateMachine.app/SwiftFiniteStateMachine";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F8FB21B21BFE15B80013C963 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftFiniteStateMachineTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachineTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -493,20 +600,28 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F83B61851A9F96F00070549A /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachine" */ = {
+		F8A027D91BFE338200ED1378 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachineDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F83B61861A9F96F00070549A /* Debug */,
-				F83B61871A9F96F00070549A /* Release */,
+				F8A027DA1BFE338200ED1378 /* Debug */,
+				F8A027DB1BFE338200ED1378 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F8FB21AD1BFE15B80013C963 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8FB21AE1BFE15B80013C963 /* Debug */,
+				F8FB21AF1BFE15B80013C963 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F83B61881A9F96F00070549A /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachineTests" */ = {
+		F8FB21B01BFE15B80013C963 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachineTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F83B61891A9F96F00070549A /* Debug */,
-				F83B618A1A9F96F00070549A /* Release */,
+				F8FB21B11BFE15B80013C963 /* Debug */,
+				F8FB21B21BFE15B80013C963 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

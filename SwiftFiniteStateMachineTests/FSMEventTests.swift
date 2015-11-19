@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+@testable import SwiftFiniteStateMachine
 
 class FSMEventTests: FSMTestCase {
 
@@ -32,7 +33,7 @@ class FSMEventTests: FSMTestCase {
         XCTAssertEqual("test", event.name)
         XCTAssertEqual([dummySourceState1,dummySourceState2], event.sources)
         XCTAssertEqual(dummyDestinationState, event.destination)
-        XCTAssertEqualOptional(dummyFiniteStateMachine, event.finiteStateMachine)
+        XCTAssertEqual(dummyFiniteStateMachine, event.finiteStateMachine)
     }
 
     // MARK: - fireEvent tests
@@ -55,14 +56,16 @@ class FSMEventTests: FSMTestCase {
 
         let result = event.willFireEventWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(self.event, actualEvent)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(self.event, actualEvent)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
 
@@ -84,14 +87,16 @@ class FSMEventTests: FSMTestCase {
 
         let result = event.didFireEventWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(self.event, actualEvent)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(self.event, actualEvent)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc public class FSMTransition: Equatable {
+public class FSMTransition: NSObject {
 
     /**
     * The event that triggered this transition
@@ -34,15 +34,16 @@ import Foundation
     */
     public weak var finiteStateMachine: FSMFiniteStateMachine?
 
-    init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
+    public init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
         self.event = event
         self.source = source
         self.finiteStateMachine = finiteStateMachine
+        super.init()
     }
 
     // MARK: - implementation
 
-    public var description : String {
+    public override var description : String {
         return "FSMTransition: event=\(event?.name) source=\(source?.name)"
     }
 
