@@ -169,7 +169,7 @@ class FSMFireEventTests: XCTestCase {
         expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
             return self.dummyError
         }
-        expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
+        expectFailureWithEvent(event, expectedCurrentState:expectedSourceState)
     }
 
     func testWillEnterStateFulfilled() {
