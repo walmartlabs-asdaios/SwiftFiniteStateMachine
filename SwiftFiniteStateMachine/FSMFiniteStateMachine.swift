@@ -214,7 +214,10 @@ public class FSMFiniteStateMachine: NSObject {
         return result
     }
 
-    func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
+    /**
+     Need docs
+*/
+    public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
 
         if !lockForEvent(event) {
             return Promise(NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorTransitionInProgress, userInfo:nil))
