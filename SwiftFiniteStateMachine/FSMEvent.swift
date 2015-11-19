@@ -22,7 +22,7 @@ public class FSMEvent: NSObject {
     /**
     * The instance of the finite state machine this state is attached to
     */
-    public weak var finiteStateMachine: FSMFiniteStateMachine?
+    public let finiteStateMachine: FSMFiniteStateMachine!
 
     /**
     * An array of FSMState instances, the state machine instance must be in one of these
@@ -119,6 +119,6 @@ public class FSMEvent: NSObject {
 
 }
 
-public func ==(lhs: FSMEvent, rhs: FSMEvent) -> Bool {
+func ==(lhs: FSMEvent, rhs: FSMEvent) -> Bool {
     return (lhs.name == rhs.name) && (lhs.finiteStateMachine == rhs.finiteStateMachine)
 }

@@ -41,7 +41,7 @@ public class FSMState: NSObject {
     /**
     * The instance of the finite state machine this state is attached to
     */
-    public weak var finiteStateMachine: FSMFiniteStateMachine?
+    public let finiteStateMachine: FSMFiniteStateMachine!
 
     /**
     * This optional closure is called on the proposed destination state
@@ -115,6 +115,6 @@ public class FSMState: NSObject {
 
 }
 
-public func ==(lhs: FSMState, rhs: FSMState) -> Bool {
+func ==(lhs: FSMState, rhs: FSMState) -> Bool {
     return (lhs.name == rhs.name) && (lhs.finiteStateMachine == rhs.finiteStateMachine)
 }

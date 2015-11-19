@@ -13,26 +13,26 @@ public class FSMTransition: NSObject {
     /**
     * The event that triggered this transition
     */
-    public weak var event:FSMEvent?
+    public let event:FSMEvent!
 
     /**
     * The source state when the transition was triggered
     */
-    public weak var source:FSMState?
+    public let source:FSMState!
 
     /**
     * The destination state of the transition
     */
-    public var destination:FSMState? {
+    public var destination:FSMState {
         get {
-            return self.event?.destination
+            return self.event.destination
         }
     }
 
     /**
     * The instance of the finite state machine this state is attached to
     */
-    public weak var finiteStateMachine: FSMFiniteStateMachine?
+    public let finiteStateMachine: FSMFiniteStateMachine!
 
     public init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
         self.event = event
@@ -49,6 +49,6 @@ public class FSMTransition: NSObject {
 
 }
 
-public func ==(lhs: FSMTransition, rhs: FSMTransition) -> Bool {
+func ==(lhs: FSMTransition, rhs: FSMTransition) -> Bool {
     return (lhs.event == rhs.event) && (lhs.source == rhs.source)
 }

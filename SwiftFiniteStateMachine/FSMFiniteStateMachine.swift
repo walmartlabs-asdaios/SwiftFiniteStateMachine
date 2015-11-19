@@ -214,7 +214,7 @@ public class FSMFiniteStateMachine: NSObject {
         return result
     }
 
-    public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
+    func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
 
         if !lockForEvent(event) {
             return Promise(NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorTransitionInProgress, userInfo:nil))
@@ -294,7 +294,7 @@ public class FSMFiniteStateMachine: NSObject {
         return lastPromise
     }
 
-    public func resetTimeoutTimer(eventTimeout:NSTimeInterval) {
+    func resetTimeoutTimer(eventTimeout:NSTimeInterval) {
         if let event = pendingEvent {
             event.stopTimeoutTimer()
             if let transition = pendingEventTransition {
@@ -362,6 +362,6 @@ public class FSMFiniteStateMachine: NSObject {
     
 }
 
-public func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
+func ==(lhs: FSMFiniteStateMachine, rhs: FSMFiniteStateMachine) -> Bool {
     return lhs === rhs
 }
