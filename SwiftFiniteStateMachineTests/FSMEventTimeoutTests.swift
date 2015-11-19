@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMEventTimeoutTests: FSMTestCase {
+class FSMEventTimeoutTests: XCTestCase {
     
     var finiteStateMachine:FSMFiniteStateMachine!
     var state1:FSMState!

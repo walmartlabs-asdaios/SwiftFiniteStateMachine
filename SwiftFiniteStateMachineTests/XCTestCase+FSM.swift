@@ -1,5 +1,5 @@
 //
-//  FSMTestCase.swift
+//  XCTestCase+FSM.swift
 //  SwiftFiniteStateMachine
 //
 //  Created by Douglas Sjoquist on 2/26/15.
@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMTestCase: XCTestCase {
+extension XCTestCase {
 
     func delayedFulfilledPromise(delay:NSTimeInterval, value:AnyObject?) -> Promise<AnyObject> {
         // Delay one of the steps longer than the event timeout threshold

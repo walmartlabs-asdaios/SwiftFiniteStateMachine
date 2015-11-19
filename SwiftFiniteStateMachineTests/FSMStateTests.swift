@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMStateTests: FSMTestCase {
+class FSMStateTests: XCTestCase {
 
     let dummyFiniteStateMachine = FSMFiniteStateMachine()
 

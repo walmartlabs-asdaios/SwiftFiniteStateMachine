@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMEventTests: FSMTestCase {
+class FSMEventTests: XCTestCase {
 
     var dummyFiniteStateMachine:FSMFiniteStateMachine!
     var dummySourceState1:FSMState!

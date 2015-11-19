@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMFireEventTests: FSMTestCase {
+class FSMFireEventTests: XCTestCase {
 
     let defaultEventTimeout:NSTimeInterval = 10.0
 

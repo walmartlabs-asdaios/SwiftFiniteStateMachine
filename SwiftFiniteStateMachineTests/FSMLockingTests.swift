@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMLockingTests: FSMTestCase {
+class FSMLockingTests: XCTestCase {
 
     let defaultEventTimeout:NSTimeInterval = 10.0
 

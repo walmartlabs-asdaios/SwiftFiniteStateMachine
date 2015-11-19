@@ -16,7 +16,7 @@
 		F8A027C01BFE2D8800ED1378 /* FSMFireEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B81BFE2D8800ED1378 /* FSMFireEventTests.swift */; };
 		F8A027C11BFE2D8800ED1378 /* FSMLockingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B91BFE2D8800ED1378 /* FSMLockingTests.swift */; };
 		F8A027C21BFE2D8800ED1378 /* FSMStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BA1BFE2D8800ED1378 /* FSMStateTests.swift */; };
-		F8A027C31BFE2D8800ED1378 /* FSMTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BB1BFE2D8800ED1378 /* FSMTestCase.swift */; };
+		F8A027C31BFE2D8800ED1378 /* XCTestCase+FSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BB1BFE2D8800ED1378 /* XCTestCase+FSM.swift */; };
 		F8A027C41BFE2D8800ED1378 /* FSMTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027BC1BFE2D8800ED1378 /* FSMTransitionTests.swift */; };
 		F8A027E61BFE33CF00ED1378 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027DC1BFE33CF00ED1378 /* AppDelegate.swift */; };
 		F8A027E91BFE33CF00ED1378 /* DemoFSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027E21BFE33CF00ED1378 /* DemoFSM.swift */; };
@@ -59,7 +59,7 @@
 		F8A027B81BFE2D8800ED1378 /* FSMFireEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFireEventTests.swift; sourceTree = "<group>"; };
 		F8A027B91BFE2D8800ED1378 /* FSMLockingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLockingTests.swift; sourceTree = "<group>"; };
 		F8A027BA1BFE2D8800ED1378 /* FSMStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMStateTests.swift; sourceTree = "<group>"; };
-		F8A027BB1BFE2D8800ED1378 /* FSMTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTestCase.swift; sourceTree = "<group>"; };
+		F8A027BB1BFE2D8800ED1378 /* XCTestCase+FSM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FSM.swift"; sourceTree = "<group>"; };
 		F8A027BC1BFE2D8800ED1378 /* FSMTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMTransitionTests.swift; sourceTree = "<group>"; };
 		F8A027CA1BFE338200ED1378 /* SwiftFiniteStateMachineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftFiniteStateMachineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A027DC1BFE33CF00ED1378 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -176,13 +176,13 @@
 		F8FB21A91BFE15B80013C963 /* SwiftFiniteStateMachineTests */ = {
 			isa = PBXGroup;
 			children = (
+				F8A027BB1BFE2D8800ED1378 /* XCTestCase+FSM.swift */,
 				F8A027B51BFE2D8800ED1378 /* FSMEventTests.swift */,
 				F8A027B61BFE2D8800ED1378 /* FSMEventTimeoutTests.swift */,
 				F8A027B71BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift */,
 				F8A027B81BFE2D8800ED1378 /* FSMFireEventTests.swift */,
 				F8A027B91BFE2D8800ED1378 /* FSMLockingTests.swift */,
 				F8A027BA1BFE2D8800ED1378 /* FSMStateTests.swift */,
-				F8A027BB1BFE2D8800ED1378 /* FSMTestCase.swift */,
 				F8A027BC1BFE2D8800ED1378 /* FSMTransitionTests.swift */,
 				F8FB21AC1BFE15B80013C963 /* Info.plist */,
 			);
@@ -357,7 +357,7 @@
 				F8A027BD1BFE2D8800ED1378 /* FSMEventTests.swift in Sources */,
 				F8A027C11BFE2D8800ED1378 /* FSMLockingTests.swift in Sources */,
 				F8A027C21BFE2D8800ED1378 /* FSMStateTests.swift in Sources */,
-				F8A027C31BFE2D8800ED1378 /* FSMTestCase.swift in Sources */,
+				F8A027C31BFE2D8800ED1378 /* XCTestCase+FSM.swift in Sources */,
 				F8A027BE1BFE2D8800ED1378 /* FSMEventTimeoutTests.swift in Sources */,
 				F8A027BF1BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift in Sources */,
 				F8A027C01BFE2D8800ED1378 /* FSMFireEventTests.swift in Sources */,

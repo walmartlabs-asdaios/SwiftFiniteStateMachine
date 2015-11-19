@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import SwiftFiniteStateMachine
 
-class FSMFiniteStateMachineTests: FSMTestCase {
+class FSMFiniteStateMachineTests: XCTestCase {
 
     // MARK: - state tests
 
