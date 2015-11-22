@@ -33,45 +33,50 @@ class DemoFSM {
     func configureFiniteStateMachine() {
         finiteStateMachine = FSMFiniteStateMachine()
 
-        signedOutState = finiteStateMachine.addState("signedOut", error:nil)
-        signedOutState.didEnterState = {
-            (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            self.username = nil
-            self.userRecord = nil
-            return value
-        }
-        authenticatedState = finiteStateMachine.addState("authenticated", error:nil)
-        authenticatedState.didEnterState = {
-            (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            self.username = value as? String
-            return value
-        }
-        signedInState = finiteStateMachine.addState("signedIn", error:nil)
-        signedInState.didEnterState = {
-            (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            self.userRecord = value as? String
-            return value
-        }
+        do {
+            signedOutState = try finiteStateMachine.addState("signedOut")
+            signedOutState.didEnterState = {
+                (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                self.username = nil
+                self.userRecord = nil
+                return value
+            }
+            authenticatedState = try finiteStateMachine.addState("authenticated")
+            authenticatedState.didEnterState = {
+                (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                self.username = value as? String
+                return value
+            }
+            signedInState = try finiteStateMachine.addState("signedIn")
+            signedInState.didEnterState = {
+                (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                self.userRecord = value as? String
+                return value
+            }
 
-        authenticateEvent = finiteStateMachine.addEvent("authenticate", sources:[signedOutState], destination:authenticatedState, error:nil)
-        authenticateEvent.willFireEvent = {
-            (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            return self.dummyAuthenticationPromise()
-        }
+            authenticateEvent = try finiteStateMachine.addEvent("authenticate", sources:[signedOutState], destination:authenticatedState)
+            authenticateEvent.willFireEvent = {
+                (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                return self.dummyAuthenticationPromise()
+            }
 
-        loadRecordEvent = finiteStateMachine.addEvent("loadRecord", sources:[authenticatedState], destination:signedInState, error:nil)
-        loadRecordEvent.willFireEvent = {
-            (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            return self.dummySignInPromise()
-        }
+            loadRecordEvent = try finiteStateMachine.addEvent("loadRecord", sources:[authenticatedState], destination:signedInState)
+            loadRecordEvent.willFireEvent = {
+                (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                return self.dummySignInPromise()
+            }
 
-        signOutEvent = finiteStateMachine.addEvent("signOut", sources:[authenticatedState,signedInState], destination:signedOutState, error:nil)
-        signOutEvent.willFireEvent = {
-            (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            return self.dummySignOutPromise()
-        }
+            signOutEvent = try finiteStateMachine.addEvent("signOut", sources:[authenticatedState,signedInState], destination:signedOutState)
+            signOutEvent.willFireEvent = {
+                (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                return self.dummySignOutPromise()
+            }
 
-        finiteStateMachine.setInitialState(signedOutState, error:nil)
+            try finiteStateMachine.setInitialState(signedOutState)
+        }
+        catch let error {
+            print("DBG: error configuring states: \(error)")
+        }
     }
 
     func dummyAuthenticationPromise() -> Promise<AnyObject> {
@@ -117,7 +122,7 @@ class DemoFSM {
         }
         return result
     }
-    
+
     func dummySignOutPromise() -> Promise<AnyObject> {
         let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Logout", message: "Tap fail or logout", preferredStyle: .Alert)
@@ -134,7 +139,7 @@ class DemoFSM {
         }
         return result
     }
-    
+
     func login() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(authenticateEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
@@ -142,9 +147,9 @@ class DemoFSM {
     func loadRecord() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(loadRecordEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
-
+    
     func logout() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(signOutEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
-
+    
 }

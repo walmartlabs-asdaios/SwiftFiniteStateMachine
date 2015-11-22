@@ -11,18 +11,18 @@ import Foundation
 public class FSMTransition: NSObject {
 
     /**
-    * The event that triggered this transition
-    */
+     * The event that triggered this transition
+     */
     public let event:FSMEvent!
 
     /**
-    * The source state when the transition was triggered
-    */
+     * The source state when the transition was triggered
+     */
     public let source:FSMState!
 
     /**
-    * The destination state of the transition
-    */
+     * The destination state of the transition
+     */
     public var destination:FSMState {
         get {
             return self.event.destination
@@ -30,8 +30,8 @@ public class FSMTransition: NSObject {
     }
 
     /**
-    * The instance of the finite state machine this state is attached to
-    */
+     * The instance of the finite state machine this state is attached to
+     */
     public let finiteStateMachine: FSMFiniteStateMachine!
 
     public init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {

@@ -92,7 +92,7 @@ class FSMStateTests: XCTestCase {
                 return .Error(error)
         })
     }
-    
+
     // MARK: - exitState tests
 
     func testWillExitState() {

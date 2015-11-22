@@ -26,14 +26,19 @@ class FSMLockingTests: XCTestCase {
         super.setUp()
 
         finiteStateMachine = FSMFiniteStateMachine()
-        state1 = finiteStateMachine.addState("state1", error:nil)
-        state2 = finiteStateMachine.addState("state2", error:nil)
-        state3 = finiteStateMachine.addState("state3", error:nil)
-        event1to2 = finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2, error:nil)
-        event2to3 = finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3, error:nil)
-        event3to1 = finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1, error:nil)
+        do {
+            state1 = try finiteStateMachine.addState("state1")
+            state2 = try finiteStateMachine.addState("state2")
+            state3 = try finiteStateMachine.addState("state3")
+            event1to2 = try finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2)
+            event2to3 = try finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3)
+            event3to1 = try finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1)
 
-        finiteStateMachine.setInitialState(state1, error:nil)
+            try finiteStateMachine.setInitialState(state1)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testSimpleConflictingCall() {
@@ -101,9 +106,9 @@ class FSMLockingTests: XCTestCase {
             let conflictingPromise = self.finiteStateMachine.fireEvent(self.event2to3, eventTimeout:self.defaultEventTimeout, initialValue:nil)
             XCTAssertTrue(conflictingPromise.isRejected)
         })
-
+        
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
     }
-
+    
 }

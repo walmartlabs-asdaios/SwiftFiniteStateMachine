@@ -15,42 +15,42 @@ public typealias FSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 public class FSMEvent: NSObject {
 
     /**
-    * The unique identifier within the state machine instance.
-    */
+     * The unique identifier within the state machine instance.
+     */
     public let name: String
 
     /**
-    * The instance of the finite state machine this state is attached to
-    */
+     * The instance of the finite state machine this state is attached to
+     */
     public let finiteStateMachine: FSMFiniteStateMachine!
 
     /**
-    * An array of FSMState instances, the state machine instance must be in one of these
-    * states before this event can be fired.
-    */
+     * An array of FSMState instances, the state machine instance must be in one of these
+     * states before this event can be fired.
+     */
     public let sources: [FSMState]
 
     /**
-    * An FSMState instances that is the resulting state of a successful firing of the event.
-    */
+     * An FSMState instances that is the resulting state of a successful firing of the event.
+     */
     public let destination: FSMState
 
     /**
-    * This optional closure is called after the transition process begins,
-    * but before the current state is changed
-    */
+     * This optional closure is called after the transition process begins,
+     * but before the current state is changed
+     */
     public var willFireEvent:FSMWillFireEventClosure?
 
     /**
-    * This optional closure is called before the transition process completes,
-    * after the current state is changed
-    */
+     * This optional closure is called before the transition process completes,
+     * after the current state is changed
+     */
     public var didFireEvent:FSMDidFireEventClosure?
 
     /**
-    * This optional closure is called after the event times out, the result of the
-    * event will be a rejection error -- there is no ability to retry from this point.
-    */
+     * This optional closure is called after the event times out, the result of the
+     * event will be a rejection error -- there is no ability to retry from this point.
+     */
     public var eventDidTimeout:FSMEventTimeoutClosure?
 
     private var timeoutTimer:NSTimer?
@@ -85,7 +85,7 @@ public class FSMEvent: NSObject {
         let transition = userInfo["transition"] as! FSMTransition
         stopTimeoutTimer()
 
-        let error = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorEventTimeout, userInfo:nil)
+        let error = FSMError.EventTimeout
         for promise in promises {
             if !promise.isFulfilled {
                 promise.reject(error)

@@ -11,59 +11,58 @@ import Foundation
 public typealias FSMDidChangeStateClosure = (oldState:FSMState?, newState:FSMState?) -> Void
 public typealias FSMGetStateAndEventClosure = (state:FSMState?, event:FSMEvent?) -> Void
 
-public struct FSMConstants {
-    static let FSMErrorDomain = "FSMError"
-    static let FSMErrorInvalidState = 101
-    static let FSMErrorInvalidStartState = 102
-    static let FSMErrorInvalidEvent = 103
-    static let FSMErrorRejected = 104
-    static let FSMErrorEventTimeout = 105
-    static let FSMErrorTransitionInProgress = 106
+public enum FSMError : ErrorType {
+    case InvalidState(String)
+    case InvalidStartState(String)
+    case InvalidEvent([String])
+    case Rejected(String)
+    case EventTimeout
+    case TransitionInProgress(FSMTransition?)
 }
 
 /**
-* FSMFiniteStateMachine is the controller for this sub-system.
-*
-* Key characteristics
-* - works asynchronously
-* - built on top of Promise to ensure predictable transition behavior
-* - can deal with arbitrary number of states and transitions
-* - individual events must be defined for each transition
-* - states and events have hooks for application code to validate or reject transitions
-* - the process guarantees a result: either a successful resolution or a rejection error
-* - since the result is an instance of Promise, the results can be monitored or
-*   checked via the Promise then:reject: method
-*
-* Transition flow
-* - initialize state machine (intended to be done just once)
-* - firing an event attempts to transition from the current state to the specified
-*   destination state
-* - if the current state is not valid for the event, then it fails
-* - otherwise the event steps through user hooks in the following general order
-*      'will' hooks:   intended use is for application code to execute any processes such as
-*                      network calls (e.g. user authentication) required before a successful
-*                      transition can occur
-*      'did' hooks:    intended use is for application code to do any post-processing
-*                      required such as updates or cleanup
-*
-*   if any of these hooks returns an instance of NSError, then:
-*      - the chain is interrupted (no further hooks will be executed)
-*      - the final result will be a rejection with the given error
-*
-*      event:              willFireEvent
-*      destinationState:   willEnterState
-*      sourceState:        willExitState
-*         [current state is set]
-*      sourceState:        didEnterState
-*      destinationState:   didExitState
-*      event:              didFireEvent
-*/
+ FSMFiniteStateMachine is the controller for this sub-system.
+
+ Key characteristics
+ - works asynchronously
+ - built on top of Promise to ensure predictable transition behavior
+ - can deal with arbitrary number of states and transitions
+ - individual events must be defined for each transition
+ - states and events have hooks for application code to validate or reject transitions
+ - the process guarantees a result: either a successful resolution or a rejection error
+ - since the result is an instance of Promise, the results can be monitored or
+ checked via the Promise then:reject: method
+
+ Transition flow
+ - initialize state machine (intended to be done just once)
+ - firing an event attempts to transition from the current state to the specified
+ destination state
+ - if the current state is not valid for the event, then it fails
+ - otherwise the event steps through user hooks in the following general order
+ 'will' hooks:   intended use is for application code to execute any processes such as
+ network calls (e.g. user authentication) required before a successful
+ transition can occur
+ 'did' hooks:    intended use is for application code to do any post-processing
+ required such as updates or cleanup
+
+ if any of these hooks returns an instance of NSError, then:
+ - the chain is interrupted (no further hooks will be executed)
+ - the final result will be a rejection with the given error
+
+ event:              willFireEvent
+ destinationState:   willEnterState
+ sourceState:        willExitState
+ [current state is set]
+ sourceState:        didEnterState
+ destinationState:   didExitState
+ event:              didFireEvent
+ */
 public class FSMFiniteStateMachine: NSObject {
 
     /**
-    * This optional closure is called on the proposed destination state
-    * before the transition process completes, after the current state is changed
-    */
+     * This optional closure is called on the proposed destination state
+     * before the transition process completes, after the current state is changed
+     */
     public var didChangeState: FSMDidChangeStateClosure?
 
     private var mutableStates:[String:FSMState] = [:]
@@ -109,73 +108,57 @@ public class FSMFiniteStateMachine: NSObject {
 
     // MARK: - interface
 
-    override public init() {
-        super.init()
-    }
-
     /**
-    * Add a new state to be used by the instance.
-    *
-    * :param: stateName must be a unique identifier within the instance
-    * :param: error optional error return value
-    * :returns: An instance of FSMState if initialization was successful, nil otherwise
-    */
-    public func addState(stateName:String, error:NSErrorPointer) -> FSMState? {
-        var result:FSMState?
+    Add a new state to be used by the instance.
 
+    -Parameter stateName: must be a unique identifier within the instance
+    -Parameter error: optional error return value
+    -Throws:
+    -Returns: An instance of FSMState if initialization was successful, nil otherwise
+    */
+    public func addState(stateName:String) throws -> FSMState {
         var errorMessage = ""
         if stateName.isEmpty {
             errorMessage = "Missing state name"
         } else if mutableStates[stateName] != nil {
             errorMessage = "Duplicate state name: \(stateName)"
         } else {
-            result = FSMState(stateName,finiteStateMachine:self)
+            let result = FSMState(stateName,finiteStateMachine:self)
             mutableStates[stateName] = result
+            return result
         }
-        if result == nil {
-            if error != nil {
-                error.memory = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidState, userInfo:["messages":[errorMessage]])
-            }
-        }
-        return result
+
+        throw FSMError.InvalidState(errorMessage)
     }
 
     /**
-    * Initialize state machine to it's starting state.
-    *
-    * :param: state the state to initialize this instance to, it must be an instance of FSMState
-    *              that was created by addStateWithName:error:
-    * :param: error optional error return value
-    * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
-    */
-    public func setInitialState(state:FSMState, error:NSErrorPointer) -> FSMState? {
-        var result:FSMState?
-
-        if mutableStates[state.name] != nil {
-            result = state
-            currentState = state
-        } else {
-            if error != nil {
-                error.memory = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidState, userInfo:["state":state.name])
-            }
+     * Initialize state machine to it's starting state.
+     *
+     * :param: state the state to initialize this instance to, it must be an instance of FSMState
+     *              that was created by addStateWithName:error:
+     * -Throws:
+     * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
+     */
+    public func setInitialState(state:FSMState) throws -> FSMState {
+        if let result = mutableStates[state.name] {
+            currentState = result
+            return result
         }
-        return result
+        throw FSMError.InvalidState(state.name)
     }
 
     /**
-    * Add a new event to be used by the instance to transition between states.
-    *
-    * :param: eventName must be a unique identifier within the instance
-    * :param: sources an array of either state names or instances that already exist in the instance
-    *                the state machine instance must be in one of these states in order for the event
-    *                to fire successfully
-    @ :param: destination a state name or instance that already exists in the instance
-    * :param: error optional error return value
-    * :returns: An instance of FSMEvent if successful, nil otherwise
-    */
-    public func addEvent(name:String, sources:[AnyObject], destination:AnyObject, error:NSErrorPointer) -> FSMEvent? {
-        var result:FSMEvent?
-
+     * Add a new event to be used by the instance to transition between states.
+     *
+     * :param: eventName must be a unique identifier within the instance
+     * :param: sources an array of either state names or instances that already exist in the instance
+     *                the state machine instance must be in one of these states in order for the event
+     *                to fire successfully
+     @ :param: destination a state name or instance that already exists in the instance
+     * -Throws: error optional error return value
+     * :returns: An instance of FSMEvent if successful, nil otherwise
+     */
+    public func addEvent(name:String, sources:[AnyObject], destination:AnyObject) throws -> FSMEvent {
         var errorMessages:[String] = []
         if name.isEmpty {
             errorMessages.append("Missing event name")
@@ -203,29 +186,26 @@ public class FSMFiniteStateMachine: NSObject {
         }
 
         if errorMessages.count == 0 {
-            result = FSMEvent(name, sources:sourceStates, destination:destinationState!, finiteStateMachine:self)
+            let result = FSMEvent(name, sources:sourceStates, destination:destinationState!, finiteStateMachine:self)
             mutableEvents[name] = result
+            return result
         }
-        if result == nil {
-            if error != nil {
-                error.memory = NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidEvent, userInfo:["messages":errorMessages])
-            }
-        }
-        return result
+
+        throw FSMError.InvalidEvent(errorMessages)
     }
 
     /**
      Need docs
-*/
+     */
     public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
 
         if !lockForEvent(event) {
-            return Promise(NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorTransitionInProgress, userInfo:nil))
+            return Promise(FSMError.TransitionInProgress(self.pendingEventTransition))
         }
 
         if let errorMessage = checkEventSourceState(event, sourceState:currentState) {
             unlockEvent()
-            return Promise(NSError(domain:FSMConstants.FSMErrorDomain, code:FSMConstants.FSMErrorInvalidStartState, userInfo:["messages":[errorMessage]]))
+            return Promise(FSMError.InvalidStartState(errorMessage))
         }
 
         let sourceState = currentState!

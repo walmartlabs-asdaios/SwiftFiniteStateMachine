@@ -11,7 +11,7 @@ import XCTest
 @testable import SwiftFiniteStateMachine
 
 class FSMEventTimeoutTests: XCTestCase {
-    
+
     var finiteStateMachine:FSMFiniteStateMachine!
     var state1:FSMState!
     var state2:FSMState!
@@ -24,14 +24,19 @@ class FSMEventTimeoutTests: XCTestCase {
         super.setUp()
 
         finiteStateMachine = FSMFiniteStateMachine()
-        state1 = finiteStateMachine.addState("state1", error:nil)
-        state2 = finiteStateMachine.addState("state2", error:nil)
-        state3 = finiteStateMachine.addState("state3", error:nil)
-        event1to2 = finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2, error:nil)
-        event2to3 = finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3, error:nil)
-        event3to1 = finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1, error:nil)
+        do {
+            state1 = try finiteStateMachine.addState("state1")
+            state2 = try finiteStateMachine.addState("state2")
+            state3 = try finiteStateMachine.addState("state3")
+            event1to2 = try finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2)
+            event2to3 = try finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3)
+            event3to1 = try finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1)
 
-        finiteStateMachine.setInitialState(state1, error:nil)
+            try finiteStateMachine.setInitialState(state1)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testSimpleTimeout() {
@@ -59,7 +64,16 @@ class FSMEventTimeoutTests: XCTestCase {
             }, reject: {
                 error in
                 expectation.fulfill()
-                XCTAssertEqual(FSMConstants.FSMErrorEventTimeout, (error as NSError).code)
+
+                do {
+                    throw error
+                }
+                catch FSMError.EventTimeout {
+                    // expected
+                }
+                catch let unknownError {
+                    XCTFail("Unknown error: \(unknownError)")
+                }
                 return .Error(error)
             }
         )
@@ -115,7 +129,7 @@ class FSMEventTimeoutTests: XCTestCase {
         XCTAssertEqual(event1to2, actualTimeoutBlockEvent)
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
-    
+
 
     func testMidEventResetTimeoutShouldSucceed() {
         let willFireDelay:NSTimeInterval = 5.0
@@ -154,7 +168,7 @@ class FSMEventTimeoutTests: XCTestCase {
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(willFireDelay+didFireDelay+2, handler:nil)
     }
-    
+
     func testDelayWithoutTimeout() {
         let timeout:NSTimeInterval = 1.0
 
@@ -176,11 +190,11 @@ class FSMEventTimeoutTests: XCTestCase {
                 XCTFail("Should not have been rejected")
                 return .Error(error)
         })
-
+        
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
     }
-
-
-
+    
+    
+    
 }

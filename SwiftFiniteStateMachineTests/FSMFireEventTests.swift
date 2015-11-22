@@ -24,10 +24,15 @@ class FSMFireEventTests: XCTestCase {
         super.setUp()
 
         finiteStateMachine = FSMFiniteStateMachine()
-        expectedSourceState = finiteStateMachine.addState("expectedSource", error:nil)!
-        otherState = finiteStateMachine.addState("otherState", error:nil)!
-        expectedDestinationState = finiteStateMachine.addState("expectedDestination", error:nil)!
-        dummyError = NSError(domain:"test", code:-1, userInfo:nil)
+        do {
+            expectedSourceState = try finiteStateMachine.addState("expectedSource")
+            otherState = try finiteStateMachine.addState("otherState")
+            expectedDestinationState = try finiteStateMachine.addState("expectedDestination")
+            dummyError = NSError(domain:"test", code:-1, userInfo:nil)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     // MARK: - fire event tests
@@ -85,325 +90,410 @@ class FSMFireEventTests: XCTestCase {
     }
 
     func testValidSimple() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        expectSuccessWithEvent(event, expectedValue:nil)
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            expectSuccessWithEvent(event, expectedValue:nil)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testInvalidSource() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[otherState], destination:expectedDestinationState, error:nil)!
-        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[otherState], destination:expectedDestinationState)
+            expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testWillFireEventFulfilled() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        let expectedValue = "expectedValue"
-        event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            return expectedValue
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            let expectedValue = "expectedValue"
+            event.willFireEvent = { (event, transition, value) -> AnyObject? in
+                return expectedValue
+            }
+            expectSuccessWithEvent(event, expectedValue:expectedValue)
         }
-        expectSuccessWithEvent(event, expectedValue:expectedValue)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testWillFireEventRejected() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            return self.dummyError
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            event.willFireEvent = { (event, transition, value) -> AnyObject? in
+                return self.dummyError
+            }
+            expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
         }
-        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testDidFireEventFulfilled() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        let expectedValue = "expectedValue"
-        event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            return expectedValue
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            let expectedValue = "expectedValue"
+            event.didFireEvent = { (event, transition, value) -> AnyObject? in
+                return expectedValue
+            }
+            expectSuccessWithEvent(event, expectedValue:expectedValue)
         }
-        expectSuccessWithEvent(event, expectedValue:expectedValue)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testDidFireEventRejected() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            return self.dummyError
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            event.didFireEvent = { (event, transition, value) -> AnyObject? in
+                return self.dummyError
+            }
+            expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
         }
-        expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testWillExitStateFulfilled() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        let expectedValue = "expectedValue"
-        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            return expectedValue
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            let expectedValue = "expectedValue"
+            expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+                return expectedValue
+            }
+            expectSuccessWithEvent(event, expectedValue:expectedValue)
         }
-        expectSuccessWithEvent(event, expectedValue:expectedValue)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testWillExitStateRejected() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            return self.dummyError
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+                return self.dummyError
+            }
+            expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
         }
-        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testDidExitStateFulfilled() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        let expectedValue = "expectedValue"
-        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            return expectedValue
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            let expectedValue = "expectedValue"
+            expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+                return expectedValue
+            }
+            expectSuccessWithEvent(event, expectedValue:expectedValue)
         }
-        expectSuccessWithEvent(event, expectedValue:expectedValue)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testDidExitStateRejected() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            return self.dummyError
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+                return self.dummyError
+            }
+            expectFailureWithEvent(event, expectedCurrentState:expectedSourceState)
         }
-        expectFailureWithEvent(event, expectedCurrentState:expectedSourceState)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testWillEnterStateFulfilled() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        let expectedValue = "expectedValue"
-        expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
-            return expectedValue
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            let expectedValue = "expectedValue"
+            expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
+                return expectedValue
+            }
+            expectSuccessWithEvent(event, expectedValue:expectedValue)
         }
-        expectSuccessWithEvent(event, expectedValue:expectedValue)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testWillEnterStateRejected() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
-            return self.dummyError
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            expectedDestinationState.willEnterState = { (state, transition, value) -> AnyObject? in
+                return self.dummyError
+            }
+            expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
         }
-        expectFailureWithEvent(event, expectedCurrentState:finiteStateMachine.currentState)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testDidEnterStateFulfilled() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        let expectedValue = "expectedValue"
-        expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
-            return expectedValue
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            let expectedValue = "expectedValue"
+            expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
+                return expectedValue
+            }
+            expectSuccessWithEvent(event, expectedValue:expectedValue)
         }
-        expectSuccessWithEvent(event, expectedValue:expectedValue)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testDidEnterStateRejected() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
-        expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
-            return self.dummyError
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
+            expectedDestinationState.didEnterState = { (state, transition, value) -> AnyObject? in
+                return self.dummyError
+            }
+            expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
         }
-        expectFailureWithEvent(event, expectedCurrentState:expectedDestinationState)
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testEventOrder() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
 
-        var firingOrder = 0
+            var firingOrder = 0
 
-        event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            XCTAssertEqual(1, ++firingOrder, "Step 1")
-            return value
-        }
-        event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(2, ++firingOrder, "Step 2")
-            return nil
-        }
-        event.destination.willExitState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call destination.willExitState")
-            return nil
-        }
-        expectedSourceState.willEnterState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call expectedSourceState.willEnterState")
-            return nil
-        }
-        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(3, ++firingOrder, "Step 3")
-            return nil
-        }
+            event.willFireEvent = { (event, transition, value) -> AnyObject? in
+                XCTAssertEqual(1, ++firingOrder, "Step 1")
+                return value
+            }
+            event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(2, ++firingOrder, "Step 2")
+                return nil
+            }
+            event.destination.willExitState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call destination.willExitState")
+                return nil
+            }
+            expectedSourceState.willEnterState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call expectedSourceState.willEnterState")
+                return nil
+            }
+            expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(3, ++firingOrder, "Step 3")
+                return nil
+            }
 
-        expectedSourceState.didEnterState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call expectedSourceState.didEnterState")
-            return nil
-        }
-        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(4, ++firingOrder, "Step 4")
-            return nil
-        }
-        event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(5, ++firingOrder, "Step 5")
-            return nil
-        }
-        event.destination.didExitState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call destinationState.didExitState")
-            return nil
-        }
-        event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            XCTAssertEqual(6, ++firingOrder, "Step 6")
-            return nil
-        }
+            expectedSourceState.didEnterState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call expectedSourceState.didEnterState")
+                return nil
+            }
+            expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(4, ++firingOrder, "Step 4")
+                return nil
+            }
+            event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(5, ++firingOrder, "Step 5")
+                return nil
+            }
+            event.destination.didExitState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call destinationState.didExitState")
+                return nil
+            }
+            event.didFireEvent = { (event, transition, value) -> AnyObject? in
+                XCTAssertEqual(6, ++firingOrder, "Step 6")
+                return nil
+            }
 
-        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
-        let expectation = expectationWithDescription("expectEventSequence")
+            let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
+            let expectation = expectationWithDescription("expectEventSequence")
 
-        promise.then(
-            {
-                value in
-                XCTAssertEqual(6, firingOrder, "Should be last step")
-                expectation.fulfill()
-                return .Value(value)
-            }, reject: {
-                error in
-                XCTFail("Should not fail")
-                expectation.fulfill()
-                return .Error(error)
-        })
+            promise.then(
+                {
+                    value in
+                    XCTAssertEqual(6, firingOrder, "Should be last step")
+                    expectation.fulfill()
+                    return .Value(value)
+                }, reject: {
+                    error in
+                    XCTFail("Should not fail")
+                    expectation.fulfill()
+                    return .Error(error)
+            })
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
 
         waitForExpectationsWithTimeout(5.0, handler:nil)
     }
 
     func testEventRejectionPropagation() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
 
-        var firingOrder = 0
+            var firingOrder = 0
 
-        event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            XCTAssertEqual(1, ++firingOrder, "Step 1")
-            return value
-        }
-        event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(2, ++firingOrder, "Step 2")
-            return nil
-        }
-        event.destination.willExitState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call destination.willExitState")
-            return nil
-        }
-        expectedSourceState.willEnterState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call expectedSourceState.willEnterState")
-            return nil
-        }
-        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(3, ++firingOrder, "Step 3")
-            return self.dummyError
-        }
+            event.willFireEvent = { (event, transition, value) -> AnyObject? in
+                XCTAssertEqual(1, ++firingOrder, "Step 1")
+                return value
+            }
+            event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(2, ++firingOrder, "Step 2")
+                return nil
+            }
+            event.destination.willExitState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call destination.willExitState")
+                return nil
+            }
+            expectedSourceState.willEnterState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call expectedSourceState.willEnterState")
+                return nil
+            }
+            expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(3, ++firingOrder, "Step 3")
+                return self.dummyError
+            }
 
-        expectedSourceState.didEnterState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call expectedSourceState.didEnterState")
-            return nil
-        }
-        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(4, ++firingOrder, "Step 4")
-            return nil
-        }
-        event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
-            XCTAssertEqual(5, ++firingOrder, "Step 5")
-            return nil
-        }
-        event.destination.didExitState = { (state, transition, value) -> AnyObject? in
-            XCTFail("should not call destinationState.didExitState")
-            return nil
-        }
-        event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            XCTAssertEqual(6, ++firingOrder, "Step 6")
-            return nil
-        }
+            expectedSourceState.didEnterState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call expectedSourceState.didEnterState")
+                return nil
+            }
+            expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(4, ++firingOrder, "Step 4")
+                return nil
+            }
+            event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
+                XCTAssertEqual(5, ++firingOrder, "Step 5")
+                return nil
+            }
+            event.destination.didExitState = { (state, transition, value) -> AnyObject? in
+                XCTFail("should not call destinationState.didExitState")
+                return nil
+            }
+            event.didFireEvent = { (event, transition, value) -> AnyObject? in
+                XCTAssertEqual(6, ++firingOrder, "Step 6")
+                return nil
+            }
 
-        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
-        let expectation = expectationWithDescription("expectEventSequence")
+            let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:nil)
+            let expectation = expectationWithDescription("expectEventSequence")
 
-        promise.then(
-            {
-                value in
-                XCTFail("Should have failed at step 3")
-                expectation.fulfill()
-                return .Value(value)
-            }, reject: {
-                error in
-                XCTAssertEqual(3, firingOrder, "Should fail at step 3")
-                expectation.fulfill()
-                return .Error(error)
-        })
+            promise.then(
+                {
+                    value in
+                    XCTFail("Should have failed at step 3")
+                    expectation.fulfill()
+                    return .Value(value)
+                }, reject: {
+                    error in
+                    XCTAssertEqual(3, firingOrder, "Should fail at step 3")
+                    expectation.fulfill()
+                    return .Error(error)
+            })
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
 
         waitForExpectationsWithTimeout(5.0, handler:nil)
     }
 
     func testEventInitialValue() {
-        finiteStateMachine.setInitialState(expectedSourceState, error:nil)
-        let event = finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState, error:nil)!
+        do {
+            try finiteStateMachine.setInitialState(expectedSourceState)
+            let event = try finiteStateMachine.addEvent("event", sources:[expectedSourceState], destination:expectedDestinationState)
 
-        var firingOrder = 0
+            var firingOrder = 0
 
-        event.willFireEvent = { (event, transition, value) -> AnyObject? in
-            var array = value as! [Int]
-            array.append(++firingOrder)
-            return array
-        }
-        event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
-            var array = value as! [Int]
-            array.append(++firingOrder)
-            return array
-        }
-        expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
-            var array = value as! [Int]
-            array.append(++firingOrder)
-            return array
-        }
-        expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
-            var array = value as! [Int]
-            array.append(++firingOrder)
-            return array
-        }
-        event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
-            var array = value as! [Int]
-            array.append(++firingOrder)
-            return array
-        }
-        event.didFireEvent = { (event, transition, value) -> AnyObject? in
-            var array = value as! [Int]
-            array.append(++firingOrder)
-            return array
-        }
+            event.willFireEvent = { (event, transition, value) -> AnyObject? in
+                var array = value as! [Int]
+                array.append(++firingOrder)
+                return array
+            }
+            event.destination.willEnterState = { (state, transition, value) -> AnyObject? in
+                var array = value as! [Int]
+                array.append(++firingOrder)
+                return array
+            }
+            expectedSourceState.willExitState = { (state, transition, value) -> AnyObject? in
+                var array = value as! [Int]
+                array.append(++firingOrder)
+                return array
+            }
+            expectedSourceState.didExitState = { (state, transition, value) -> AnyObject? in
+                var array = value as! [Int]
+                array.append(++firingOrder)
+                return array
+            }
+            event.destination.didEnterState = { (state, transition, value) -> AnyObject? in
+                var array = value as! [Int]
+                array.append(++firingOrder)
+                return array
+            }
+            event.didFireEvent = { (event, transition, value) -> AnyObject? in
+                var array = value as! [Int]
+                array.append(++firingOrder)
+                return array
+            }
 
-        let initialValue:[Int] = []
-        let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:initialValue)
-        let expectation = expectationWithDescription("expectEventSequence")
+            let initialValue:[Int] = []
+            let promise = finiteStateMachine.fireEvent(event, eventTimeout:defaultEventTimeout, initialValue:initialValue)
+            let expectation = expectationWithDescription("expectEventSequence")
 
-        promise.then(
-            {
-                value in
-                if let array = value as? [Int] {
-                    let expectedValue = [1,2,3,4,5,6]
-                    XCTAssertEqual(expectedValue, array, "should have accumulated values in array passed in as intial value")
-                } else {
-                    XCTFail("value should be [Int]")
-                }
-                expectation.fulfill()
-                return .Value(value)
-            }, reject: {
-                error in
-                XCTFail("Should not fail")
-                expectation.fulfill()
-                return .Error(error)
-        })
-
+            promise.then(
+                {
+                    value in
+                    if let array = value as? [Int] {
+                        let expectedValue = [1,2,3,4,5,6]
+                        XCTAssertEqual(expectedValue, array, "should have accumulated values in array passed in as intial value")
+                    } else {
+                        XCTFail("value should be [Int]")
+                    }
+                    expectation.fulfill()
+                    return .Value(value)
+                }, reject: {
+                    error in
+                    XCTFail("Should not fail")
+                    expectation.fulfill()
+                    return .Error(error)
+            })
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
+        
         waitForExpectationsWithTimeout(5.0, handler:nil)
     }
-
+    
 }

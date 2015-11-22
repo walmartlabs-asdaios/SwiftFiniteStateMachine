@@ -26,5 +26,5 @@ class FSMTransitionTests: XCTestCase {
         XCTAssertEqual(sourceState, transition.source)
         XCTAssertEqual(destinationState, transition.destination)
     }
-
+    
 }
