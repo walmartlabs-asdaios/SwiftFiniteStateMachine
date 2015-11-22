@@ -24,44 +24,49 @@ public enum FSMError : ErrorType {
  FSMFiniteStateMachine is the controller for this sub-system.
 
  Key characteristics
+
  - works asynchronously
  - built on top of Promise to ensure predictable transition behavior
  - can deal with arbitrary number of states and transitions
  - individual events must be defined for each transition
  - states and events have hooks for application code to validate or reject transitions
  - the process guarantees a result: either a successful resolution or a rejection error
- - since the result is an instance of Promise, the results can be monitored or
- checked via the Promise then:reject: method
+ - because the result is an instance of Promise, the results can be monitored or checked via the Promise then:reject: method
 
  Transition flow
+
  - initialize state machine (intended to be done just once)
  - firing an event attempts to transition from the current state to the specified
  destination state
  - if the current state is not valid for the event, then it fails
  - otherwise the event steps through user hooks in the following general order
- 'will' hooks:   intended use is for application code to execute any processes such as
+ -- 'will' hooks:   intended use is for application code to execute any processes such as
  network calls (e.g. user authentication) required before a successful
  transition can occur
- 'did' hooks:    intended use is for application code to do any post-processing
+ -- 'did' hooks:    intended use is for application code to do any post-processing
  required such as updates or cleanup
 
- if any of these hooks returns an instance of NSError, then:
+ If any of these hooks returns an instance of ErrorType, then:
+
  - the chain is interrupted (no further hooks will be executed)
  - the final result will be a rejection with the given error
 
- event:              willFireEvent
- destinationState:   willEnterState
- sourceState:        willExitState
- [current state is set]
- sourceState:        didEnterState
- destinationState:   didExitState
- event:              didFireEvent
+ The order that hooks are checked is:
+
+ - event -> willFireEvent
+ - destinationState -> willEnterState
+ - sourceState -> willExitState
+ - [current state is set]
+ - sourceState -> didEnterState
+ - destinationState -> didExitState
+ - event -> didFireEvent
+
  */
 public class FSMFiniteStateMachine: NSObject {
 
     /**
-     * This optional closure is called on the proposed destination state
-     * before the transition process completes, after the current state is changed
+     This optional closure is called on the proposed destination state
+     before the transition process completes, after the current state is changed
      */
     public var didChangeState: FSMDidChangeStateClosure?
 
@@ -111,10 +116,10 @@ public class FSMFiniteStateMachine: NSObject {
     /**
     Add a new state to be used by the instance.
 
-    -Parameter stateName: must be a unique identifier within the instance
-    -Parameter error: optional error return value
-    -Throws:
-    -Returns: An instance of FSMState if initialization was successful, nil otherwise
+    - Parameter stateName: must be a unique identifier within the instance
+    - Parameter error: optional error return value
+    - Throws:
+    - Returns: An instance of FSMState if initialization was successful, nil otherwise
     */
     public func addState(stateName:String) throws -> FSMState {
         var errorMessage = ""
@@ -132,12 +137,12 @@ public class FSMFiniteStateMachine: NSObject {
     }
 
     /**
-     * Initialize state machine to it's starting state.
-     *
-     * :param: state the state to initialize this instance to, it must be an instance of FSMState
-     *              that was created by addStateWithName:error:
-     * -Throws:
-     * :returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
+     Initialize state machine to it's starting state.
+
+     - Parameter state: the state to initialize this instance to, it must be an instance of FSMState
+     that was created by addStateWithName:error:
+     - Throws:
+     - Returns: The FSMState instance passed as an argument if initialization was successful, nil otherwise
      */
     public func setInitialState(state:FSMState) throws -> FSMState {
         if let result = mutableStates[state.name] {
@@ -148,15 +153,15 @@ public class FSMFiniteStateMachine: NSObject {
     }
 
     /**
-     * Add a new event to be used by the instance to transition between states.
-     *
-     * :param: eventName must be a unique identifier within the instance
-     * :param: sources an array of either state names or instances that already exist in the instance
-     *                the state machine instance must be in one of these states in order for the event
-     *                to fire successfully
-     @ :param: destination a state name or instance that already exists in the instance
-     * -Throws: error optional error return value
-     * :returns: An instance of FSMEvent if successful, nil otherwise
+     Add a new event to be used by the instance to transition between states.
+
+     - Parameter eventName: must be a unique identifier within the instance
+     - Parameter sources: an array of either state names or instances that already exist in the instance
+     the state machine instance must be in one of these states in order for the event
+     to fire successfully
+     - Parameter destination: a state name or instance that already exists in the instance
+     - Throws
+     - Returns: An instance of FSMEvent if successful, nil otherwise
      */
     public func addEvent(name:String, sources:[AnyObject], destination:AnyObject) throws -> FSMEvent {
         var errorMessages:[String] = []
@@ -195,7 +200,13 @@ public class FSMFiniteStateMachine: NSObject {
     }
 
     /**
-     Need docs
+     Fires an event that will work through check where the state machine is in the correct
+     state and then work through the list of hooks to attempt to transition to the destination state.
+
+     - Parameter event: the event to be fired
+     - Parameter eventTimeout: the transition must be completed within this timeout or the transition will fail
+     - Parameter initialValue: an optional value to seed the event chain with
+     - Returns: An instance of FSMEvent if successful, nil otherwise
      */
     public func fireEvent(event:FSMEvent, eventTimeout:NSTimeInterval, initialValue:AnyObject?) -> Promise<AnyObject> {
 

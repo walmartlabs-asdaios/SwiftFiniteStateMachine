@@ -12,52 +12,56 @@ public typealias FSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?)
 public typealias FSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
 public typealias FSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
+/**
+ An event represents a potential transition from one or more source states to a new
+ destination state with hooks for various points along the transition.
+*/
 public class FSMEvent: NSObject {
 
     /**
-     * The unique identifier within the state machine instance.
+     The unique identifier within the state machine instance.
      */
     public let name: String
 
     /**
-     * The instance of the finite state machine this state is attached to
+     The instance of the finite state machine this state is attached to
      */
     public let finiteStateMachine: FSMFiniteStateMachine!
 
     /**
-     * An array of FSMState instances, the state machine instance must be in one of these
-     * states before this event can be fired.
+     An array of FSMState instances, the state machine instance must be in one of these
+     states before this event can be fired.
      */
     public let sources: [FSMState]
 
     /**
-     * An FSMState instances that is the resulting state of a successful firing of the event.
+     An FSMState instances that is the resulting state of a successful firing of the event.
      */
     public let destination: FSMState
 
     /**
-     * This optional closure is called after the transition process begins,
-     * but before the current state is changed
+     This optional closure is called after the transition process begins,
+     but before the current state is changed
      */
     public var willFireEvent:FSMWillFireEventClosure?
 
     /**
-     * This optional closure is called before the transition process completes,
-     * after the current state is changed
+     This optional closure is called before the transition process completes,
+     after the current state is changed
      */
     public var didFireEvent:FSMDidFireEventClosure?
 
     /**
-     * This optional closure is called after the event times out, the result of the
-     * event will be a rejection error -- there is no ability to retry from this point.
+     This optional closure is called after the event times out, the result of the
+     event will be a rejection error -- there is no ability to retry from this point.
      */
     public var eventDidTimeout:FSMEventTimeoutClosure?
 
     private var timeoutTimer:NSTimer?
 
-    // MARK: - interface
+    // MARK: - implementation
 
-    public init(_ name : String, sources:[FSMState], destination:FSMState, finiteStateMachine: FSMFiniteStateMachine) {
+    init(_ name : String, sources:[FSMState], destination:FSMState, finiteStateMachine: FSMFiniteStateMachine) {
         self.name = name
         self.sources = sources
         self.destination = destination
@@ -65,6 +69,10 @@ public class FSMEvent: NSObject {
         super.init()
     }
 
+    public override var description : String {
+        return "FSMEvent: \(name)"
+    }
+    
     func resetTimeoutTimer(eventTimeout:NSTimeInterval, transition:FSMTransition, promises:[Promise<AnyObject>]) {
         if eventTimeout > 0 {
             let userInfo = ["promises":promises,"transition":transition]
@@ -79,7 +87,7 @@ public class FSMEvent: NSObject {
         timeoutTimer = nil
     }
 
-    @objc func handleEventTimeout(timer:NSTimer) {
+    func handleEventTimeout(timer:NSTimer) {
         let userInfo = timer.userInfo as! [String:AnyObject]
         let promises = userInfo["promises"] as! [Promise<AnyObject>]
         let transition = userInfo["transition"] as! FSMTransition
@@ -93,12 +101,6 @@ public class FSMEvent: NSObject {
         }
 
         eventDidTimeout?(self, transition)
-    }
-
-    // MARK: - implementation
-
-    public override var description : String {
-        return "FSMEvent: \(name)"
     }
 
     func willFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {

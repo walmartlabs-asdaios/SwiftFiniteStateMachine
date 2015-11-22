@@ -164,8 +164,8 @@
 			isa = PBXGroup;
 			children = (
 				F8FB219E1BFE15B70013C963 /* SwiftFiniteStateMachine.h */,
-				F8FB21B71BFE164F0013C963 /* FSMEvent.swift */,
 				F8FB21B81BFE164F0013C963 /* FSMFiniteStateMachine.swift */,
+				F8FB21B71BFE164F0013C963 /* FSMEvent.swift */,
 				F8FB21B91BFE164F0013C963 /* FSMState.swift */,
 				F8FB21BA1BFE164F0013C963 /* FSMTransition.swift */,
 				F8FB21A01BFE15B70013C963 /* Info.plist */,
@@ -607,6 +607,7 @@
 				F8A027DB1BFE338200ED1378 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F8FB21AD1BFE15B80013C963 /* Build configuration list for PBXNativeTarget "SwiftFiniteStateMachine" */ = {
 			isa = XCConfigurationList;

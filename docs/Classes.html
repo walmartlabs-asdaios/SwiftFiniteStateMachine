@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Classes  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+  </head>
+  <body>
+    <a title="Classes  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html"> Docs</a> (60% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html"> Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Classes  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/FSMEvent.html">FSMEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FSMFiniteStateMachine.html">FSMFiniteStateMachine</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FSMState.html">FSMState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FSMTransition.html">FSMTransition</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/FSMError.html">FSMError</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Classes</h1>
+            <p>The following classes are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C23SwiftFiniteStateMachine8FSMEvent"></a>
+                    <a name="//apple_ref/swift/Class/FSMEvent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C23SwiftFiniteStateMachine8FSMEvent">FSMEvent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An event represents a potential transition from one or more source states to a new
+destination state with hooks for various points along the transition.</p>
+
+                        <a href="Classes/FSMEvent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">FSMEvent</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C23SwiftFiniteStateMachine21FSMFiniteStateMachine"></a>
+                    <a name="//apple_ref/swift/Class/FSMFiniteStateMachine" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C23SwiftFiniteStateMachine21FSMFiniteStateMachine">FSMFiniteStateMachine</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>FSMFiniteStateMachine is the controller for this sub-system.</p>
+
+<p>Key characteristics</p>
+
+<ul>
+<li>works asynchronously</li>
+<li>built on top of Promise to ensure predictable transition behavior</li>
+<li>can deal with arbitrary number of states and transitions</li>
+<li>individual events must be defined for each transition</li>
+<li>states and events have hooks for application code to validate or reject transitions</li>
+<li>the process guarantees a result: either a successful resolution or a rejection error</li>
+<li>because the result is an instance of Promise, the results can be monitored or checked via the Promise then:reject: method</li>
+</ul>
+
+<p>Transition flow</p>
+
+<ul>
+<li>initialize state machine (intended to be done just once)</li>
+<li>firing an event attempts to transition from the current state to the specified
+destination state</li>
+<li>if the current state is not valid for the event, then it fails</li>
+<li>otherwise the event steps through user hooks in the following general order
+&ndash; &lsquo;will&rsquo; hooks:   intended use is for application code to execute any processes such as
+network calls (e.g. user authentication) required before a successful
+transition can occur
+&ndash; &lsquo;did&rsquo; hooks:    intended use is for application code to do any post-processing
+required such as updates or cleanup</li>
+</ul>
+
+<p>If any of these hooks returns an instance of ErrorType, then:</p>
+
+<ul>
+<li>the chain is interrupted (no further hooks will be executed)</li>
+<li>the final result will be a rejection with the given error</li>
+</ul>
+
+<p>The order that hooks are checked is:</p>
+
+<ul>
+<li>event -&gt; willFireEvent</li>
+<li>destinationState -&gt; willEnterState</li>
+<li>sourceState -&gt; willExitState</li>
+<li>[current state is set]</li>
+<li>sourceState -&gt; didEnterState</li>
+<li>destinationState -&gt; didExitState</li>
+<li>event -&gt; didFireEvent</li>
+</ul>
+
+                        <a href="Classes/FSMFiniteStateMachine.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">FSMFiniteStateMachine</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C23SwiftFiniteStateMachine8FSMState"></a>
+                    <a name="//apple_ref/swift/Class/FSMState" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C23SwiftFiniteStateMachine8FSMState">FSMState</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>FSMState represents a single state in the state machine instance.</p>
+
+<p>Each instance has it&rsquo;s own set of optional closures that application code can use to
+prepare for or reject individual steps in the transition process.</p>
+
+<p>All of the closures are optional, if a particular one is nil, the state machine will simply
+move along to the next step in the process.</p>
+
+<p>Each event closure returns a value,</p>
+
+<ul>
+<li>if an instance of ErrorType is returned, then the chain of events is interrupted
+and the final result of the transition will be a rejection with that same error.</li>
+<li>if an instance of Promise is returned, then it will be inserted into the chain
+of promises used in the transition, and subsequent steps will be dependent on
+the fulfillment or rejection of that promise</li>
+<li>if any other value is returned (including nil), then that value is passed to
+the next step in the process</li>
+</ul>
+
+                        <a href="Classes/FSMState.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">FSMState</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C23SwiftFiniteStateMachine13FSMTransition"></a>
+                    <a name="//apple_ref/swift/Class/FSMTransition" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C23SwiftFiniteStateMachine13FSMTransition">FSMTransition</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A transition represents a transition in process for an event being fired.</p>
+
+                        <a href="Classes/FSMTransition.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">FSMTransition</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2015 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2015-11-21)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.4.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

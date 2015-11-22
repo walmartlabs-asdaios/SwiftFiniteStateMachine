@@ -8,20 +8,23 @@
 
 import Foundation
 
+/**
+ A transition represents a transition in process for an event being fired.
+ */
 public class FSMTransition: NSObject {
 
     /**
-     * The event that triggered this transition
+     The event that triggered this transition
      */
     public let event:FSMEvent!
 
     /**
-     * The source state when the transition was triggered
+     The source state when the transition was triggered
      */
     public let source:FSMState!
 
     /**
-     * The destination state of the transition
+     The destination state of the transition
      */
     public var destination:FSMState {
         get {
@@ -29,19 +32,19 @@ public class FSMTransition: NSObject {
         }
     }
 
-    /**
-     * The instance of the finite state machine this state is attached to
-     */
-    public let finiteStateMachine: FSMFiniteStateMachine!
+    // MARK: - implementation
 
-    public init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
+    /**
+     The instance of the finite state machine this state is attached to
+     */
+    let finiteStateMachine: FSMFiniteStateMachine!
+
+    init(_ event:FSMEvent, source:FSMState, finiteStateMachine:FSMFiniteStateMachine) {
         self.event = event
         self.source = source
         self.finiteStateMachine = finiteStateMachine
         super.init()
     }
-
-    // MARK: - implementation
 
     public override var description : String {
         return "FSMTransition: event=\(event?.name) source=\(source?.name)"
