@@ -1,0 +1,20 @@
+FSMEvent.swift
+	public override var description : String
+FSMFiniteStateMachine.swift
+	public enum FSMError : ErrorType
+	case InvalidState(String)
+	case InvalidStartState(String)
+	case InvalidEvent([String])
+	case Rejected(String)
+	case EventTimeout
+	case TransitionInProgress(FSMTransition?)
+	private(set) public var currentState: FSMState?
+	public var states:[String:FSMState]
+	public var events:[String:FSMEvent]
+	public var pendingEvent:FSMEvent?
+	public func getStateAndEvent(getStateAndEventClosure:FSMGetStateAndEventClosure)
+	public override var description : String
+FSMState.swift
+	public override var description : String
+FSMTransition.swift
+	public override var description : String

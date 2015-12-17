@@ -34,16 +34,18 @@ class ViewController: UIViewController {
         userRecordLabel.text = ""
 
         demoFSM.login().then(
-            { (value:AnyObject?) -> AnyObject? in
+            {
+                value in
                 self.usernameLabel.text = value as? String
                 self.messageLabel.text = "Logged in"
                 dispatch_async(dispatch_get_main_queue(), {
                     self.loadRecord()
                 })
-                return value
-            }, reject: { (error) -> NSError in
-                self.messageLabel.text = "Could not login: \(error.localizedDescription)"
-                return error
+                return .Value(value)
+            }, reject: {
+                error in
+                self.messageLabel.text = "Could not login: \(error)"
+                return .Error(error)
             }
         )
     }
@@ -52,13 +54,15 @@ class ViewController: UIViewController {
         messageLabel.text = "load record started"
 
         demoFSM.loadRecord().then(
-            { (value:AnyObject?) -> AnyObject? in
+            {
+                value in
                 self.userRecordLabel.text = value as? String
                 self.messageLabel.text = "Record loaded"
-                return value
-            }, reject: { (error) -> NSError in
-                self.messageLabel.text = "Could not load record: \(error.localizedDescription)"
-                return error
+                return .Value(value)
+            }, reject: {
+                error in
+                self.messageLabel.text = "Could not load record: \(error)"
+                return .Error(error)
             }
         )
     }
@@ -67,14 +71,16 @@ class ViewController: UIViewController {
         messageLabel.text = "logout started"
 
         demoFSM.logout().then(
-            { (value:AnyObject?) -> AnyObject? in
+            {
+                value in
                 self.usernameLabel.text = ""
                 self.userRecordLabel.text = ""
                 self.messageLabel.text = "Logged out"
-                return value
-            }, reject: { (error) -> NSError in
-                self.messageLabel.text = "Could not logout: \(error.localizedDescription)"
-                return error
+                return .Value(value)
+            }, reject: {
+                error in
+                self.messageLabel.text = "Could not logout: \(error)"
+                return .Error(error)
             }
         )
     }

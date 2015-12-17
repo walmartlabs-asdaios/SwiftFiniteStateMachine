@@ -8,8 +8,9 @@
 
 import Foundation
 import XCTest
+@testable import SwiftFiniteStateMachine
 
-class FSMStateTests: FSMTestCase {
+class FSMStateTests: XCTestCase {
 
     let dummyFiniteStateMachine = FSMFiniteStateMachine()
 
@@ -26,9 +27,9 @@ class FSMStateTests: FSMTestCase {
         let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.willEnterState = {
             (state, transition, value) -> AnyObject? in
@@ -44,14 +45,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.willEnterStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
 
@@ -59,9 +62,9 @@ class FSMStateTests: FSMTestCase {
         let dummySource = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let expectedState = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.didEnterState = {
             (state, transition, value) -> AnyObject? in
@@ -77,26 +80,28 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.didEnterStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
-    
+
     // MARK: - exitState tests
 
     func testWillExitState() {
         let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.willExitState = {
             (state, transition, value) -> AnyObject? in
@@ -112,14 +117,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.willExitStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
 
@@ -127,9 +134,9 @@ class FSMStateTests: FSMTestCase {
         let expectedState = FSMState("source", finiteStateMachine: dummyFiniteStateMachine)
         let dummyDestination = FSMState("destination", finiteStateMachine: dummyFiniteStateMachine)
 
-        var actualState:FSMState? = nil
-        var actualTransition:FSMTransition? = nil
-        var actualValue:AnyObject? = nil
+        var actualState:FSMState?
+        var actualTransition:FSMTransition?
+        var actualValue:AnyObject?
 
         expectedState.didExitState = {
             (state, transition, value) -> AnyObject? in
@@ -145,14 +152,16 @@ class FSMStateTests: FSMTestCase {
 
         let result = expectedState.didExitStateWithTransition(expectedTransition, value:expectedValue)
         result.then(
-            { (value) -> AnyObject? in
-                XCTAssertEqualOptional(expectedState, actualState)
-                XCTAssertEqualOptional(expectedTransition, actualTransition)
+            {
+                value in
+                XCTAssertEqual(expectedState, actualState)
+                XCTAssertEqual(expectedTransition, actualTransition)
                 XCTAssertTrue(expectedValue === actualValue)
-                return nil
-            }, reject: { (error) -> NSError in
+                return .Value(nil)
+            }, reject: {
+                error in
                 XCTFail("should not fail")
-                return error
+                return .Error(error)
         })
     }
     

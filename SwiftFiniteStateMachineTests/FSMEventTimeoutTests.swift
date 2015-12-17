@@ -8,9 +8,10 @@
 
 import UIKit
 import XCTest
+@testable import SwiftFiniteStateMachine
 
-class FSMEventTimeoutTests: FSMTestCase {
-    
+class FSMEventTimeoutTests: XCTestCase {
+
     var finiteStateMachine:FSMFiniteStateMachine!
     var state1:FSMState!
     var state2:FSMState!
@@ -23,14 +24,19 @@ class FSMEventTimeoutTests: FSMTestCase {
         super.setUp()
 
         finiteStateMachine = FSMFiniteStateMachine()
-        state1 = finiteStateMachine.addState("state1", error:nil)
-        state2 = finiteStateMachine.addState("state2", error:nil)
-        state3 = finiteStateMachine.addState("state3", error:nil)
-        event1to2 = finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2, error:nil)
-        event2to3 = finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3, error:nil)
-        event3to1 = finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1, error:nil)
+        do {
+            state1 = try finiteStateMachine.addState("state1")
+            state2 = try finiteStateMachine.addState("state2")
+            state3 = try finiteStateMachine.addState("state3")
+            event1to2 = try finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2)
+            event2to3 = try finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3)
+            event3to1 = try finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1)
 
-        finiteStateMachine.setInitialState(state1, error:nil)
+            try finiteStateMachine.setInitialState(state1)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testSimpleTimeout() {
@@ -42,29 +48,40 @@ class FSMEventTimeoutTests: FSMTestCase {
             return self.delayedFulfilledPromise(timeout*5.0, value:value)
         }
 
-        var actualTimeoutBlockEvent:FSMEvent? = nil
-        var actualTimeoutBlockTransition:FSMTransition? = nil
+        var actualTimeoutBlockEvent:FSMEvent?
+        var actualTimeoutBlockTransition:FSMTransition?
         event1to2.eventDidTimeout = {(event,transition) -> Void in
             actualTimeoutBlockEvent = event
             actualTimeoutBlockTransition = transition
         }
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:timeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
                 XCTFail("Should have been rejected")
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
-                XCTAssertEqual(kFSMErrorEventTimeout, error.code)
-                return error
+
+                do {
+                    throw error
+                }
+                catch FSMError.EventTimeout {
+                    // expected
+                }
+                catch let unknownError {
+                    XCTFail("Unknown error: \(unknownError)")
+                }
+                return .Error(error)
             }
         )
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
 
-        XCTAssertEqualOptional(event1to2, actualTimeoutBlockEvent)
+        XCTAssertEqual(event1to2, actualTimeoutBlockEvent)
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
 
@@ -86,31 +103,33 @@ class FSMEventTimeoutTests: FSMTestCase {
             return self.delayedFulfilledPromise(didFireDelay, value:value)
         }
 
-        var actualTimeoutBlockEvent:FSMEvent? = nil
-        var actualTimeoutBlockTransition:FSMTransition? = nil
+        var actualTimeoutBlockEvent:FSMEvent?
+        var actualTimeoutBlockTransition:FSMTransition?
         event1to2.eventDidTimeout = {(event,transition) -> Void in
             actualTimeoutBlockEvent = event
             actualTimeoutBlockTransition = transition
         }
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:eventTimeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
                 XCTFail("Should have been rejected")
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
-                return error
+                return .Error(error)
             }
         )
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(willFireDelay+didFireDelay+2, handler:nil)
 
-        XCTAssertEqualOptional(event1to2, actualTimeoutBlockEvent)
+        XCTAssertEqual(event1to2, actualTimeoutBlockEvent)
         XCTAssertNotNil(actualTimeoutBlockTransition)
     }
-    
+
 
     func testMidEventResetTimeoutShouldSucceed() {
         let willFireDelay:NSTimeInterval = 5.0
@@ -134,20 +153,22 @@ class FSMEventTimeoutTests: FSMTestCase {
         }
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:eventTimeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
                 XCTFail("Should not have been rejected")
-                return error
+                return .Error(error)
             }
         )
 
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(willFireDelay+didFireDelay+2, handler:nil)
     }
-    
+
     func testDelayWithoutTimeout() {
         let timeout:NSTimeInterval = 1.0
 
@@ -159,19 +180,21 @@ class FSMEventTimeoutTests: FSMTestCase {
 
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:timeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 expectation.fulfill()
                 XCTFail("Should not have been rejected")
-                return error
+                return .Error(error)
         })
-
+        
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
     }
-
-
-
+    
+    
+    
 }

@@ -8,8 +8,9 @@
 
 import UIKit
 import XCTest
+@testable import SwiftFiniteStateMachine
 
-class FSMLockingTests: FSMTestCase {
+class FSMLockingTests: XCTestCase {
 
     let defaultEventTimeout:NSTimeInterval = 10.0
 
@@ -25,14 +26,19 @@ class FSMLockingTests: FSMTestCase {
         super.setUp()
 
         finiteStateMachine = FSMFiniteStateMachine()
-        state1 = finiteStateMachine.addState("state1", error:nil)
-        state2 = finiteStateMachine.addState("state2", error:nil)
-        state3 = finiteStateMachine.addState("state3", error:nil)
-        event1to2 = finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2, error:nil)
-        event2to3 = finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3, error:nil)
-        event3to1 = finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1, error:nil)
+        do {
+            state1 = try finiteStateMachine.addState("state1")
+            state2 = try finiteStateMachine.addState("state2")
+            state3 = try finiteStateMachine.addState("state3")
+            event1to2 = try finiteStateMachine.addEvent("event1to2", sources:[state1], destination:state2)
+            event2to3 = try finiteStateMachine.addEvent("event2to3", sources:[state2], destination:state3)
+            event3to1 = try finiteStateMachine.addEvent("event3to1", sources:[state3], destination:state1)
 
-        finiteStateMachine.setInitialState(state1, error:nil)
+            try finiteStateMachine.setInitialState(state1)
+        }
+        catch let error {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func testSimpleConflictingCall() {
@@ -46,13 +52,15 @@ class FSMLockingTests: FSMTestCase {
 
         let promise = finiteStateMachine.fireEvent(event1to2, eventTimeout:defaultEventTimeout, initialValue:nil)
         promise.then(
-            { (value) -> AnyObject? in
+            {
+                value in
                 event1to2Expectation.fulfill()
-                return value
-            }, reject: { (error) -> NSError in
+                return .Value(value)
+            }, reject: {
+                error in
                 event1to2Expectation.fulfill()
                 XCTFail("Should not have been rejected")
-                return error
+                return .Error(error)
         })
 
         let conflictingPromise = finiteStateMachine.fireEvent(event2to3, eventTimeout:timeout, initialValue:nil)
@@ -78,14 +86,16 @@ class FSMLockingTests: FSMTestCase {
             }
             let promise1to2 = self.finiteStateMachine.fireEvent(self.event1to2, eventTimeout:timeout, initialValue:nil)
             promise1to2.then(
-                { (value) -> AnyObject? in
+                {
+                    value in
                     event1to2Expectation.fulfill()
                     XCTAssertNil(self.finiteStateMachine.pendingEvent)
-                    return value
-                }, reject: { (error) -> NSError in
+                    return .Value(value)
+                }, reject: {
+                    error in
                     event1to2Expectation.fulfill()
                     XCTFail("Should not have been rejected")
-                    return error
+                    return .Error(error)
                 }
             )
         })
@@ -96,9 +106,9 @@ class FSMLockingTests: FSMTestCase {
             let conflictingPromise = self.finiteStateMachine.fireEvent(self.event2to3, eventTimeout:self.defaultEventTimeout, initialValue:nil)
             XCTAssertTrue(conflictingPromise.isRejected)
         })
-
+        
         // wait long enough for timeout to trigger
         waitForExpectationsWithTimeout(timeout*2.0, handler:nil)
     }
-
+    
 }

@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import SwiftFiniteStateMachine
 
 class DemoFSM {
     let rootViewController:UIViewController
 
-    var username:String? = nil
-    var userRecord:String? = nil
+    var username:String?
+    var userRecord:String?
 
     var finiteStateMachine:FSMFiniteStateMachine!
     var signedOutState:FSMState!
@@ -32,49 +33,54 @@ class DemoFSM {
     func configureFiniteStateMachine() {
         finiteStateMachine = FSMFiniteStateMachine()
 
-        signedOutState = finiteStateMachine.addState("signedOut", error:nil)
-        signedOutState.didEnterState = {
-            (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            self.username = nil
-            self.userRecord = nil
-            return value
-        }
-        authenticatedState = finiteStateMachine.addState("authenticated", error:nil)
-        authenticatedState.didEnterState = {
-            (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            self.username = value as? String
-            return value
-        }
-        signedInState = finiteStateMachine.addState("signedIn", error:nil)
-        signedInState.didEnterState = {
-            (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            self.userRecord = value as? String
-            return value
-        }
+        do {
+            signedOutState = try finiteStateMachine.addState("signedOut")
+            signedOutState.didEnterState = {
+                (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                self.username = nil
+                self.userRecord = nil
+                return value
+            }
+            authenticatedState = try finiteStateMachine.addState("authenticated")
+            authenticatedState.didEnterState = {
+                (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                self.username = value as? String
+                return value
+            }
+            signedInState = try finiteStateMachine.addState("signedIn")
+            signedInState.didEnterState = {
+                (state:FSMState, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                self.userRecord = value as? String
+                return value
+            }
 
-        authenticateEvent = finiteStateMachine.addEvent("authenticate", sources:[signedOutState], destination:authenticatedState, error:nil)
-        authenticateEvent.willFireEvent = {
-            (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            return self.dummyAuthenticationPromise()
-        }
+            authenticateEvent = try finiteStateMachine.addEvent("authenticate", sources:[signedOutState], destination:authenticatedState)
+            authenticateEvent.willFireEvent = {
+                (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                return self.dummyAuthenticationPromise()
+            }
 
-        loadRecordEvent = finiteStateMachine.addEvent("loadRecord", sources:[authenticatedState], destination:signedInState, error:nil)
-        loadRecordEvent.willFireEvent = {
-            (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            return self.dummySignInPromise()
-        }
+            loadRecordEvent = try finiteStateMachine.addEvent("loadRecord", sources:[authenticatedState], destination:signedInState)
+            loadRecordEvent.willFireEvent = {
+                (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                return self.dummySignInPromise()
+            }
 
-        signOutEvent = finiteStateMachine.addEvent("signOut", sources:[authenticatedState,signedInState], destination:signedOutState, error:nil)
-        signOutEvent.willFireEvent = {
-            (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
-            return self.dummySignOutPromise()
-        }
+            signOutEvent = try finiteStateMachine.addEvent("signOut", sources:[authenticatedState,signedInState], destination:signedOutState)
+            signOutEvent.willFireEvent = {
+                (event:FSMEvent, transition:FSMTransition, value:AnyObject?) -> AnyObject? in
+                return self.dummySignOutPromise()
+            }
 
-        finiteStateMachine.setInitialState(signedOutState, error:nil)
+            try finiteStateMachine.setInitialState(signedOutState)
+        }
+        catch let error {
+            print("DBG: error configuring states: \(error)")
+        }
     }
 
-    func dummyAuthenticationPromise() -> Promise {
-        let result = Promise()
+    func dummyAuthenticationPromise() -> Promise<AnyObject> {
+        let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Authentication", message: "Tap fail or enter a username and tap authenticate", preferredStyle: .Alert)
         var usernameTextField:UITextField!
         alertController.addTextFieldWithConfigurationHandler { (textField:UITextField!) -> Void in
@@ -95,8 +101,8 @@ class DemoFSM {
         return result
     }
 
-    func dummySignInPromise() -> Promise {
-        let result = Promise()
+    func dummySignInPromise() -> Promise<AnyObject> {
+        let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Load Record", message: "Tap fail or enter userRecord and tap load record", preferredStyle: .Alert)
         var userRecordTextField:UITextField!
         alertController.addTextFieldWithConfigurationHandler { (textField:UITextField!) -> Void in
@@ -116,9 +122,9 @@ class DemoFSM {
         }
         return result
     }
-    
-    func dummySignOutPromise() -> Promise {
-        let result = Promise()
+
+    func dummySignOutPromise() -> Promise<AnyObject> {
+        let result:Promise<AnyObject> = Promise()
         let alertController = UIAlertController(title: "Dummy Logout", message: "Tap fail or logout", preferredStyle: .Alert)
 
         alertController.addAction(UIAlertAction(title: "Fail", style: .Cancel) { (action) in
@@ -133,17 +139,17 @@ class DemoFSM {
         }
         return result
     }
-    
-    func login() -> Promise {
+
+    func login() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(authenticateEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
 
-    func loadRecord() -> Promise {
+    func loadRecord() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(loadRecordEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
-
-    func logout() -> Promise {
+    
+    func logout() -> Promise<AnyObject> {
         return finiteStateMachine.fireEvent(signOutEvent, eventTimeout:defaultEventTimeout, initialValue:nil)
     }
-
+    
 }
