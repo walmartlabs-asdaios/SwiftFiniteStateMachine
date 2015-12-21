@@ -10,6 +10,7 @@ import Foundation
 
 public typealias FSMWillFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
 public typealias FSMDidFireEventClosure = (FSMEvent, FSMTransition, AnyObject?) -> AnyObject?
+public typealias FSMFireEventFailedClosure = (FSMEvent, FSMTransition, ErrorType) -> AnyObject?
 public typealias FSMEventTimeoutClosure = (FSMEvent, FSMTransition) -> Void
 
 /**
@@ -50,6 +51,11 @@ public class FSMEvent: NSObject {
      after the current state is changed
      */
     public var didFireEvent:FSMDidFireEventClosure?
+
+    /**
+     This optional closure is called if the transition fails for some reason
+    */
+    public var fireEventFailed:FSMFireEventFailedClosure?
 
     /**
      This optional closure is called after the event times out, the result of the
@@ -105,7 +111,7 @@ public class FSMEvent: NSObject {
 
     func willFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {
         var response:AnyObject? = value
-        if let willFireEvent = self.willFireEvent {
+        if let willFireEvent = willFireEvent {
             response = willFireEvent(self,transition,value)
         }
         return Promise.valueAsPromise(response)
@@ -113,10 +119,17 @@ public class FSMEvent: NSObject {
 
     func didFireEventWithTransition(transition:FSMTransition, value:AnyObject?) -> Promise<AnyObject> {
         var response:AnyObject? = value
-        if let didFireEvent = self.didFireEvent {
+        if let didFireEvent = didFireEvent {
             response = didFireEvent(self,transition,value)
         }
         return Promise.valueAsPromise(response)
+    }
+
+    func fireEventFailedWithTransition(transition:FSMTransition, error:ErrorType) -> Promise<AnyObject> {
+        if let fireEventFailed = fireEventFailed {
+            return Promise.valueAsPromise(fireEventFailed(self,transition,error))
+        }
+        return Promise.valueAsPromise(error)
     }
 
 }

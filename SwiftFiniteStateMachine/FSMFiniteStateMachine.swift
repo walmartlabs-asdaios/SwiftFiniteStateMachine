@@ -263,10 +263,16 @@ public class FSMFiniteStateMachine: NSObject {
         })
         pendingEventPromises.append(lastPromise)
 
-        lastPromise = lastPromise.then({
-            value in
-            return .Pending(event.didFireEventWithTransition(transition, value:value))
-        })
+        lastPromise = lastPromise.then(
+            {
+                value in
+                return .Pending(event.didFireEventWithTransition(transition, value:value))
+            },
+            reject: {
+                error in
+                return .Pending(event.fireEventFailedWithTransition(transition, error: error as NSError))
+            }
+        )
         pendingEventPromises.append(lastPromise)
         pendingEventTransition = transition
 

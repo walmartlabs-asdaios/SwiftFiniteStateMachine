@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F8A027B21BFE2CF400ED1378 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027AF1BFE2CF400ED1378 /* Promise.swift */; };
-		F8A027B31BFE2CF400ED1378 /* SwiftPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = F8A027B01BFE2CF400ED1378 /* SwiftPromises.h */; };
-		F8A027B41BFE2CF400ED1378 /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B11BFE2CF400ED1378 /* Synchronizer.swift */; };
 		F8A027BD1BFE2D8800ED1378 /* FSMEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B51BFE2D8800ED1378 /* FSMEventTests.swift */; };
 		F8A027BE1BFE2D8800ED1378 /* FSMEventTimeoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B61BFE2D8800ED1378 /* FSMEventTimeoutTests.swift */; };
 		F8A027BF1BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027B71BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift */; };
@@ -24,6 +21,9 @@
 		F8A027EC1BFE33CF00ED1378 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A027E51BFE33CF00ED1378 /* ViewController.swift */; };
 		F8A027F11BFE33E700ED1378 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8A027ED1BFE33E700ED1378 /* LaunchScreen.xib */; };
 		F8A027F21BFE33E700ED1378 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8A027EF1BFE33E700ED1378 /* Main.storyboard */; };
+		F8C5BD251C28A95E008F81FE /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C5BD221C28A95E008F81FE /* Promise.swift */; };
+		F8C5BD261C28A95E008F81FE /* SwiftPromises.h in Headers */ = {isa = PBXBuildFile; fileRef = F8C5BD231C28A95E008F81FE /* SwiftPromises.h */; };
+		F8C5BD271C28A95E008F81FE /* Synchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C5BD241C28A95E008F81FE /* Synchronizer.swift */; };
 		F8FB219F1BFE15B70013C963 /* SwiftFiniteStateMachine.h in Headers */ = {isa = PBXBuildFile; fileRef = F8FB219E1BFE15B70013C963 /* SwiftFiniteStateMachine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F8FB21A61BFE15B80013C963 /* SwiftFiniteStateMachine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FB219C1BFE15B70013C963 /* SwiftFiniteStateMachine.framework */; };
 		F8FB21BB1BFE164F0013C963 /* FSMEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FB21B71BFE164F0013C963 /* FSMEvent.swift */; };
@@ -50,9 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F8A027AF1BFE2CF400ED1378 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
-		F8A027B01BFE2CF400ED1378 /* SwiftPromises.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftPromises.h; sourceTree = "<group>"; };
-		F8A027B11BFE2CF400ED1378 /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
 		F8A027B51BFE2D8800ED1378 /* FSMEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTests.swift; sourceTree = "<group>"; };
 		F8A027B61BFE2D8800ED1378 /* FSMEventTimeoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEventTimeoutTests.swift; sourceTree = "<group>"; };
 		F8A027B71BFE2D8800ED1378 /* FSMFiniteStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMFiniteStateMachineTests.swift; sourceTree = "<group>"; };
@@ -69,9 +66,12 @@
 		F8A027E51BFE33CF00ED1378 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F8A027EE1BFE33E700ED1378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F8A027F01BFE33E700ED1378 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F8C5BD1F1C28A91C008F81FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		F8C5BD221C28A95E008F81FE /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
+		F8C5BD231C28A95E008F81FE /* SwiftPromises.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftPromises.h; sourceTree = "<group>"; };
+		F8C5BD241C28A95E008F81FE /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
 		F8FB219C1BFE15B70013C963 /* SwiftFiniteStateMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFiniteStateMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8FB219E1BFE15B70013C963 /* SwiftFiniteStateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftFiniteStateMachine.h; sourceTree = "<group>"; };
-		F8FB21A01BFE15B70013C963 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8FB21A51BFE15B80013C963 /* SwiftFiniteStateMachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftFiniteStateMachineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8FB21AC1BFE15B80013C963 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8FB21B71BFE164F0013C963 /* FSMEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMEvent.swift; sourceTree = "<group>"; };
@@ -130,20 +130,9 @@
 		F83B618C1A9F97410070549A /* external */ = {
 			isa = PBXGroup;
 			children = (
-				F8A027AE1BFE2CF400ED1378 /* SwiftPromises */,
+				F8C5BD211C28A95E008F81FE /* SwiftPromises */,
 			);
 			name = external;
-			sourceTree = "<group>";
-		};
-		F8A027AE1BFE2CF400ED1378 /* SwiftPromises */ = {
-			isa = PBXGroup;
-			children = (
-				F8A027AF1BFE2CF400ED1378 /* Promise.swift */,
-				F8A027B01BFE2CF400ED1378 /* SwiftPromises.h */,
-				F8A027B11BFE2CF400ED1378 /* Synchronizer.swift */,
-			);
-			name = SwiftPromises;
-			path = external/SwiftPromises/SwiftPromises/source;
 			sourceTree = "<group>";
 		};
 		F8A027CB1BFE338200ED1378 /* SwiftFiniteStateMachineDemo */ = {
@@ -160,6 +149,25 @@
 			path = SwiftFiniteStateMachineDemo;
 			sourceTree = "<group>";
 		};
+		F8C5BD201C28A922008F81FE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F8C5BD1F1C28A91C008F81FE /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F8C5BD211C28A95E008F81FE /* SwiftPromises */ = {
+			isa = PBXGroup;
+			children = (
+				F8C5BD221C28A95E008F81FE /* Promise.swift */,
+				F8C5BD231C28A95E008F81FE /* SwiftPromises.h */,
+				F8C5BD241C28A95E008F81FE /* Synchronizer.swift */,
+			);
+			name = SwiftPromises;
+			path = external/SwiftPromises/SwiftPromises/source;
+			sourceTree = "<group>";
+		};
 		F8FB219D1BFE15B70013C963 /* SwiftFiniteStateMachine */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,7 +176,7 @@
 				F8FB21B71BFE164F0013C963 /* FSMEvent.swift */,
 				F8FB21B91BFE164F0013C963 /* FSMState.swift */,
 				F8FB21BA1BFE164F0013C963 /* FSMTransition.swift */,
-				F8FB21A01BFE15B70013C963 /* Info.plist */,
+				F8C5BD201C28A922008F81FE /* Supporting Files */,
 			);
 			path = SwiftFiniteStateMachine;
 			sourceTree = "<group>";
@@ -196,7 +204,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8A027B31BFE2CF400ED1378 /* SwiftPromises.h in Headers */,
+				F8C5BD261C28A95E008F81FE /* SwiftPromises.h in Headers */,
 				F8FB219F1BFE15B70013C963 /* SwiftFiniteStateMachine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,10 +351,10 @@
 			files = (
 				F8FB21BB1BFE164F0013C963 /* FSMEvent.swift in Sources */,
 				F8FB21BC1BFE164F0013C963 /* FSMFiniteStateMachine.swift in Sources */,
-				F8A027B21BFE2CF400ED1378 /* Promise.swift in Sources */,
+				F8C5BD251C28A95E008F81FE /* Promise.swift in Sources */,
 				F8FB21BD1BFE164F0013C963 /* FSMState.swift in Sources */,
 				F8FB21BE1BFE164F0013C963 /* FSMTransition.swift in Sources */,
-				F8A027B41BFE2CF400ED1378 /* Synchronizer.swift in Sources */,
+				F8C5BD271C28A95E008F81FE /* Synchronizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,7 +532,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = SwiftFiniteStateMachine/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachine;
@@ -548,7 +556,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = SwiftFiniteStateMachine/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ivygulch.SwiftFiniteStateMachine;
