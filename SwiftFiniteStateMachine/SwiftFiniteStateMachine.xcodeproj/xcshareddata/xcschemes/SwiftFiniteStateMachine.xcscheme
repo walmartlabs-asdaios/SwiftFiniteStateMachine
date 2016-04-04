@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0720"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F83B61651A9F96F00070549A"
-               BuildableName = "SwiftFiniteStateMachine.app"
+               BlueprintIdentifier = "F87BEC4D1CB319DB0023D740"
+               BuildableName = "SwiftFiniteStateMachine.framework"
                BlueprintName = "SwiftFiniteStateMachine"
                ReferencedContainer = "container:SwiftFiniteStateMachine.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F83B617A1A9F96F00070549A"
+               BlueprintIdentifier = "F87BEC571CB319DB0023D740"
                BuildableName = "SwiftFiniteStateMachineTests.xctest"
                BlueprintName = "SwiftFiniteStateMachineTests"
                ReferencedContainer = "container:SwiftFiniteStateMachine.xcodeproj">
@@ -42,8 +42,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F83B61651A9F96F00070549A"
-            BuildableName = "SwiftFiniteStateMachine.app"
+            BlueprintIdentifier = "F87BEC4D1CB319DB0023D740"
+            BuildableName = "SwiftFiniteStateMachine.framework"
             BlueprintName = "SwiftFiniteStateMachine"
             ReferencedContainer = "container:SwiftFiniteStateMachine.xcodeproj">
          </BuildableReference>
@@ -61,16 +61,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F83B61651A9F96F00070549A"
-            BuildableName = "SwiftFiniteStateMachine.app"
+            BlueprintIdentifier = "F87BEC4D1CB319DB0023D740"
+            BuildableName = "SwiftFiniteStateMachine.framework"
             BlueprintName = "SwiftFiniteStateMachine"
             ReferencedContainer = "container:SwiftFiniteStateMachine.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -80,16 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F83B61651A9F96F00070549A"
-            BuildableName = "SwiftFiniteStateMachine.app"
+            BlueprintIdentifier = "F87BEC4D1CB319DB0023D740"
+            BuildableName = "SwiftFiniteStateMachine.framework"
             BlueprintName = "SwiftFiniteStateMachine"
             ReferencedContainer = "container:SwiftFiniteStateMachine.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

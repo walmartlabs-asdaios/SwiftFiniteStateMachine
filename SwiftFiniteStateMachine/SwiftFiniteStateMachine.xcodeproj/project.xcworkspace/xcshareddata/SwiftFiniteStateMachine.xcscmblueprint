@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "3FD3021502565F2FEF3D52E26FEFFC132972614E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "3FD3021502565F2FEF3D52E26FEFFC132972614E" : 0,
+    "194FB2C339AA2A55AC3F5BF82F9143C9E57C11B1" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0D9F7BE8-A9A1-45C4-B2A1-947C5721D47F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "3FD3021502565F2FEF3D52E26FEFFC132972614E" : "SwiftFiniteStateMachine\/",
+    "194FB2C339AA2A55AC3F5BF82F9143C9E57C11B1" : "SwiftFiniteStateMachine\/external\/SwiftPromises\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SwiftFiniteStateMachine",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SwiftFiniteStateMachine\/SwiftFiniteStateMachine.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:walmartlabs-asdaios\/SwiftPromises",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "194FB2C339AA2A55AC3F5BF82F9143C9E57C11B1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:walmartlabs-asdaios\/SwiftFiniteStateMachine.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3FD3021502565F2FEF3D52E26FEFFC132972614E"
+    }
+  ]
+}
